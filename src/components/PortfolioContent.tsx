@@ -16,6 +16,8 @@ import { NavBar } from '@/components/ui/tubelight-navbar';
 import { Home, User, GraduationCap, Briefcase, Code, FolderOpen, Award, MessageSquare } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { projects } from '@/lib/projects';
 
 export function PortfolioContent() {
   const { theme } = useTheme();
@@ -43,31 +45,7 @@ export function PortfolioContent() {
     { name: 'Testimonials', url: '#testimonials', icon: MessageSquare }];
 
   // Projects data with categories
-  const projects = [
-    {
-      id: 'autonomous-robot',
-      title: 'Autonomous Robot',
-      description: 'Self-navigating robot using SLAM and path planning algorithms with real-time obstacle detection',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80',
-      categories: ['Robotics',],
-      size: 'large' // for layout
-    },
-    {
-      id: 'audio-search',
-      title: 'Audio Search Engine',
-      description: 'Voice-powered search with NLP and speech recognition',
-      image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/a5838af0-769b-474e-a5fc-caa1e19c86e5/generated_images/modern-audio-search-engine-interface-wit-0e47d749-20251103021714.jpg',
-      categories: ['AI/ML', 'Web Development'],
-      size: 'small'
-    },
-    {
-      id: 'agro-analytics',
-      title: 'Agro Analytics Platform',
-      description: 'AI-driven crop monitoring and predictive analytics system',
-      image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/a5838af0-769b-474e-a5fc-caa1e19c86e5/generated_images/ai-powered-agricultural-analytics-dashbo-925fa72a-20251103021715.jpg',
-      categories: ['AI/ML', 'Data Science'],
-      size: 'small'
-    }];
+
 
 
   // Extract unique categories
@@ -337,12 +315,14 @@ export function PortfolioContent() {
                     }>
                       {project.description}
                     </p>
-                    <Button
-                      size="default"
-                      className="w-fit bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,255,255,0.1)]"
-                    >
-                      View Project
-                    </Button>
+                    <Link href={`/projects/${project.id}`}>
+                      <Button
+                        size="default"
+                        className="w-fit bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,255,255,0.1)]"
+                      >
+                        View Project
+                      </Button>
+                    </Link>
                   </div>
                 </motion.div>);
 

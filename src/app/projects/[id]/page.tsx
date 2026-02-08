@@ -1,124 +1,82 @@
+'use client';
+
 import React from 'react';
-import { projects } from '@/lib/data';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
+import { projects } from '@/lib/projects';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ExternalLink, Github, FileText, Globe } from 'lucide-react';
-import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
-import { MediaGallery } from '@/components/MediaGallery';
+import { ArrowLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
-interface ProjectPageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
+export default function ProjectPage() {
+  const params = useParams<{ id: string }>();
+  const router = useRouter();
+  const id = params.id;
 
-export default async function ProjectPage({ params }: ProjectPageProps) {
-  const { id } = await params;
   const project = projects.find((p) => p.id === id);
 
   if (!project) {
-    notFound();
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
+        <h1 className="text-4xl font-bold mb-4">Project Not Found</h1>
+        <Button onClick={() => router.push('/#projects')}>Back to Projects</Button>
+      </div>
+    );
   }
-
-  const getLinkIcon = (type: string) => {
-    switch (type) {
-      case 'repository':
-        return <Github className="w-4 h-4" />;
-      case 'report':
-        return <FileText className="w-4 h-4" />;
-      case 'demo':
-        return <Globe className="w-4 h-4" />;
-      default:
-        return <ExternalLink className="w-4 h-4" />;
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground p-8 md:p-16">
-      {/* Theme Toggle */}
-      <div className="fixed top-6 right-6 z-50">
-        <AnimatedThemeToggler className="w-11 h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
-      </div>
-
-      <div className="max-w-4xl mx-auto">
-        <Link href="/" className="inline-block mb-8">
-          <Button variant="ghost" className="gap-2">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-4xl mx-auto"
+      >
+        <Link href="/#projects" className="inline-block mb-8">
+          <Button variant="ghost" className="gap-2 pl-0 hover:pl-2 transition-all">
             <ArrowLeft className="w-4 h-4" />
-            Back to Portfolio
+            Back to Projects
           </Button>
         </Link>
 
-        <div className="space-y-8">
-          {/* Media Gallery */}
-          <MediaGallery media={project.media} title={project.title} />
-
-          <div className="space-y-6">
-            {/* Header Section */}
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-wrap gap-2">
-                {project.categories.map((category) => (
+        <div className="rounded-2xl overflow-hidden border border-border bg-card mb-8">
+          <div className="relative h-[400px] md:h-[500px] w-full">
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            <div className="absolute bottom-0 left-0 p-8">
+              <div className="flex flex-wrap gap-2 mb-4">
+                {project.categories.map((cat) => (
                   <span
-                    key={category}
-                    className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                    key={cat}
+                    className="px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs text-white"
                   >
-                    {category}
+                    {cat}
                   </span>
                 ))}
               </div>
-
-              <h1 className="text-4xl md:text-5xl font-bold">{project.title}</h1>
-              
-              <p className="text-xl text-muted-foreground leading-relaxed">
-                {project.description}
-              </p>
-
-              {/* Project Links */}
-              {project.links && project.links.length > 0 && (
-                <div className="flex flex-wrap gap-4 pt-2">
-                  {project.links.map((link, index) => (
-                    <a
-                      key={index}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex"
-                    >
-                      <Button variant="outline" className="gap-2">
-                        {getLinkIcon(link.type)}
-                        {link.label}
-                      </Button>
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Detailed Content */}
-            <div className="grid md:grid-cols-2 gap-8 pt-8 border-t border-border">
-              {project.goals && project.goals.length > 0 && (
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-semibold">Project Goals</h3>
-                  <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                    {project.goals.map((goal, index) => (
-                      <li key={index}>{goal}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {project.contribution && (
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-semibold">My Contribution</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {project.contribution}
-                  </p>
-                </div>
-              )}
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{project.title}</h1>
             </div>
           </div>
         </div>
-      </div>
+
+        <div className="prose prose-invert max-w-none">
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Overview</h2>
+          <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+            {project.description}
+          </p>
+
+          <div className="bg-card border border-border rounded-xl p-6 mb-8">
+            <h3 className="text-xl font-semibold mb-4 text-foreground">Technical Details</h3>
+            <p className="text-muted-foreground">
+              Detailed technical specifications and implementation details for {project.title} will be added here.
+            </p>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
