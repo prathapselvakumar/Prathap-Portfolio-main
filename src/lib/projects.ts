@@ -54,17 +54,12 @@ export const projects: Project[] = [
             { icon: 'Database', title: "Path Logging", desc: "Stores navigation paths and obstacle data for analysis." }
         ],
         videos: [
-            { id: "1", title: "CNC Machining Process", description: "Full walkthrough of the CNC machining setup and cutting process for the housing component.", thumbnail: "/IMG_4876.JPG", duration: "4:32", url: "/IMG_5346.MOV" },
-            { id: "2", title: "Assembly & Testing", description: "Final assembly of all components and initial testing of mechanical systems.", thumbnail: "/IMG_4876.JPG", duration: "7:15", url: "/IMG_5139.MOV" },
-            { id: "3", title: "3D Printing Prototypes", description: "Rapid prototyping iterations using FDM and SLA 3D printing techniques.", thumbnail: "/IMG_4876.JPG", duration: "3:48", url: "/IMG_5164.MOV" },
-            { id: "4", title: "Component Integration", description: "Integrating electronic components into the 3D printed housing.", thumbnail: "/IMG_4876.JPG", duration: "5:20", url: "/IMG_5165.MOV" },
-            { id: "5", title: "Initial Boot", description: "First power-up and boot sequence of the autonomous system.", thumbnail: "/IMG_4876.JPG", duration: "2:10", url: "/IMG_5166.MOV" },
-            { id: "6", title: "Sensor Calibration", description: "Calibrating the LIDAR and ultrasonic sensors for accurate mapping.", thumbnail: "/IMG_4876.JPG", duration: "6:45", url: "/IMG_5167.MOV" },
-            { id: "7", title: "Autonomous Navigation", description: "Demonstration of the robot navigating a complex environment autonomously.", thumbnail: "/IMG_4876.JPG", duration: "8:30", url: "/IMG_5225.MOV" },
-            { id: "8", title: "Obstacle Avoidance", description: "Testing the real-time obstacle avoidance algorithms.", thumbnail: "/IMG_4876.JPG", duration: "4:15", url: "/IMG_5343.MOV" },
-            { id: "9", title: "Path Planning Visualization", description: "Visualizing the path planning algorithms in action.", thumbnail: "/IMG_4876.JPG", duration: "3:50", url: "/IMG_5344.MOV" },
-            { id: "10", title: "Final System Test", description: "Comprehensive test of all systems working together.", thumbnail: "/IMG_4876.JPG", duration: "9:10", url: "/IMG_5345.MOV" },
-            { id: "11", title: "Project Overview", description: "A high-level overview of the entire autonomous robot project.", thumbnail: "/IMG_4876.JPG", duration: "5:00", url: "/226c11ad-2bca-41d5-acee-faace3ca477e.mp4" }
+            { id: "1", title: "Computer Vision", description: "The output of the object detection using YOLOv8.", thumbnail: "/IMG_4876.JPG", duration: "4:32", url: "/Object_Detection.MOV" },
+            { id: "2", title: "Lidars", description: "Initial testing of the lidars.", thumbnail: "/IMG_4876.JPG", duration: "2:10", url: "/LIDAR.MOV" },
+            { id: "3", title: "Arm Movement Testing", description: "Testing the movement of the arm.", thumbnail: "/IMG_4876.JPG", duration: "3:48", url: "/ARM.MOV" },
+            { id: "4", title: "Strucal Construction", description: "The construction of the robot.", thumbnail: "/IMG_4876.JPG", duration: "5:20", url: "/Leo Construction Progress.MOV" },
+            { id: "5", title: "Trail Run", description: "First run of the robot in a trail environment.", thumbnail: "/IMG_4876.JPG", duration: "7:15", url: "/Trail Run-1.MOV" },
+
         ],
         files: [
             { id: "1", name: "Housing Assembly", format: ".f3d", description: "Complete Fusion 360 assembly with all internal components and mounting points.", fileSize: "24.3 MB", icon: "fusion", previewImage: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&h=300&fit=crop", downloadUrl: "#" },
