@@ -315,7 +315,11 @@ export function PortfolioContent() {
                     }>
                       {project.description}
                     </p>
-                    <Link href={`/projects/${project.id}`}>
+                    <Link
+                      href={project.id === 'audio-search' ? "/projects/audio-search" : `/projects/${project.id}`}
+                      target={project.id === 'audio-search' ? "_blank" : undefined}
+                      rel={project.id === 'audio-search' ? "noopener noreferrer" : undefined}
+                    >
                       <Button
                         size="default"
                         className="w-fit bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,255,255,0.1)]"

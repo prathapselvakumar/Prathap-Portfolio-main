@@ -181,8 +181,8 @@ export function Certificates() {
   const categories = ['All', ...Array.from(new Set(certificates.map(cert => cert.category)))];
 
   // Filter certificates based on selected category
-  const filteredCertificates = selectedCategory === 'All' 
-    ? certificates 
+  const filteredCertificates = selectedCategory === 'All'
+    ? certificates
     : certificates.filter(cert => cert.category === selectedCategory);
 
   const handleViewCertificate = (cert: Certificate) => {
@@ -242,11 +242,10 @@ export function Certificates() {
               key={category}
               onClick={() => setSelectedCategory(category)}
               size="default"
-              className={`pointer-events-auto cursor-pointer ${
-                selectedCategory === category
+              className={`pointer-events-auto cursor-pointer ${selectedCategory === category
                   ? 'bg-foreground text-background'
                   : 'bg-background text-muted-foreground hover:text-foreground'
-              }`}
+                }`}
             >
               {category}
             </LiquidButton>
@@ -266,7 +265,7 @@ export function Certificates() {
             >
               {/* Background Gradient on Hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-muted/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              
+
               {/* Content */}
               <div className="relative z-10 h-full flex flex-col justify-between p-6">
                 <div className="flex-1">
@@ -276,11 +275,11 @@ export function Certificates() {
                     </div>
                     <Award className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
                   </div>
-                  
+
                   <h3 className="font-bold text-foreground mb-2 line-clamp-2 text-lg">
                     {cert.title}
                   </h3>
-                  
+
                   <p className="text-muted-foreground text-sm font-medium mb-1">
                     {cert.issuer}
                   </p>

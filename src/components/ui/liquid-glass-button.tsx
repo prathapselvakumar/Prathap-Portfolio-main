@@ -6,32 +6,33 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const liquidbuttonVariants = cva(
-  "inline-flex items-center transition-colors justify-center cursor-pointer gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none",
+  "inline-flex items-center transition-colors justify-center cursor-pointer gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none",
   {
     variants: {
       variant: {
-        default: "bg-transparent hover:scale-105 duration-300 transition text-primary",
+        default: "bg-primary text-primary-foreground hover:opacity-90",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-border text-foreground hover:bg-secondary",
+        outlinePrimary:
+          "border border-primary/30 text-primary hover:bg-primary/10",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground hover:bg-primary/10 hover:text-primary",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 text-xs gap-1.5 px-4 has-[>svg]:px-4",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        xl: "h-12 rounded-md px-8 has-[>svg]:px-6",
-        xxl: "h-14 rounded-md px-10 has-[>svg]:px-8",
+        default: "h-auto px-4 py-2",
+        sm: "h-auto px-3 py-1.5 text-xs",
+        lg: "h-auto px-8 py-4",
+        hero: "h-auto px-6 py-6 text-sm font-semibold font-mono",
         icon: "size-9",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "xxl",
+      size: "default",
     },
   }
 );
@@ -72,7 +73,7 @@ function LiquidButton({
           style={{ backdropFilter: 'url("#container-glass")' }}
         />
 
-        <div className="relative z-10">
+        <div className="relative z-10 flex items-center justify-center gap-2">
           {children}
         </div>
         <GlassFilter />

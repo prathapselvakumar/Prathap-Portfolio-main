@@ -4,7 +4,6 @@ import path from "node:path";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
-    turbo: false, // Disable Turbopack
   },
   images: {
     remotePatterns: [
@@ -21,9 +20,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
   // Remove Turbopack specific configuration
 };
 
