@@ -54,13 +54,48 @@ export const projects: Project[] = [
             { icon: 'Database', title: "Path Logging", desc: "Stores navigation paths and obstacle data for analysis." }
         ],
         videos: [
-            { id: "1", title: "Computer Vision", description: "The output of the object detection using YOLOv8.", thumbnail: "/IMG_4876.JPG", duration: "4:32", url: "/Object_Detection.MOV" },
-            { id: "2", title: "Lidars", description: "Initial testing of the lidars.", thumbnail: "/IMG_4876.JPG", duration: "2:10", url: "/LIDAR.MOV" },
-            { id: "3", title: "Arm Movement Testing", description: "Testing the movement of the arm.", thumbnail: "/IMG_4876.JPG", duration: "3:48", url: "/ARM.MOV" },
-            { id: "4", title: "Strucal Construction", description: "The construction of the robot.", thumbnail: "/IMG_4876.JPG", duration: "5:20", url: "/Leo Construction Progress.MOV" },
-            { id: "5", title: "Trail Run", description: "First run of the robot in a trail environment.", thumbnail: "/IMG_4876.JPG", duration: "7:15", url: "/Trail Run-1.MOV" },
-
+            {
+                id: "1",
+                title: "Computer Vision",
+                description: "The output of the object detection using YOLOv8.",
+                thumbnail: "/IMG_4876.JPG",
+                duration: "4:32",
+                url: "https://www.youtube.com/embed/qvzDwsoLuuM?si=Yi3NlumaOGGyOG8A"
+            },
+            {
+                id: "2",
+                title: "Lidars",
+                description: "Initial testing of the lidars.",
+                thumbnail: "/IMG_4876.JPG",
+                duration: "2:10",
+                url: "https://www.youtube.com/embed/VSYWAxqKxZ8?si=jUMfohMpg7cIfBh"
+            },
+            {
+                id: "3",
+                title: "Arm Movement Testing",
+                description: "Testing the movement of the arm.",
+                thumbnail: "/IMG_4876.JPG",
+                duration: "3:48",
+                url: "https://www.youtube.com/embed/XS9NESWWpK8?si=EJpZDgY3A2b5d7aR"
+            },
+            {
+                id: "4",
+                title: "Structural Construction",
+                description: "The construction of the robot.",
+                thumbnail: "/IMG_4876.JPG",
+                duration: "5:20",
+                url: "https://www.youtube.com/embed/JKL012XYZ"
+            },
+            {
+                id: "5",
+                title: "Trail Run",
+                description: "First run of the robot in a trail environment.",
+                thumbnail: "/IMG_4876.JPG",
+                duration: "7:15",
+                url: "https://www.youtube.com/embed/FMmaug6hqB4?si=TfzrjiVYwOa-qobM"
+            }
         ],
+
         files: [
             { id: "1", name: "Housing Assembly", format: ".f3d", description: "Complete Fusion 360 assembly with all internal components and mounting points.", fileSize: "24.3 MB", icon: "fusion", previewImage: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&h=300&fit=crop", downloadUrl: "#" },
             { id: "2", name: "Gear Train", format: ".step", description: "STEP file of the precision gear train for cross-platform CAD compatibility.", fileSize: "8.7 MB", icon: "cad", previewImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop", downloadUrl: "#" },
@@ -96,3 +131,4 @@ export const projects: Project[] = [
         repos: []
     }
 ];
+
