@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Award } from 'lucide-react';
 import { LiquidButton } from '@/components/ui/liquid-glass-button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 interface Certificate {
   id: string;
@@ -13,7 +14,8 @@ interface Certificate {
   category: string;
   description: string[];
   skills: string[];
-  verificationUrl?: string;
+  verificationUrl?: string; // Kept for backwards compatibility if needed
+  filePath?: string;      // New field for local file path
 }
 
 const certificates: Certificate[] = [
@@ -29,6 +31,7 @@ const certificates: Certificate[] = [
       "Hands-on projects for practical experience"
     ],
     skills: ["Python", "Flask", "Web Development", "Backend"],
+    filePath: "/Certificate/Python And Flask Framework Complete Course For Beginners.pdf"
   },
   {
     id: "excel-basics",
@@ -42,6 +45,7 @@ const certificates: Certificate[] = [
       "Basic formulas and functions"
     ],
     skills: ["Microsoft Excel", "Data Analysis", "Spreadsheets", "Productivity Tools"],
+    filePath: "/Certificate/An Introduction to  Excel.pdf"
   },
   {
     id: "javascript-ibm",
@@ -55,6 +59,7 @@ const certificates: Certificate[] = [
       "Interactive web applications"
     ],
     skills: ["JavaScript", "Web Development", "Frontend"],
+    filePath: "/Certificate/IBMCE CEJS1IN Certificate  IBM.pdf"
   },
   {
     id: "prompt-engineering",
@@ -68,6 +73,7 @@ const certificates: Certificate[] = [
       "Best practices for generative AI applications"
     ],
     skills: ["AI", "Prompt Engineering", "Generative AI", "Machine Learning"],
+    filePath: "/Certificate/Introduction to Prompt Engineering.pdf"
   },
   {
     id: "numpy-pandas",
@@ -81,6 +87,7 @@ const certificates: Certificate[] = [
       "Practical applications and projects"
     ],
     skills: ["Python", "NumPy", "Pandas", "Data Analysis"],
+    filePath: "/Certificate/Numpy Pandas in Python.pdf"
   },
   {
     id: "js-axix-intellects",
@@ -94,6 +101,7 @@ const certificates: Certificate[] = [
       "Practical programming exercises"
     ],
     skills: ["JavaScript", "Web Development", "Programming"],
+    filePath: "/Certificate/SRM Axis Java Script.pdf"
   },
   {
     id: "c-programming-scratch-to-master",
@@ -107,6 +115,7 @@ const certificates: Certificate[] = [
       "Functions, structures, files, and modular programming"
     ],
     skills: ["C", "Pointers", "Memory Management", "Problem Solving"],
+    filePath: "/Certificate/C Programming Language.pdf"
   },
   {
     id: "basics-of-python-c-square",
@@ -120,6 +129,7 @@ const certificates: Certificate[] = [
       "Hands-on practice with basic scripts"
     ],
     skills: ["Python", "Scripting", "Problem Solving"],
+    filePath: "/Certificate/Basics of Python C-SQUARE.pdf"
   },
   {
     id: "power-bi-fundamentals",
@@ -133,6 +143,7 @@ const certificates: Certificate[] = [
       "Publishing and sharing insights"
     ],
     skills: ["Power BI", "Data Modeling", "Dashboards"],
+    filePath: "/Certificate/Power Bi .pdf"
   },
   {
     id: "srm-axis-ml-big-data",
@@ -146,6 +157,7 @@ const certificates: Certificate[] = [
       "Practical applications and use cases"
     ],
     skills: ["Machine Learning", "Big Data", "Data Processing"],
+    filePath: "/Certificate/SRM AXIS- Machine Learning and Big Data.pdf"
   },
   {
     id: "shah-1353-prathap-s",
@@ -158,6 +170,7 @@ const certificates: Certificate[] = [
       "Demonstrated competence as per SHAH program"
     ],
     skills: ["Problem Solving"],
+    filePath: "/Certificate/SHAH - 1353 PRATHAP S.pdf"
   },
   {
     id: "qentelli-intern",
@@ -171,11 +184,13 @@ const certificates: Certificate[] = [
       "Demonstrated enthusiasm, self-discipline and self-motivation"
     ],
     skills: ["AI/ML", "Predictive Analytics", "Machine Learning"],
+    filePath: "/Certificate/Qentelli Intership certificate.pdf"
   }
 ];
 
 export function Certificates() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
 
   // Extract unique categories
   const categories = ['All', ...Array.from(new Set(certificates.map(cert => cert.category)))];
@@ -186,12 +201,14 @@ export function Certificates() {
     : certificates.filter(cert => cert.category === selectedCategory);
 
   const handleViewCertificate = (cert: Certificate) => {
-    if (cert.verificationUrl) {
+    if (cert.filePath) {
+      setSelectedCert(cert);
+    } else if (cert.verificationUrl) {
       window.open(cert.verificationUrl, '_blank', 'noopener,noreferrer');
     } else {
       // Create a custom notification instead of alert
       const notification = document.createElement('div');
-      notification.textContent = `Certificate "${cert.title}" - Contact for verification details`;
+      notification.textContent = `Certificate document pending upload.`;
       notification.style.cssText = `
         position: fixed;
         top: 20px;
@@ -243,8 +260,8 @@ export function Certificates() {
               onClick={() => setSelectedCategory(category)}
               size="default"
               className={`pointer-events-auto cursor-pointer ${selectedCategory === category
-                  ? 'bg-foreground text-background'
-                  : 'bg-background text-muted-foreground hover:text-foreground'
+                ? 'bg-foreground text-background'
+                : 'bg-background text-muted-foreground hover:text-foreground'
                 }`}
             >
               {category}
@@ -318,12 +335,32 @@ export function Certificates() {
                     className="w-full bg-foreground text-background hover:text-background pointer-events-auto cursor-pointer"
                   >
                     View Certificate
+                    {!cert.filePath && !cert.verificationUrl && " (Missing)"}
                   </LiquidButton>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Certificate Modal */}
+        <Dialog open={!!selectedCert} onOpenChange={(open) => !open && setSelectedCert(null)}>
+          <DialogContent className="max-w-6xl h-[90vh] flex flex-col p-0 overflow-hidden">
+            <DialogHeader className="p-4 border-b">
+              <DialogTitle>{selectedCert?.title}</DialogTitle>
+              <DialogDescription>{selectedCert?.issuer} - {selectedCert?.date}</DialogDescription>
+            </DialogHeader>
+            <div className="flex-1 w-full h-full bg-muted/20">
+              {selectedCert?.filePath && (
+                <iframe
+                  src={selectedCert.filePath}
+                  className="w-full h-full"
+                  title={selectedCert.title}
+                />
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );

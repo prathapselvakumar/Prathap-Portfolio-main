@@ -5,6 +5,8 @@ export interface Project {
     image: string;
     categories: string[];
     size: 'large' | 'small';
+    demoUrl?: string; // URL for "Run Demo" button
+    repoUrl?: string; // URL for "GitHub" button
     videos?: {
         id: string;
         title: string;
@@ -50,6 +52,7 @@ export const projects: Project[] =
             image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80',
             categories: ['Robotics'],
             size: 'large',
+            repoUrl: 'https://github.com/prathapselvakumar/Leo-Rover.git',
             features: [
                 { icon: 'Cpu', title: "SLAM Navigation", desc: "Simultaneous Localization and Mapping for autonomous movement." },
                 { icon: 'Zap', title: "Real-time Processing", desc: "On-board processing of sensor data for immediate reaction." },
@@ -105,9 +108,7 @@ export const projects: Project[] =
                 { id: "4", name: "Bracket Mount", format: ".stl", description: "3D-printable mounting bracket optimized for PLA/PETG with support-free geometry.", fileSize: "3.2 MB", icon: "cad", previewImage: "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=400&h=300&fit=crop", downloadUrl: "#" },
             ],
             repos: [
-                { id: "1", name: "motor-controller-firmware", description: "Embedded firmware for brushless DC motor controller with FOC algorithm implementation.", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 42, url: "https://github.com", topics: ["embedded", "motor-control", "stm32"] },
-                { id: "2", name: "sensor-data-pipeline", description: "Real-time sensor data acquisition and processing pipeline with visualization dashboard.", language: "Python", languageColor: "hsl(50 70% 50%)", stars: 28, url: "https://github.com", topics: ["data-pipeline", "sensors", "visualization"] },
-                { id: "3", name: "cad-automation-scripts", description: "Fusion 360 API scripts for automated CAD operations, parametric design, and batch exports.", language: "Python", languageColor: "hsl(50 70% 50%)", stars: 15, url: "https://github.com", topics: ["fusion360", "automation", "cad"] },
+                { id: "1", name: "Leo-Rover", description: "The complete source code for the Autonomous Robot project.", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 0, url: "https://github.com/prathapselvakumar/Leo-Rover.git", topics: ["robotics", "autonomous", "leo-rover"] }
             ]
         },
         {
@@ -115,8 +116,9 @@ export const projects: Project[] =
             title: 'Audio Search Engine',
             description: 'Voice-powered search with NLP and speech recognition',
             image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/a5838af0-769b-474e-a5fc-caa1e19c86e5/generated_images/modern-audio-search-engine-interface-wit-0e47d749-20251103021714.jpg',
-            categories: ['AI/ML', 'Web Development'],
+            categories: ['AI/ML'],
             size: 'small',
+            repoUrl: 'https://github.com/prathapselvakumar/Audio-Search-Engine',
             videos: [],
             files: [],
             repos: []
@@ -126,8 +128,9 @@ export const projects: Project[] =
             title: 'Agro Analytics Platform',
             description: 'AI-driven crop monitoring and predictive analytics system',
             image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/a5838af0-769b-474e-a5fc-caa1e19c86e5/generated_images/ai-powered-agricultural-analytics-dashbo-925fa72a-20251103021715.jpg',
-            categories: ['AI/ML', 'Data Science'],
+            categories: ['AI/ML'],
             size: 'small',
+            repoUrl: 'https://github.com/prathapselvakumar/Agro-Analytics',
             videos: [],
             files: [],
             repos: []

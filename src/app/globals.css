@@ -137,6 +137,10 @@
   }
   body {
     @apply bg-background text-foreground transition-colors duration-300;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
 
   /* Parallax Scrolling Styles */

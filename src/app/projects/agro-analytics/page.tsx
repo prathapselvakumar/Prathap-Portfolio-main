@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useRef } from "react";
 import { Search, Terminal, Github, ExternalLink, Star, Code2, Play, Square, ChevronRight, Cpu, Zap, Database, Check, AlertCircle, Loader2 } from "lucide-react";
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
-import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -68,242 +67,214 @@ const SectionHeader = ({ label, title, description }: { label: string; title: st
 
 /* ─── Data ─── */
 const features = [
-    { icon: Cpu, title: "Audio Fingerprinting", desc: "Generates unique acoustic fingerprints from audio channels using spectral analysis and hashing." },
-    { icon: Database, title: "SQLite Storage", desc: "Stores fingerprints in SQLite database for fast lookup and matching against recorded audio." },
-    { icon: Zap, title: "Real-Time Listening", desc: "Records audio from microphone in real-time and matches it against the fingerprint database." },
-    { icon: Search, title: "Hash Matching", desc: "Finds matching songs by comparing fingerprint hashes with confidence scoring and offset alignment." },
+    { icon: Cpu, title: "Crop Recommendation", desc: "ML-powered crop suggestions using RandomForest and XGBoost based on temperature, humidity, pH, and rainfall." },
+    { icon: Database, title: "MySQL Database", desc: "Secure user authentication with hashed passwords stored in MySQL, managing user sessions via Streamlit." },
+    { icon: Zap, title: "Crop Health Detection", desc: "YOLOv8 object detection model analyzes uploaded crop images to identify diseases and health status." },
+    { icon: Search, title: "Weather Forecasting", desc: "Integrates real-time weather data and forecasting to help farmers plan agricultural activities." },
 ];
 
 const codeSnippets = [
     {
         id: "1",
-        title: "analyze.py",
-        description: "Analyzes music files and stores fingerprints in the database",
-        code: `import os
-import src.analyzer as analyzer
-from src.filereader import FileReader
-from termcolor import colored
-from src.db import SQLiteDatabase
+        title: "AgroAnalytics.py",
+        description: "Main app with auth, MySQL connection, and Streamlit UI",
+        code: `import streamlit as st
+import mysql.connector
+from passlib.hash import pbkdf2_sha256
+from PIL import Image
 
-MUSICS_FOLDER_PATH = "mp3"
+def create_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="crops"
+    )
 
-if __name__ == '__main__':
-    db = SQLiteDatabase()
+def create_users_table(connection):
+    cursor = connection.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(50) NOT NULL,
+            password VARCHAR(100) NOT NULL
+        )
+    ''')
+    connection.commit()
 
-    for filename in os.listdir(MUSICS_FOLDER_PATH):
-        # Skip hidden files and non-WAV files
-        if not filename.endswith(".wav") or filename.startswith('.'):
-            continue
+def register_user(connection, username, password):
+    cursor = connection.cursor()
+    hashed_password = pbkdf2_sha256.hash(password)
+    cursor.execute('INSERT INTO users (username, password) VALUES (%s, %s)',
+                   (username, hashed_password))
+    connection.commit()
 
-        try:
-            file_path = os.path.join(MUSICS_FOLDER_PATH, filename)
-            reader = FileReader(file_path)
-            audio = reader.parse_audio()
-        except Exception as e:
-            print(colored(f"Error processing {filename}: {str(e)}", "red"))
-            continue
+def authenticate_user(connection, username, password):
+    cursor = connection.cursor()
+    cursor.execute('SELECT password FROM users WHERE username = %s',
+                   (username,))
+    result = cursor.fetchone()
+    if result:
+        return pbkdf2_sha256.verify(password, result[0])
+    return False
 
-        song = db.get_song_by_filehash(audio['file_hash'])
+def main():
+    st.set_page_config(layout="centered", page_icon="🌾")
+    st.title("Agro Analytics")
+    connection = create_connection()
+    create_users_table(connection)
 
-        if not song:
-            song_id = db.add_song(filename, audio['file_hash'])
-        else:
-            song_id = song['id']
+    page = st.sidebar.radio("", ["Login", "Register"])
 
-        print(colored(f"Analyzing music: {filename}", "green"))
+    if page == "Register":
+        st.header("Register")
+        new_username = st.text_input("Enter your username:")
+        new_password = st.text_input("Enter your password:", type="password")
+        if st.button("Register"):
+            register_user(connection, new_username, new_password)
+            st.success("Registration successful!")
 
-        hash_count = db.get_song_hashes_count(song_id)
-        if hash_count > 0:
-            msg = f'Warning: This song already exists ({hash_count} hashes), skipping'
-            print(colored(msg, 'yellow'))
-            continue
+    elif page == "Login":
+        st.header("Login")
+        username = st.text_input("Enter your username:")
+        password = st.text_input("Enter your password:", type="password")
+        if st.button("Login"):
+            if authenticate_user(connection, username, password):
+                st.success("Login successful!")
+                st.session_state["my_input"] = "success"
+            else:
+                st.error("Authentication failed.")
 
-        hashes = set()
-
-        for channeln, channel in enumerate(audio['channels']):
-            channel_hashes = analyzer.fingerprint(channel, Fs=audio['Fs'])
-            channel_hashes = set(channel_hashes)
-            msg = f'Channel {channeln} saved {len(channel_hashes)} hashes'
-            print(colored(msg, attrs=['dark']))
-            hashes |= channel_hashes
-
-        values = [(song_id, hash, offset) for hash, offset in hashes]
-        db.store_fingerprints(values)
-
-    print(colored('Done', "green"))`,
+if __name__ == "__main__":
+    main()`,
     },
     {
         id: "2",
-        title: "listen.py",
-        description: "Records audio from mic and matches against fingerprint database",
-        code: `import os
-import sys
-import src
-import src.analyzer as analyzer
-import argparse
-from argparse import RawTextHelpFormatter
-from itertools import zip_longest
-from termcolor import colored
-from src.listener import Listener
-from src.db import SQLiteDatabase
+        title: "1_Crop_Recommendation.py",
+        description: "ML crop recommendation using RandomForest, XGBoost, and Naive Bayes",
+        code: `import streamlit as st
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.pipeline import make_pipeline
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
+from sklearn.naive_bayes import GaussianNB
 
-if __name__ == '__main__':
-    db = SQLiteDatabase()
-    parser = argparse.ArgumentParser(formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-s', '--seconds', nargs='?')
-    args = parser.parse_args()
+if st.session_state['my_input'] == 'success':
+    st.title("Crop Recommendation")
 
-    if not args.seconds:
-        print(colored("Warning: You don't set any second. It's 10 by default", "yellow"))
-        args.seconds = "10"
+    # Load dataset
+    df = pd.read_csv("dataset/Crop_recommendation.csv")
 
-    seconds = int(args.seconds)
-    chunksize = 2**12
-    channels = 1
-    record_forever = False
+    # Prepare features and labels
+    X = df[['temperature', 'humidity', 'ph', 'rainfall']]
+    y = df['label']
 
-    listener = Listener()
-    listener.start_recording(
-        seconds=seconds,
-        chunksize=chunksize,
-        channels=channels
+    le = LabelEncoder()
+    y_encoded = le.fit_transform(y)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y_encoded, test_size=0.2, random_state=42
     )
 
-    while True:
-        bufferSize = int(listener.rate / listener.chunksize * seconds)
-        print(colored("Listening....", "green"))
-        for i in range(0, bufferSize):
-            nums = listener.process_recording()
-        if not record_forever: break
+    # Train models
+    models = {
+        "Random Forest": make_pipeline(StandardScaler(),
+                         RandomForestClassifier()),
+        "XGBoost": make_pipeline(StandardScaler(),
+                    XGBClassifier()),
+        "Naive Bayes": make_pipeline(StandardScaler(),
+                       GaussianNB()),
+    }
 
-    listener.stop_recording()
-    print(colored('Okey, enough', attrs=['dark']))
+    # User input
+    temp = st.number_input("Temperature (°C)", 0.0, 50.0)
+    humidity = st.number_input("Humidity (%)", 0.0, 100.0)
+    ph = st.number_input("pH Level", 0.0, 14.0)
+    rainfall = st.number_input("Rainfall (mm)", 0.0, 500.0)
 
-    def grouper(iterable, n, fillvalue=None):
-        args = [iter(iterable)] * n
-        return (filter(None, values) for values
-                in zip_longest(fillvalue=fillvalue, *args))
+    if st.button("Recommend Crop"):
+        input_data = np.array([[temp, humidity, ph, rainfall]])
+        for name, model in models.items():
+            model.fit(X_train, y_train)
+            pred = model.predict(input_data)
+            crop = le.inverse_transform(pred)
+            st.write(f"{name}: {crop[0]}")`,
+    },
+    {
+        id: "3",
+        title: "2_Crop_Health.py",
+        description: "YOLOv8 crop disease detection from uploaded images",
+        code: `import streamlit as st
+import cv2
+from ultralytics import YOLO
+from PIL import Image
+import io
+import tempfile
+import os
 
-    data = listener.get_recorded_data()
-    msg = 'Took %d samples'
-    print(colored(msg, attrs=['dark']) % len(data[0]))
+if st.session_state['my_input'] == 'success':
+    def saveImage(fileUpload, folderPath):
+        file = fileUpload.read()
+        fileName = fileUpload.name
+        if not os.path.exists(folderPath):
+            os.makedirs(folderPath)
+        with open(os.path.join(folderPath, fileName), "wb") as f:
+            f.write(file)
 
-    Fs = analyzer.DEFAULT_FS
-    channel_amount = len(data)
-    result = set()
-    matches = []
+    model = YOLO('model/best.pt')
 
-    def find_matches(samples, Fs=analyzer.DEFAULT_FS):
-        hashes = analyzer.fingerprint(samples, Fs=Fs)
-        return return_matches(hashes)
+    st.title("Crop Health Monitoring")
 
-    def return_matches(hashes):
-        mapper = {}
-        for hash, offset in hashes:
-            mapper[hash.upper()] = offset
-        values = mapper.keys()
-        for split_values in grouper(values, 1000):
-            query = """
-                SELECT upper(hash), song_fk, offset
-                FROM fingerprints
-                WHERE upper(hash) IN (%s)
-            """
-            vals = list(split_values).copy()
-            length = len(vals)
-            query = query % ', '.join('?' * length)
-            x = db.executeAll(query, values=vals)
-            matches_found = len(x)
-            if matches_found > 0:
-                msg = 'I found %d hash in db'
-                print(colored(msg, 'green') % matches_found)
-            for hash, sid, offset in x:
-                yield (sid, mapper[hash])
+    option = st.selectbox("Choose an option",
+        ["Upload an Image", "Upload a Video", "Live Feed"])
 
-    for channeln, channel in enumerate(data):
-        matches.extend(find_matches(channel))
-
-    def align_matches(matches):
-        diff_counter = {}
-        largest = 0
-        largest_count = 0
-        song_id = -1
-        for tup in matches:
-            sid, diff = tup
-            if diff not in diff_counter:
-                diff_counter[diff] = {}
-            if sid not in diff_counter[diff]:
-                diff_counter[diff][sid] = 0
-            diff_counter[diff][sid] += 1
-            if diff_counter[diff][sid] > largest_count:
-                largest = diff
-                largest_count = diff_counter[diff][sid]
-                song_id = sid
-
-        songM = db.get_song_by_id(song_id)
-        nseconds = round(float(largest) / analyzer.DEFAULT_FS *
-                         analyzer.DEFAULT_WINDOW_SIZE *
-                         analyzer.DEFAULT_OVERLAP_RATIO, 5)
-        return {
-            "SONG_ID": song_id,
-            "SONG_NAME": songM[1],
-            "CONFIDENCE": largest_count,
-            "OFFSET": int(largest),
-            "OFFSET_SECS": nseconds
-        }
-
-    total_matches_found = len(matches)
-    if total_matches_found > 0:
-        msg = 'Totally found %d hash'
-        print(colored(msg, 'green') % total_matches_found)
-        song = align_matches(matches)
-        msg = ' => song: %s (id=%d)\\n'
-        msg += '    offset: %d (%d secs)\\n'
-        print(colored(msg, 'green') % (
-            song['SONG_NAME'], song['SONG_ID'],
-            song['OFFSET'], song['OFFSET_SECS']
-        ))
-    else:
-        msg = 'Not anything matching'
-        print(colored(msg, 'red'))`,
+    if option == "Upload an Image":
+        fileUpload = st.file_uploader("Upload a crop image",
+            type=["jpg", "png", "jpeg"])
+        if fileUpload is not None:
+            image = Image.open(fileUpload)
+            results = model.predict(source=image)
+            annotated = results[0].plot()
+            st.image(annotated, caption="Detection Results",
+                     use_column_width=True)`,
     },
 ];
 
 const terminalOutput = [
-    { type: "cmd" as const, text: "python analyze.py" },
-    { type: "success" as const, text: "Analyzing music: 1.wav" },
-    { type: "info" as const, text: "Channel 0 saved 4823 hashes" },
-    { type: "success" as const, text: "Analyzing music: 2.wav" },
-    { type: "info" as const, text: "Channel 0 saved 5102 hashes" },
-    { type: "success" as const, text: "Analyzing music: 3.wav" },
-    { type: "info" as const, text: "Channel 0 saved 4956 hashes" },
-    { type: "success" as const, text: "Done" },
+    { type: "cmd" as const, text: "streamlit run AgroAnalytics.py" },
+    { type: "success" as const, text: "You can now view your Streamlit app in your browser." },
+    { type: "info" as const, text: "Local URL: http://localhost:8501" },
     { type: "divider" as const, text: "─".repeat(56) },
-    { type: "cmd" as const, text: "python listen.py -s 10" },
-    { type: "info" as const, text: "Warning: Recording for 10 seconds..." },
-    { type: "success" as const, text: "Listening...." },
-    { type: "info" as const, text: "Okey, enough" },
-    { type: "info" as const, text: "Took 44100 samples" },
-    { type: "success" as const, text: "I found 342 hash in db" },
-    { type: "success" as const, text: "Totally found 342 hash" },
+    { type: "success" as const, text: "Login successful! ✓" },
+    { type: "info" as const, text: "Loading Crop Recommendation module..." },
+    { type: "info" as const, text: "Training RandomForest on 2200 samples..." },
+    { type: "success" as const, text: "RandomForest: Rice 🌾" },
+    { type: "success" as const, text: "XGBoost: Rice 🌾" },
+    { type: "success" as const, text: "NaiveBayes: Rice 🌾" },
     { type: "divider" as const, text: "─".repeat(56) },
-    { type: "result" as const, text: " => song: 1.wav (id=1)" },
-    { type: "result" as const, text: "    offset: 2048 (12 secs)" },
-    { type: "success" as const, text: "Match found! ✓" },
+    { type: "info" as const, text: "Loading YOLO model (model/best.pt)..." },
+    { type: "success" as const, text: "Crop Health Detection ready ✓" },
+    { type: "info" as const, text: "Uploaded: tomato_leaf.jpg" },
+    { type: "result" as const, text: " => Detected: Early Blight (confidence: 0.92)" },
+    { type: "success" as const, text: "Analysis complete ✓" },
     { type: "divider" as const, text: "─".repeat(56) },
     { type: "info" as const, text: "📌 This is sample terminal output." },
     { type: "info" as const, text: "For full source code & docs, visit GitHub ↓" },
-    { type: "result" as const, text: "→ github.com/prathapselvakumar/Audio-Search-Engine" },
+    { type: "result" as const, text: "→ github.com/prathapselvakumar/Agro-Analytics" },
 ];
 
 const repo = {
-    name: "Audio-Search-Engine",
-    description: "A Python-based audio fingerprinting and recognition system. Analyzes WAV files, generates acoustic fingerprints, stores them in SQLite, and matches recorded audio against the database in real-time.",
+    name: "Agro-Analytics",
+    description: "A Streamlit-based agricultural analytics platform with ML crop recommendation (RandomForest, XGBoost), YOLOv8 crop health detection, weather forecasting, and MySQL user authentication.",
     language: "Python",
     languageColor: "hsl(50 70% 50%)",
     stars: 0,
     forks: 0,
-    url: "https://github.com/prathapselvakumar/Audio-Search-Engine",
-    topics: ["python", "audio-fingerprinting", "sqlite", "signal-processing", "music-recognition"],
+    url: "https://github.com/prathapselvakumar/Agro-Analytics",
+    topics: ["python", "streamlit", "machine-learning", "yolov8", "agriculture", "crop-recommendation"],
 };
 
 /* ─── Page ─── */
@@ -332,7 +303,7 @@ const Index = () => {
 
     const getLineColor = (type: string) => {
         switch (type) {
-            case "cmd": return "text-primary";
+            case "cmd": return "text-primary text-glow";
             case "success": return "text-primary";
             case "info": return "text-muted-foreground";
             case "header": return "text-foreground font-bold";
@@ -344,11 +315,11 @@ const Index = () => {
 
     return (
         <main className="min-h-screen bg-background">
-            {/* ═══ Navigation ═══ */}
+            {/* ─── Navigation ─── */}
             {/* Project Title (Top Left) */}
             <div className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <Terminal className="w-4 h-4 text-primary" />
-                <span className="font-mono font-bold text-sm tracking-tight">Audio Search Engine</span>
+                <span className="font-mono font-bold text-sm tracking-tight">Agro Analytics Platform</span>
             </div>
 
             {/* Theme Toggle (Top Right) */}
@@ -359,14 +330,7 @@ const Index = () => {
             {/* Centered Navigation Menu */}
             <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full px-2 py-0.5">
                 {/* Liquid Glass Background */}
-                <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 
-                    shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)] 
-                    transition-all 
-                    dark:shadow-[0_0_8px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3.5px_rgba(255,255,255,0.09),inset_-3px_-3px_0.5px_-3.5px_rgba(255,255,255,0.85),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.6),inset_0_0_6px_6px_rgba(255,255,255,0.12),inset_0_0_2px_2px_rgba(255,255,255,0.06),0_0_12px_rgba(0,0,0,0.15)]" />
-
-                <div
-                    className="absolute top-0 left-0 isolate -z-10 h-full w-full overflow-hidden rounded-full"
-                    style={{ backdropFilter: 'url("#navbar-glass")' }} />
+                <div className="absolute inset-0 z-0 h-full w-full rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm" />
 
                 <NavigationMenu className="relative z-10">
                     <NavigationMenuList className="gap-1">
@@ -403,83 +367,59 @@ const Index = () => {
                 </NavigationMenu>
             </div>
 
-            {/* SVG Filter for Glass Effect */}
-            <svg className="hidden">
-                <defs>
-                    <filter
-                        id="navbar-glass"
-                        x="0%"
-                        y="0%"
-                        width="100%"
-                        height="100%"
-                        colorInterpolationFilters="sRGB">
-                        <feTurbulence
-                            type="fractalNoise"
-                            baseFrequency="0.05 0.05"
-                            numOctaves="1"
-                            seed="1"
-                            result="turbulence" />
-                        <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise" />
-                        <feDisplacementMap
-                            in="SourceGraphic"
-                            in2="blurredNoise"
-                            scale="70"
-                            xChannelSelector="R"
-                            yChannelSelector="B"
-                            result="displaced" />
-                        <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur" />
-                        <feComposite in="finalBlur" in2="finalBlur" operator="over" />
-                    </filter>
-                </defs>
-            </svg>
+            {/* SVG Filter removed */}
 
             {/* ═══ Hero ═══ */}
             <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-20">
+                {/* Grid background */}
+                {/* Grid background removed */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+
                 <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
                     <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded border border-primary/30 bg-primary/5 animate-fade-in">
                         <Terminal className="w-4 h-4 text-primary" />
-                        <span className="text-primary font-mono text-sm tracking-widest uppercase">Python CLI Project</span>
+                        <span className="text-primary font-mono text-sm tracking-widest uppercase">Streamlit + ML Project</span>
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight animate-fade-in" style={{ animationDelay: "0.1s" }}>
-                        <span className="gradient-text">Audio Search</span> <span className="text-foreground">Engine</span>
+                        <span className="gradient-text text-glow">Agro</span> <span className="text-foreground">Analytics</span>
                     </h1>
 
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-mono animate-fade-in" style={{ animationDelay: "0.2s" }}>
-                        A Python-based audio fingerprinting and recognition system.<br />
-                        Analyze WAV files, generate fingerprints, and match audio in real-time.
+                        A Streamlit-based agricultural analytics platform with ML crop recommendation,<br />
+                        YOLOv8 crop health detection, and weather forecasting.
                     </p>
 
                     {/* Quick install */}
                     <div className="mt-10 animate-fade-in" style={{ animationDelay: "0.4s" }}>
                         <div className="inline-flex items-center gap-3 px-5 py-3 rounded border border-border bg-card font-mono text-sm">
                             <span className="text-primary">$</span>
-                            <span className="text-muted-foreground">git clone https://github.com/prathapselvakumar/Audio-Search-Engine.git</span>
+                            <span className="text-muted-foreground">git clone https://github.com/prathapselvakumar/Agro-Analytics.git</span>
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Features ═══ */}
-            < section className="py-24 px-6" >
+            <section className="py-24 px-6">
                 <div className="max-w-6xl mx-auto">
-                    <SectionHeader label="# features" title="What It Does" description="Core capabilities of the auto search engine." />
+                    <SectionHeader label="# features" title="What It Does" description="Core capabilities of the Agro Analytics platform." />
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {features.map((f, i) => (
-                            <div key={i} className="group p-6 rounded border border-border bg-card hover:border-primary/40 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
-                                <f.icon className="w-8 h-8 text-primary mb-4 transition-all" />
+                            <div key={i} className="group p-6 rounded border border-border bg-card hover:border-primary/40 hover:box-glow transition-all duration-300 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                                <f.icon className="w-8 h-8 text-primary mb-4 group-hover:text-glow transition-all" />
                                 <h3 className="font-mono font-bold text-foreground mb-2 text-sm">{f.title}</h3>
                                 <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
                             </div>
                         ))}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Terminal Demo ═══ */}
-            < section id="demo" className="py-24 px-6 surface-elevated" >
+            <section id="demo" className="py-24 px-6 surface-elevated">
                 <div className="max-w-4xl mx-auto">
-                    <SectionHeader label="# demo" title="Live Terminal Output" description="See the audio fingerprinting and matching in action. Click Run to simulate." />
+                    <SectionHeader label="# demo" title="Live Terminal Output" description="See the Agro Analytics platform in action. Click Run to simulate." />
 
                     <div className="rounded-lg border border-border overflow-hidden bg-background animate-fade-in">
                         {/* Terminal title bar */}
@@ -488,7 +428,7 @@ const Index = () => {
                                 <div className="w-3 h-3 rounded-full bg-destructive/60" />
                                 <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
                                 <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                <span className="ml-3 text-xs text-muted-foreground font-mono">terminal — python</span>
+                                <span className="ml-3 text-xs text-muted-foreground font-mono">terminal — streamlit</span>
                             </div>
                             <button
                                 onClick={handleRun}
@@ -523,12 +463,12 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Source Code ═══ */}
-            < section id="code" className="py-24 px-6" >
+            <section id="code" className="py-24 px-6">
                 <div className="max-w-6xl mx-auto">
-                    <SectionHeader label="# source" title="Project Source Code" description="Browse the core Python modules that power the audio search engine." />
+                    <SectionHeader label="# source" title="Project Source Code" description="Browse the core Python modules that power the Agro Analytics platform." />
 
                     <div className="grid lg:grid-cols-[280px_1fr] gap-4 animate-fade-in">
                         {/* File list */}
@@ -575,14 +515,14 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Repository ═══ */}
             <section id="repository" className="py-24 px-6 surface-elevated">
                 <div className="max-w-4xl mx-auto">
                     <SectionHeader label="# repository" title="Get the Code" description="Clone the repository and start searching from your terminal." />
 
-                    <a href={repo.url} target="_blank" rel="noopener noreferrer" className="group block rounded-lg border border-border bg-card p-8 hover:border-primary/40 transition-all duration-300 animate-fade-in">
+                    <a href={repo.url} target="_blank" rel="noopener noreferrer" className="group block rounded-lg border border-border bg-card p-8 hover:border-primary/40 hover:box-glow transition-all duration-300 animate-fade-in">
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                             <div className="flex-1">
                                 <div className="flex items-center gap-3 mb-4">
@@ -614,28 +554,27 @@ const Index = () => {
                     <div className="mt-6 rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in" style={{ animationDelay: "0.1s" }}>
                         <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
                         <div className="space-y-2 text-foreground">
-                            <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Audio-Search-Engine.git</div>
-                            <div><span className="text-primary">$</span> cd Audio-Search-Engine</div>
+                            <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Agro-Analytics.git</div>
+                            <div><span className="text-primary">$</span> cd Agro-Analytics</div>
                             <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
-                            <div><span className="text-primary">$</span> python analyze.py</div>
-                            <div><span className="text-primary">$</span> python listen.py -s 10</div>
+                            <div><span className="text-primary">$</span> streamlit run AgroAnalytics.py</div>
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Footer ═══ */}
-            < footer className="border-t border-border py-10 px-6" >
+            <footer className="border-t border-border py-10 px-6">
                 <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <span className="font-mono text-xs text-muted-foreground">
-                        <span className="text-primary">$</span> echo "© {new Date().getFullYear()} Audio-Search-Engine"
+                        <span className="text-primary">$</span> echo "© {new Date().getFullYear()} Agro-Analytics"
                     </span>
                     <a href={repo.url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
                         <Github className="w-5 h-5" />
                     </a>
                 </div>
-            </footer >
-        </main >
+            </footer>
+        </main>
     );
 };
 

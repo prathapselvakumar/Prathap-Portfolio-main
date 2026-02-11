@@ -77,20 +77,28 @@ export function PortfolioContent() {
             fill="currentColor" />
 
 
-          <div className="flex h-full flex-col lg:flex-row">
+          {/* 3D Scene - Absolute Background */}
+          <div className="absolute top-0 right-0 h-full w-full md:w-[60%] z-0">
+            <SplineScene
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="w-full h-full"
+            />
+          </div>
+
+          <div className="flex h-full flex-col lg:flex-row relative z-10 pointer-events-none">
             {/* Left: Text Content */}
             <motion.div
-              className="flex-1 p-8 md:p-16 lg:p-24 relative z-10 flex flex-col justify-center"
+              className="flex-1 p-8 md:p-16 lg:p-24 flex flex-col justify-center pointer-events-auto max-w-4xl"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}>
-
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
               <div className="space-y-6">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}>
-
+                  transition={{ delay: 0.4 }}
+                >
                   {/* Robotics Engineer - Now at the top */}
                   <p className="text-sm md:text-base text-muted-foreground uppercase tracking-widest mb-4">
                     Robotics Engineer
@@ -110,33 +118,23 @@ export function PortfolioContent() {
                     <div className="absolute left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-px w-1/4" />
 
                     {/* Core component - Theme Aware Particles */}
-                    {mounted &&
+                    {mounted && (
                       <SparklesCore
                         background="transparent"
                         minSize={0.4}
                         maxSize={1}
                         particleDensity={1200}
                         className="w-full h-full"
-                        particleColor={theme === 'dark' ? '#FFFFFF' : '#000000'} />
-
-                    }
+                        particleColor={theme === 'dark' ? '#FFFFFF' : '#000000'}
+                      />
+                    )}
                   </div>
                 </motion.div>
               </div>
             </motion.div>
 
-            {/* Right: 3D Scene */}
-            <motion.div
-              className="flex-1 relative h-[400px] lg:h-full"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}>
-
-              <SplineScene
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="w-full h-full" />
-
-            </motion.div>
+            {/* Right spacer for layout balance if needed, but flex-1 on left handles it */}
+            <div className="flex-1" />
           </div>
         </div>
       </section>
