@@ -317,26 +317,30 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             {project.files.map((file) => (
                                 <div
                                     key={file.id}
-                                    className="flex rounded-lg border bg-card overflow-hidden"
+                                    className="flex rounded-lg border bg-card overflow-hidden group"
                                 >
-                                    <img
-                                        src={file.previewImage}
-                                        alt={file.name}
-                                        className="w-48 object-cover"
-                                    />
-                                    <div className="p-5 flex-1">
-                                        <h3 className="font-semibold">{file.name}</h3>
-                                        <p className="text-sm text-muted-foreground mb-3">
+                                    <div className="relative w-48 h-full bg-zinc-900 overflow-hidden">
+                                        <img
+                                            src={file.previewImage}
+                                            alt={file.name}
+                                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                                        />
+                                    </div>
+                                    <div className="p-5 flex-1 flex flex-col justify-center">
+                                        <h3 className="font-semibold text-lg mb-1">{file.name}</h3>
+                                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                                             {file.description}
                                         </p>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-xs font-mono">{file.fileSize}</span>
-                                            <a href={file.downloadUrl}>
-                                                <Button size="sm">
-                                                    <Download className="w-4 h-4 mr-1" />
-                                                    Download
-                                                </Button>
-                                            </a>
+                                        <div className="flex justify-between items-center mt-auto">
+                                            <span className="text-xs font-mono px-2 py-1 rounded bg-muted/50 text-muted-foreground">{file.fileSize}</span>
+                                            <div className="flex gap-2">
+                                                <a href={file.downloadUrl}>
+                                                    <Button size="sm">
+                                                        <Download className="w-4 h-4 mr-1" />
+                                                        Download
+                                                    </Button>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

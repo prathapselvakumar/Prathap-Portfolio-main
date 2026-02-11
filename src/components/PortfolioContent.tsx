@@ -314,8 +314,8 @@ export function PortfolioContent() {
                     </p>
                     <Link
                       href={project.id === 'audio-search' ? "/projects/audio-search" : `/projects/${project.id}`}
-                      target={project.id === 'audio-search' ? "_blank" : undefined}
-                      rel={project.id === 'audio-search' ? "noopener noreferrer" : undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <Button
                         size="default"

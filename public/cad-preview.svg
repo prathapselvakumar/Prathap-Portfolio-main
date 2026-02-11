@@ -1,0 +1,19 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#1e293b"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="1"/>
+  </pattern>
+  <rect width="400" height="300" fill="url(#grid)" />
+  
+  <!-- Abstract Gear/Tech Shape -->
+  <g transform="translate(200, 150)" stroke="#94a3b8" stroke-width="2" fill="none">
+    <circle r="60" />
+    <circle r="20" />
+    <path d="M -70 0 L -50 0 M 50 0 L 70 0 M 0 -70 L 0 -50 M 0 50 L 0 70" />
+    <path d="M -49 -49 L -35 -35 M 35 -35 L 49 -49 M 35 35 L 49 49 M -35 35 L -49 49" />
+    <rect x="-80" y="-90" width="160" height="180" stroke="#475569" stroke-dasharray="5,5" />
+  </g>
+  
+  <text x="20" y="280" font-family="monospace" fill="#64748b" font-size="14">CAD FILE PREVIEW</text>
+  <text x="380" y="280" font-family="monospace" fill="#64748b" font-size="14" text-anchor="end">.STEP / .STL</text>
+</svg>

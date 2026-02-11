@@ -1,0 +1,21 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#0f172a"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="1"/>
+  </pattern>
+  <rect width="400" height="300" fill="url(#grid)" />
+  
+  <!-- L Bracket Shape Isometric -->
+  <g transform="translate(150, 100)" stroke="#fbbf24" stroke-width="2" fill="rgba(251, 191, 36, 0.1)">
+    <path d="M 0 0 L 60 30 L 60 150 L 0 120 Z" />
+    <path d="M 0 120 L -60 90 L -60 -30 L 0 0 Z" />
+    <path d="M 0 0 L 0 120" stroke-dasharray="5,5" />
+    
+    <!-- Holes -->
+    <ellipse cx="30" cy="75" rx="10" ry="5" fill="none" />
+    <ellipse cx="-30" cy="45" rx="10" ry="5" fill="none" />
+  </g>
+  
+  <text x="20" y="280" font-family="monospace" fill="#94a3b8" font-size="12">CAMERA L-MOUNT v6</text>
+  <text x="380" y="280" font-family="monospace" fill="#94a3b8" font-size="12" text-anchor="end">.STEP</text>
+</svg>

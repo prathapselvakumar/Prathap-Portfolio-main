@@ -1,0 +1,21 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#0f172a"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="1"/>
+  </pattern>
+  <rect width="400" height="300" fill="url(#grid)" />
+  
+  <!-- Cylinder Top -->
+  <g transform="translate(200, 100)" stroke="#a3e635" stroke-width="2" fill="rgba(163, 230, 53, 0.1)">
+    <ellipse cx="0" cy="0" rx="60" ry="30" />
+    <!-- Cylinder Body -->
+    <path d="M -60 0 L -60 80 A 60 30 0 0 0 60 80 L 60 0" />
+    <!-- Inner Circle -->
+    <ellipse cx="0" cy="0" rx="40" ry="20" fill="none" />
+    <!-- Base -->
+    <path d="M -80 80 L 80 80 L 60 80" />
+  </g>
+  
+  <text x="20" y="280" font-family="monospace" fill="#94a3b8" font-size="12">LIDAR MOUNT v4</text>
+  <text x="380" y="280" font-family="monospace" fill="#94a3b8" font-size="12" text-anchor="end">.STEP</text>
+</svg>

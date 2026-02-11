@@ -24,6 +24,7 @@ export interface Project {
         icon: 'fusion' | 'cad';
         previewImage: string;
         downloadUrl: string;
+        modelUrl?: string;
     }[];
     repos?: {
         id: string;
@@ -102,10 +103,10 @@ export const projects: Project[] =
             ],
 
             files: [
-                { id: "1", name: "Housing Assembly", format: ".f3d", description: "Complete Fusion 360 assembly with all internal components and mounting points.", fileSize: "24.3 MB", icon: "fusion", previewImage: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&h=300&fit=crop", downloadUrl: "#" },
-                { id: "2", name: "Gear Train", format: ".step", description: "STEP file of the precision gear train for cross-platform CAD compatibility.", fileSize: "8.7 MB", icon: "cad", previewImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop", downloadUrl: "#" },
-                { id: "3", name: "PCB Enclosure", format: ".f3d", description: "Custom enclosure designed in Fusion 360 for the controller PCB with ventilation.", fileSize: "12.1 MB", icon: "fusion", previewImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop", downloadUrl: "#" },
-                { id: "4", name: "Bracket Mount", format: ".stl", description: "3D-printable mounting bracket optimized for PLA/PETG with support-free geometry.", fileSize: "3.2 MB", icon: "cad", previewImage: "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=400&h=300&fit=crop", downloadUrl: "#" },
+                { id: "1", name: "Arm mounting plate v7", format: ".step", description: "Mounting plate for the robotic arm assembly.", fileSize: "30 KB", icon: "cad", previewImage: "/Cad Files/arm-plate-thumb.svg", downloadUrl: "/Cad Files/Arm mounting plate v7.step", modelUrl: "/Cad Files/Arm mounting plate v7.glb" },
+                { id: "2", name: "L camera mount v6", format: ".step", description: "L-shaped bracket for camera mounting.", fileSize: "44 KB", icon: "cad", previewImage: "/Cad Files/camera-mount-thumb.svg", downloadUrl: "/Cad Files/L camera mount v6.step", modelUrl: "/Cad Files/L camera mount v6.glb" },
+                { id: "3", name: "LIDAR A2 mount v4_", format: ".step", description: "Mounting unit for LIDAR A2 sensor.", fileSize: "80 KB", icon: "cad", previewImage: "/Cad Files/lidar-mount-thumb.svg", downloadUrl: "/Cad Files/LIDAR A2 mount v4_.step", modelUrl: "/Cad Files/LIDAR A2 mount v4_.glb" },
+                { id: "4", name: "NUC mounting plate v4", format: ".step", description: "Mounting plate for the NUC computer.", fileSize: "40 KB", icon: "cad", previewImage: "/Cad Files/nuc-plate-thumb.svg", downloadUrl: "/Cad Files/NUC mounting plate v4.step", modelUrl: "/Cad Files/NUC mounting plate v4.glb" },
             ],
             repos: [
                 { id: "1", name: "Leo-Rover", description: "The complete source code for the Autonomous Robot project.", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 0, url: "https://github.com/prathapselvakumar/Leo-Rover.git", topics: ["robotics", "autonomous", "leo-rover"] }
