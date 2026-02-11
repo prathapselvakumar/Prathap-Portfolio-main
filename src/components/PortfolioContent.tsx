@@ -76,7 +76,6 @@ export function PortfolioContent() {
             className="-top-40 left-0 md:left-60 md:-top-20"
             fill="currentColor" />
 
-
           {/* 3D Scene - Absolute Background */}
           <div className="absolute top-0 right-0 h-full w-full md:w-[60%] z-0">
             <SplineScene
@@ -185,8 +184,8 @@ export function PortfolioContent() {
                 <LiquidButton
                   onClick={() => {
                     const link = document.createElement('a');
-                    link.href = '/Prathap%20Sevakumar-CV.pdf';
-                    link.download = 'Prathap Sevakumar-CV.pdf';
+                    link.href = '/Prathap Selvakumar-CV.pdf';
+                    link.download = 'Prathap Selvakumar-CV.pdf';
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -357,11 +356,7 @@ export function PortfolioContent() {
       </div>
 
       {/* Footer */}
-      <footer className="py-8 px-8 border-t border-border bg-background">
-        <div className="max-w-7xl mx-auto text-center text-muted-foreground">
-          <p>© 2024 Robotics Portfolio. Built with passion for innovation.</p>
-        </div>
-      </footer>
+
     </div>);
 
 }
