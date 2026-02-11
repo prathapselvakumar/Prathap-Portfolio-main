@@ -2,30 +2,41 @@
 
 import React, { useRef, useEffect, useState, createElement, useMemo, useCallback, memo } from "react";
 
+import { useTheme } from "next-themes";
+
 export const Component = () => {
-    return (
-        <div className='bg-background text-foreground h-screen w-screen flex justify-center items-center'>
-            <VaporizeTextCycle
-                texts={["Welcome to Prathap's portfolio"]}
-                font={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "70px",
-                    fontWeight: 600
-                }}
-                color="currentColor"
-                spread={5}
-                density={5}
-                animation={{
-                    vaporizeDuration: 2,
-                    fadeInDuration: 1,
-                    waitDuration: 0.5
-                }}
-                direction="left-to-right"
-                alignment="center"
-                tag={Tag.H1}
-                />
-        </div>
-    )
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <div className='bg-white dark:bg-black text-black dark:text-white h-screen w-screen flex justify-center items-center'>
+      <VaporizeTextCycle
+        texts={["Welcome to Prathap's portfolio"]}
+        font={{
+          fontFamily: "Inter, sans-serif",
+          fontSize: "70px",
+          fontWeight: 600
+        }}
+        color={resolvedTheme === 'dark' ? "#ffffff" : "#000000"}
+        spread={5}
+        density={5}
+        animation={{
+          vaporizeDuration: 2,
+          fadeInDuration: 1,
+          waitDuration: 0.5
+        }}
+        direction="left-to-right"
+        alignment="center"
+        tag={Tag.H1}
+      />
+    </div>
+  )
 }
 
 export enum Tag {
@@ -286,15 +297,15 @@ export default function VaporizeTextCycle({
       }
     };
   }, [
-    animationState, 
-    isInView, 
-    texts.length, 
-    direction, 
-    globalDpr, 
-    memoizedUpdateParticles, 
-    memoizedRenderParticles, 
-    animationDurations.FADE_IN_DURATION, 
-    animationDurations.WAIT_DURATION, 
+    animationState,
+    isInView,
+    texts.length,
+    direction,
+    globalDpr,
+    memoizedUpdateParticles,
+    memoizedRenderParticles,
+    animationDurations.FADE_IN_DURATION,
+    animationDurations.WAIT_DURATION,
     animationDurations.VAPORIZE_DURATION
   ]);
 
@@ -343,7 +354,7 @@ export default function VaporizeTextCycle({
         const { width, height } = entry.contentRect;
         setWrapperSize({ width, height });
       }
-      
+
       renderCanvas({
         framerProps: {
           texts,
@@ -400,7 +411,7 @@ const SeoElement = memo(({ tag = Tag.P, texts }: { tag: Tag, texts: string[] }) 
 
   // Ensure tag is a valid HTML element string
   const safeTag = Object.values(Tag).includes(tag) ? tag : "p";
-  
+
   return createElement(safeTag, { style }, texts?.join(" ") ?? "");
 });
 
@@ -432,7 +443,7 @@ const handleFontChange = ({
 }) => {
   if (currentFont !== lastFontRef.current) {
     lastFontRef.current = currentFont;
-    
+
     // Re-render after 1 second to catch the loaded font
     const timeoutId = setTimeout(() => {
       cleanup({ canvasRef, particlesRef }); // Clean up before re-rendering
@@ -446,13 +457,13 @@ const handleFontChange = ({
         transformedDensity,
       });
     }, 1000);
-    
+
     return () => {
       clearTimeout(timeoutId);
       cleanup({ canvasRef, particlesRef });
     };
   }
-  
+
   return undefined;
 };
 
@@ -463,11 +474,11 @@ const cleanup = ({ canvasRef, particlesRef }: { canvasRef: React.RefObject<HTMLC
   // Clear canvas
   const canvas = canvasRef.current;
   const ctx = canvas?.getContext("2d");
-  
+
   if (canvas && ctx) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
-  
+
   // Clear particles
   if (particlesRef.current) {
     particlesRef.current = [];
@@ -559,11 +570,11 @@ const createParticles = (
   ctx.textBaseline = "middle";
   ctx.imageSmoothingQuality = "high";
   ctx.imageSmoothingEnabled = true;
-  
+
   if ('fontKerning' in ctx) {
     (ctx as any).fontKerning = "normal";
   }
-  
+
   if ('textRendering' in ctx) {
     (ctx as any).textRendering = "geometricPrecision";
   }
@@ -572,7 +583,7 @@ const createParticles = (
   const metrics = ctx.measureText(text);
   let textLeft;
   const textWidth = metrics.width;
-  
+
   if (alignment === "center") {
     textLeft = textX - textWidth / 2;
   } else if (alignment === "left") {
@@ -580,7 +591,7 @@ const createParticles = (
   } else {
     textLeft = textX - textWidth;
   }
-  
+
   const textBoundaries = {
     left: textLeft,
     right: textLeft + textWidth,
@@ -605,7 +616,7 @@ const createParticles = (
     for (let x = 0; x < canvas.width; x += sampleRate) {
       const index = (y * canvas.width + x) * 4;
       const alpha = data[index + 3];
-      
+
       if (alpha > 0) {
         // Remove density from opacity calculation
         const originalAlpha = alpha / 255 * (sampleRate / currentDPR);
@@ -623,7 +634,7 @@ const createParticles = (
           angle: 0,
           speed: 0,
         };
-        
+
         particles.push(particle);
       }
     }
@@ -646,13 +657,13 @@ const updateParticles = (
   density: number
 ) => {
   let allParticlesVaporized = true;
-  
+
   particles.forEach(particle => {
     // Only animate particles that have been "vaporized"
-    const shouldVaporize = direction === "left-to-right" 
-      ? particle.originalX <= vaporizeX 
+    const shouldVaporize = direction === "left-to-right"
+      ? particle.originalX <= vaporizeX
       : particle.originalX >= vaporizeX;
-    
+
     if (shouldVaporize) {
       // When a particle is first vaporized, determine if it should fade quickly based on density
       if (particle.speed === 0) {
@@ -661,13 +672,13 @@ const updateParticles = (
         particle.speed = (Math.random() * 1 + 0.5) * MULTIPLIED_VAPORIZE_SPREAD;
         particle.velocityX = Math.cos(particle.angle) * particle.speed;
         particle.velocityY = Math.sin(particle.angle) * particle.speed;
-        
+
         // Determine if particle should fade quickly based on density
         // density of 1 means all particles animate normally
         // density of 0.5 means 50% of particles fade quickly
         particle.shouldFadeQuickly = Math.random() > density;
       }
-      
+
       if (particle.shouldFadeQuickly) {
         // Quick fade out for particles marked to fade quickly
         particle.opacity = Math.max(0, particle.opacity - deltaTime);
@@ -677,41 +688,41 @@ const updateParticles = (
         const dx = particle.originalX - particle.x;
         const dy = particle.originalY - particle.y;
         const distanceFromOrigin = Math.sqrt(dx * dx + dy * dy);
-        
+
         // Damping factor increases with distance, creating a more natural motion
         const dampingFactor = Math.max(0.95, 1 - distanceFromOrigin / (100 * MULTIPLIED_VAPORIZE_SPREAD));
-        
+
         // Add slight random motion to create a more organic feel
         const randomSpread = MULTIPLIED_VAPORIZE_SPREAD * 3;
         const spreadX = (Math.random() - 0.5) * randomSpread;
         const spreadY = (Math.random() - 0.5) * randomSpread;
-        
+
         // Update velocities with damping and random motion
         particle.velocityX = (particle.velocityX + spreadX + dx * 0.002) * dampingFactor;
         particle.velocityY = (particle.velocityY + spreadY + dy * 0.002) * dampingFactor;
-        
+
         // Limit maximum velocity
         const maxVelocity = MULTIPLIED_VAPORIZE_SPREAD * 2;
         const currentVelocity = Math.sqrt(particle.velocityX * particle.velocityX + particle.velocityY * particle.velocityY);
-        
+
         if (currentVelocity > maxVelocity) {
           const scale = maxVelocity / currentVelocity;
           particle.velocityX *= scale;
           particle.velocityY *= scale;
         }
-        
+
         // Update position
         particle.x += particle.velocityX * deltaTime * 20;
         particle.y += particle.velocityY * deltaTime * 10;
-        
+
         // Calculate fade rate based on vaporize duration
         const baseFadeRate = 0.25;
         const durationBasedFadeRate = baseFadeRate * (2000 / VAPORIZE_DURATION);
-        
+
         // Slower fade out for more persistence, scaled by duration
         particle.opacity = Math.max(0, particle.opacity - deltaTime * durationBasedFadeRate);
       }
-      
+
       // Check if this particle is still visible
       if (particle.opacity > 0.01) {
         allParticlesVaporized = false;
@@ -721,14 +732,14 @@ const updateParticles = (
       allParticlesVaporized = false;
     }
   });
-  
+
   return allParticlesVaporized;
 };
 
 const renderParticles = (ctx: CanvasRenderingContext2D, particles: Particle[], globalDpr: number) => {
   ctx.save();
   ctx.scale(globalDpr, globalDpr);
-  
+
   particles.forEach(particle => {
     if (particle.opacity > 0) {
       const color = particle.color.replace(/[\d.]+\)$/, `${particle.opacity})`);
@@ -736,7 +747,7 @@ const renderParticles = (ctx: CanvasRenderingContext2D, particles: Particle[], g
       ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1, 1);
     }
   });
-  
+
   ctx.restore();
 };
 
@@ -757,26 +768,26 @@ const resetParticles = (particles: Particle[]) => {
 const calculateVaporizeSpread = (fontSize: number) => {
   // Convert font size string to number if needed
   const size = typeof fontSize === "string" ? parseInt(fontSize) : fontSize;
-  
+
   // Define our known points for interpolation
   const points = [
     { size: 20, spread: 0.2 },
     { size: 50, spread: 0.5 },
     { size: 100, spread: 1.5 }
   ];
-  
+
   // Handle edge cases
   if (size <= points[0].size) return points[0].spread;
   if (size >= points[points.length - 1].size) return points[points.length - 1].spread;
-  
+
   // Find the two points to interpolate between
   let i = 0;
   while (i < points.length - 1 && points[i + 1].size < size) i++;
-  
+
   // Linear interpolation between the two closest points
   const p1 = points[i];
   const p2 = points[i + 1];
-  
+
   return p1.spread + (size - p1.size) * (p2.spread - p1.spread) / (p2.size - p1.size);
 };
 
@@ -792,7 +803,7 @@ const parseColor = (color: string) => {
   // Try to match rgb/rgba pattern
   const rgbMatch = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
   const rgbaMatch = color.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
-  
+
   if (rgbaMatch) {
     // If RGBA format
     const [_, r, g, b, a] = rgbaMatch;
@@ -802,7 +813,7 @@ const parseColor = (color: string) => {
     const [_, r, g, b] = rgbMatch;
     return `rgba(${r}, ${g}, ${b}, 1)`;
   }
-  
+
   // If color is not in rgb format, try to get computed style from a temporary element
   if (typeof window !== "undefined") {
     const tempElement = document.createElement("div");
@@ -810,18 +821,18 @@ const parseColor = (color: string) => {
     document.body.appendChild(tempElement);
     const computedColor = window.getComputedStyle(tempElement).color;
     document.body.removeChild(tempElement);
-    
+
     // Recursively parse the computed color
     if (computedColor && computedColor !== color) {
       return parseColor(computedColor);
     }
   }
-  
+
   // Fallback to current foreground color from CSS variables
   if (typeof window !== "undefined") {
     const rootStyles = getComputedStyle(document.documentElement);
     const foreground = rootStyles.getPropertyValue('--foreground').trim();
-    
+
     // If we have a oklch color, convert to rgb
     if (foreground.startsWith('oklch')) {
       // For dark mode, use white; for light mode, use black
@@ -829,7 +840,7 @@ const parseColor = (color: string) => {
       return isDark ? "rgba(255, 255, 255, 1)" : "rgba(0, 0, 0, 1)";
     }
   }
-  
+
   // Final fallback to black
   console.warn("Could not parse color:", color);
   return "rgba(0, 0, 0, 1)";
@@ -841,10 +852,10 @@ const parseColor = (color: string) => {
 function transformValue(input: number, inputRange: number[], outputRange: number[], clamp = false): number {
   const [inputMin, inputMax] = inputRange;
   const [outputMin, outputMax] = outputRange;
-  
+
   const progress = (input - inputMin) / (inputMax - inputMin);
   let result = outputMin + progress * (outputMax - outputMin);
-  
+
   if (clamp) {
     if (outputMax > outputMin) {
       result = Math.min(Math.max(result, outputMin), outputMax);
@@ -852,7 +863,7 @@ function transformValue(input: number, inputRange: number[], outputRange: number
       result = Math.min(Math.max(result, outputMax), outputMin);
     }
   }
-  
+
   return result;
 }
 
@@ -864,16 +875,16 @@ function useIsInView(ref: React.RefObject<HTMLElement>) {
 
   useEffect(() => {
     if (!ref.current) return;
-    
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsInView(entry.isIntersecting);
       },
       { threshold: 0, rootMargin: '50px' }
     );
-    
+
     observer.observe(ref.current);
-    
+
     return () => {
       observer.disconnect();
     };

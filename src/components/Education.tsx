@@ -28,7 +28,7 @@ const education: EducationItem[] = [
       "Collaborative projects with industry partners and research institutions"
     ],
     achievements: ["Admitted to prestigious MSc program", "Research opportunities", "Industry collaborations"],
-    logo: "/Manchester-logo.svg"
+    logo: "/University_of_Manchester.svg"
   },
   {
     id: "btech-cse",
@@ -43,7 +43,7 @@ const education: EducationItem[] = [
       "Strong foundation that prepared for advanced robotics studies"
     ],
     achievements: ["CGPA: 8.49", "Dean's List Recognition", "Active participation in technical societies"],
-    logo: "/srm-logo.svg"
+    logo: "/SRM University.svg"
   },
 ];
 
@@ -137,11 +137,11 @@ export function Education() {
                         <p className="text-sm text-foreground font-medium mt-1">CGPA: {edu.cgpa}</p>
                       )}
                     </div>
-                    {(edu.id === 'msc-robotics' || edu.id === 'btech-cse') && (
+                    {edu.logo && (
                       <div className="w-36 h-auto">
                         <img
-                          src={edu.id === 'msc-robotics' ? "/manchester-logo.svg" : "/srm-logo.svg"}
-                          alt={edu.id === 'msc-robotics' ? "University of Manchester Logo" : "SRM University Logo"}
+                          src={edu.logo}
+                          alt={`${edu.institution} Logo`}
                           className="w-full h-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                         />
                       </div>

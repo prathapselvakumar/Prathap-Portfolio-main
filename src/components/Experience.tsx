@@ -11,6 +11,7 @@ interface ExperienceItem {
   period: string;
   description: string[];
   technologies: string[];
+  logo?: string;
 }
 
 const experiences: ExperienceItem[] = [
@@ -25,6 +26,7 @@ const experiences: ExperienceItem[] = [
       "Implementing responsive designs and ensuring optimal performance across devices"
     ],
     technologies: ["React.js", "JavaScript", "HTML/CSS", "Git"],
+    logo: "/C-Square Info solution.png"
   },
   {
     id: "qentelli-intern",
@@ -37,6 +39,7 @@ const experiences: ExperienceItem[] = [
       "Gained hands-on experience with machine learning frameworks and tools"
     ],
     technologies: ["Python", "Machine Learning", "Predictive Analytics", "Data Science"],
+    logo: "/Qentelli.png"
   },
   {
     id: "nus-academic-intern",
@@ -49,6 +52,7 @@ const experiences: ExperienceItem[] = [
       "Collaborated with academic researchers on cutting-edge deep learning approaches"
     ],
     technologies: ["Python", "TensorFlow", "Deep Learning", "Big Data Analytics"],
+    logo: "/National University of Singapore.svg"
   },
   {
     id: "csq-intern",
@@ -61,6 +65,7 @@ const experiences: ExperienceItem[] = [
       "Gained experience with database operations and API integration"
     ],
     technologies: ["Python", "SQL", "Data Processing", "MongoDB"],
+    logo: "/C-Square Info solution.png"
   },
 ];
 
@@ -91,14 +96,14 @@ export function Experience() {
                     "w-full liquid-glass-card p-6 cursor-pointer transition-all duration-300 relative overflow-hidden",
                     "hover:scale-[1.02] transform transition-transform duration-200",
                     "border border-border rounded-xl bg-card",
-                    activeTab === exp.id 
-                      ? "border-l-4 border-l-foreground bg-accent shadow-[0_0_20px_5px_rgba(59,130,246,0.3)]" 
+                    activeTab === exp.id
+                      ? "border-l-4 border-l-foreground bg-accent shadow-[0_0_20px_5px_rgba(59,130,246,0.3)]"
                       : "border-l-4 border-l-transparent hover:border-l-foreground/50 hover:bg-accent/50 hover:shadow-[0_0_15px_3px_rgba(59,130,246,0.2)]"
                   )}
                 >
                   {/* Background Gradient on Hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
-                  
+
                   <div className={cn(
                     "absolute left-0 top-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-foreground shadow-[0_0_10px_3px_rgba(59,130,246,0.8)] transition-all duration-300",
                     activeTab === exp.id ? "opacity-100 scale-100" : "opacity-0 scale-50"
@@ -112,7 +117,7 @@ export function Experience() {
               </div>
             ))}
           </div>
-          
+
           {/* Tabbed content */}
           <div className="lg:col-span-8 lg:pl-6">
             {/* Mobile tabs */}
@@ -132,7 +137,7 @@ export function Experience() {
                 </button>
               ))}
             </div>
-            
+
             {/* Content */}
             {experiences.map((exp) => (
               <div
@@ -143,14 +148,23 @@ export function Experience() {
                 )}
               >
                 <div className="space-y-4">
-                  <div className="flex flex-col justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                       <h3 className="text-2xl font-bold text-foreground">{exp.title}</h3>
                       <p className="text-lg text-muted-foreground">{exp.company}</p>
                       <p className="text-sm text-muted-foreground">{exp.period}</p>
                     </div>
+                    {exp.logo && (
+                      <div className="w-24 h-auto sm:w-32">
+                        <img
+                          src={exp.logo}
+                          alt={`${exp.company} Logo`}
+                          className="w-full h-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                        />
+                      </div>
+                    )}
                   </div>
-                
+
                   <div className="mb-8">
                     <h4 className="text-sm font-semibold mb-3 text-foreground">Key Responsibilities</h4>
                     <ul className="space-y-2">
@@ -162,7 +176,7 @@ export function Experience() {
                       ))}
                     </ul>
                   </div>
-                
+
                   <div>
                     <div className="relative group">
                       <div className="absolute inset-0 bg-background/50 backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -170,8 +184,8 @@ export function Experience() {
                         <h4 className="text-sm font-medium mb-3 text-foreground/80">Technologies</h4>
                         <div className="flex flex-wrap gap-2">
                           {exp.technologies.map((tech, index) => (
-                            <span 
-                              key={index} 
+                            <span
+                              key={index}
                               className="px-3 py-1.5 text-xs font-medium rounded-full border border-border/30 
                                        bg-card backdrop-blur-sm hover:bg-accent 
                                        transition-all duration-300 hover:shadow-sm text-foreground"

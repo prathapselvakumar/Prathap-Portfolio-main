@@ -17,7 +17,7 @@ export function LandingPage({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex w-full h-screen justify-center items-center bg-background text-foreground"
+      className="fixed inset-0 z-50 flex w-full h-screen justify-center items-center bg-white dark:bg-black text-black dark:text-white"
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
