@@ -9,7 +9,7 @@ import { Protection } from "@/components/Protection";
 
 export const metadata: Metadata = {
   title: "prathapsk",
-  description: "Prathap Selvakumar - Robotics Engineer Portfolio",
+  description: "Prathap Selvakumar - Robotic Graduate Portfolio",
 };
 
 export default function RootLayout({

@@ -34,6 +34,40 @@ export function PortfolioContent() {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  /* ─── Spline Control ─── */
+  const splineRef = React.useRef<any>(null);
+
+  const handleSplineLoad = (spline: any) => {
+    splineRef.current = spline;
+    console.log("Spline loaded", spline);
+  };
+
+  const triggerRobotBye = () => {
+    if (splineRef.current) {
+      // Attempt to trigger "Bye" animation
+      // Assuming "Robot" is the object name and "mouseDown" triggers the action
+      // You may need to adjust "Robot" to the exact name in your Spline scene
+      const robot = splineRef.current.findObjectByName('Robot');
+      if (robot) {
+        splineRef.current.emitEvent('mouseDown', 'Robot');
+        console.log("Triggered Bye animation on Robot");
+      } else {
+        console.log("Robot object not found in Spline scene");
+        // Fallback: emit global event if specific object not found
+        splineRef.current.emitEvent('mouseDown');
+      }
+    }
+  };
+
+  const handleNavClick = (url: string) => {
+    scrollToSection(url);
+
+    // If navigating away from home, trigger robot "Bye"
+    if (url !== '#hero') {
+      triggerRobotBye();
+    }
+  };
+
   const navItems = [
     { name: 'Home', url: '#hero', icon: Home },
     { name: 'About', url: '#about', icon: User },
@@ -61,7 +95,7 @@ export function PortfolioContent() {
       {/* Navigation Bar */}
       <NavBar
         items={navItems}
-        onItemClick={scrollToSection} />
+        onItemClick={handleNavClick} />
 
 
       {/* Theme Toggle - Fixed Position */}
@@ -81,6 +115,7 @@ export function PortfolioContent() {
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
               className="w-full h-full"
+              onLoad={handleSplineLoad}
             />
           </div>
 
@@ -156,12 +191,11 @@ export function PortfolioContent() {
               <p className="text-xl text-muted-foreground leading-relaxed">
                 I'm a dedicated robotics engineering student with a passion for creating
                 intelligent systems that solve real-world problems. My journey combines
-                mechanical design, embedded systems, and machine learning.
+                Python, ROS2, and machine learning.
               </p>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 Currently focusing on autonomous navigation, computer vision, and
-                human-robot interaction. Always eager to learn and contribute to
-                cutting-edge robotics projects.
+                human-robot interaction. I am seeking a role where I can apply my expertise to deliver tangible results. My focus is on execution and bringing value to the team immediately.
               </p>
 
               {/* Skills Grid */}

@@ -20,6 +20,20 @@ interface Certificate {
 
 const certificates: Certificate[] = [
   {
+    id: "igi-publication",
+    title: "IGI Publication",
+    issuer: "IGI Global",
+    date: "2024",
+    category: "Publication",
+    description: [
+      "Research publication in IGI Global",
+      "Academic contribution to the field",
+      "Peer-reviewed research work"
+    ],
+    skills: ["Research", "Academic Writing", "Publication"],
+    filePath: "/Certificate/IGI Publication.pdf"
+  },
+  {
     id: "python-flask",
     title: "Python And Flask Framework Complete Course For Beginners",
     issuer: "UDEMY",
