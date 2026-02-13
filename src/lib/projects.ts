@@ -50,7 +50,7 @@ export const projects: Project[] =
             id: 'autonomous-robot',
             title: 'Autonomous Robot',
             description: 'Self-navigating robot using SLAM and path planning algorithms with real-time obstacle detection',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Leo-Rover.jpg',
+            image: '/maxresdefault.jpg',
             categories: ['Robotics'],
             size: 'large',
             repoUrl: 'https://github.com/prathapselvakumar/Leo-Rover.git',
