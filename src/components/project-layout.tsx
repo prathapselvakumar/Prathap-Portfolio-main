@@ -210,9 +210,21 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                 </defs>
             </svg>
 
-            {/* ─── Hero ─── */}
-            <section className="min-h-[80vh] flex items-center justify-center pt-24 px-6 text-center">
-                <div className="max-w-4xl">
+            {/* ─── Hero ═══ */}
+            <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-24 px-6 text-center">
+
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src={project.image}
+                        alt=""
+                        className="w-full h-full object-cover opacity-80 dark:opacity-40"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+                </div>
+
+                <div className="relative z-10 max-w-4xl">
                     <h1 className="text-6xl md:text-8xl font-bold mb-6">
                         <span className="gradient-text">{project.title}</span>
                     </h1>

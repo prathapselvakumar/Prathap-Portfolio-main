@@ -135,6 +135,22 @@ export const projects: Project[] =
             videos: [],
             files: [],
             repos: []
+        },
+        {
+            id: 'snake-detection',
+            title: 'Snake Detection',
+            description: 'Real-time snake detection and classification system using YOLOv8',
+            image: '/image.png',
+            categories: ['AI/ML', 'Computer Vision'],
+            size: 'small',
+            repoUrl: 'https://github.com/prathapselvakumar/Snake-detection',
+            features: [
+                { icon: 'Cpu', title: "YOLOv8 Detection", desc: "Real-time snake detection using a custom-trained YOLOv8 model." },
+                { icon: 'Zap', title: "Species Classification", desc: "Classifies detected snakes as venomous or non-venomous." },
+            ],
+            videos: [],
+            files: [],
+            repos: []
         }
     ];
 

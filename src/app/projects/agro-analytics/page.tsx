@@ -371,8 +371,17 @@ const Index = () => {
 
             {/* ═══ Hero ═══ */}
             <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-20">
-                {/* Grid background */}
-                {/* Grid background removed */}
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/a5838af0-769b-474e-a5fc-caa1e19c86e5/generated_images/ai-powered-agricultural-analytics-dashbo-925fa72a-20251103021715.jpg"
+                        alt=""
+                        className="w-full h-full object-cover opacity-80 dark:opacity-40"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+                </div>
+
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
                 <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">

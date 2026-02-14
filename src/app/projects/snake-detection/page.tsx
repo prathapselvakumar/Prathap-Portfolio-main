@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, Terminal, Github, ExternalLink, Star, Code2, Play, Square, ChevronRight, Cpu, Zap, Database, Check, AlertCircle, Loader2 } from "lucide-react";
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
-import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -68,242 +67,166 @@ const SectionHeader = ({ label, title, description }: { label: string; title: st
 
 /* ─── Data ─── */
 const features = [
-    { icon: Cpu, title: "Audio Fingerprinting", desc: "Generates unique acoustic fingerprints from audio channels using spectral analysis and hashing." },
-    { icon: Database, title: "SQLite Storage", desc: "Stores fingerprints in SQLite database for fast lookup and matching against recorded audio." },
-    { icon: Zap, title: "Real-Time Listening", desc: "Records audio from microphone in real-time and matches it against the fingerprint database." },
-    { icon: Search, title: "Hash Matching", desc: "Finds matching songs by comparing fingerprint hashes with confidence scoring and offset alignment." },
+    { icon: Cpu, title: "YOLOv8 Detection", desc: "Real-time snake detection using a custom-trained YOLOv8 model to identify and classify snake species from images and video." },
+    { icon: Zap, title: "Species Classification", desc: "Classifies detected snakes as venomous or non-venomous, providing critical safety information for users." },
+    { icon: Database, title: "Image & Video Input", desc: "Supports multiple input modes including uploaded images, video files, and live camera feed for flexible detection." },
+    { icon: Search, title: "Annotated Results", desc: "Outputs annotated images and videos with bounding boxes, confidence scores, and species labels for clear identification." },
 ];
 
 const codeSnippets = [
     {
         id: "1",
-        title: "analyze.py",
-        description: "Analyzes music files and stores fingerprints in the database",
-        code: `import os
-import src.analyzer as analyzer
-from src.filereader import FileReader
-from termcolor import colored
-from src.db import SQLiteDatabase
+        title: "detect.py",
+        description: "Main detection script using YOLOv8 for snake identification",
+        code: `import cv2
+from ultralytics import YOLO
+import argparse
 
-MUSICS_FOLDER_PATH = "mp3"
+def load_model(weights_path):
+    """Load the YOLOv8 model with custom weights."""
+    model = YOLO(weights_path)
+    return model
 
-if __name__ == '__main__':
-    db = SQLiteDatabase()
+def detect_snake(model, source, conf=0.5):
+    """Run snake detection on the given source."""
+    results = model.predict(
+        source=source,
+        conf=conf,
+        save=True,
+        show=True
+    )
+    return results
 
-    for filename in os.listdir(MUSICS_FOLDER_PATH):
-        # Skip hidden files and non-WAV files
-        if not filename.endswith(".wav") or filename.startswith('.'):
-            continue
+def process_results(results):
+    """Process and display detection results."""
+    for result in results:
+        boxes = result.boxes
+        for box in boxes:
+            cls = int(box.cls[0])
+            conf = float(box.conf[0])
+            label = result.names[cls]
+            print(f"Detected: {label} ({conf:.2f})")
+    return results
 
-        try:
-            file_path = os.path.join(MUSICS_FOLDER_PATH, filename)
-            reader = FileReader(file_path)
-            audio = reader.parse_audio()
-        except Exception as e:
-            print(colored(f"Error processing {filename}: {str(e)}", "red"))
-            continue
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--weights", default="best.pt")
+    parser.add_argument("--source", required=True)
+    parser.add_argument("--conf", type=float, default=0.5)
+    args = parser.parse_args()
 
-        song = db.get_song_by_filehash(audio['file_hash'])
-
-        if not song:
-            song_id = db.add_song(filename, audio['file_hash'])
-        else:
-            song_id = song['id']
-
-        print(colored(f"Analyzing music: {filename}", "green"))
-
-        hash_count = db.get_song_hashes_count(song_id)
-        if hash_count > 0:
-            msg = f'Warning: This song already exists ({hash_count} hashes), skipping'
-            print(colored(msg, 'yellow'))
-            continue
-
-        hashes = set()
-
-        for channeln, channel in enumerate(audio['channels']):
-            channel_hashes = analyzer.fingerprint(channel, Fs=audio['Fs'])
-            channel_hashes = set(channel_hashes)
-            msg = f'Channel {channeln} saved {len(channel_hashes)} hashes'
-            print(colored(msg, attrs=['dark']))
-            hashes |= channel_hashes
-
-        values = [(song_id, hash, offset) for hash, offset in hashes]
-        db.store_fingerprints(values)
-
-    print(colored('Done', "green"))`,
+    model = load_model(args.weights)
+    results = detect_snake(model, args.source, args.conf)
+    process_results(results)`,
     },
     {
         id: "2",
-        title: "listen.py",
-        description: "Records audio from mic and matches against fingerprint database",
-        code: `import os
-import sys
-import src
-import src.analyzer as analyzer
-import argparse
-from argparse import RawTextHelpFormatter
-from itertools import zip_longest
-from termcolor import colored
-from src.listener import Listener
-from src.db import SQLiteDatabase
+        title: "train.py",
+        description: "Training script for the YOLOv8 snake detection model",
+        code: `from ultralytics import YOLO
 
-if __name__ == '__main__':
-    db = SQLiteDatabase()
-    parser = argparse.ArgumentParser(formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-s', '--seconds', nargs='?')
-    args = parser.parse_args()
+def train_model():
+    """Train YOLOv8 model on snake dataset."""
+    model = YOLO("yolov8n.pt")  # Load pretrained model
 
-    if not args.seconds:
-        print(colored("Warning: You don't set any second. It's 10 by default", "yellow"))
-        args.seconds = "10"
-
-    seconds = int(args.seconds)
-    chunksize = 2**12
-    channels = 1
-    record_forever = False
-
-    listener = Listener()
-    listener.start_recording(
-        seconds=seconds,
-        chunksize=chunksize,
-        channels=channels
+    results = model.train(
+        data="data.yaml",
+        epochs=100,
+        imgsz=640,
+        batch=16,
+        name="snake_detection",
+        patience=20,
+        save=True,
+        plots=True
     )
+    return results
 
-    while True:
-        bufferSize = int(listener.rate / listener.chunksize * seconds)
-        print(colored("Listening....", "green"))
-        for i in range(0, bufferSize):
-            nums = listener.process_recording()
-        if not record_forever: break
+def validate_model(weights_path):
+    """Validate the trained model."""
+    model = YOLO(weights_path)
+    metrics = model.val()
+    print(f"mAP50: {metrics.box.map50:.4f}")
+    print(f"mAP50-95: {metrics.box.map:.4f}")
+    return metrics
 
-    listener.stop_recording()
-    print(colored('Okey, enough', attrs=['dark']))
+if __name__ == "__main__":
+    train_model()
+    validate_model("runs/detect/snake_detection/weights/best.pt")`,
+    },
+    {
+        id: "3",
+        title: "app.py",
+        description: "Streamlit web app for interactive snake detection",
+        code: `import streamlit as st
+from ultralytics import YOLO
+from PIL import Image
+import cv2
+import tempfile
 
-    def grouper(iterable, n, fillvalue=None):
-        args = [iter(iterable)] * n
-        return (filter(None, values) for values
-                in zip_longest(fillvalue=fillvalue, *args))
+st.set_page_config(page_title="Snake Detection", page_icon="🐍")
+st.title("🐍 Snake Detection System")
 
-    data = listener.get_recorded_data()
-    msg = 'Took %d samples'
-    print(colored(msg, attrs=['dark']) % len(data[0]))
+model = YOLO("best.pt")
 
-    Fs = analyzer.DEFAULT_FS
-    channel_amount = len(data)
-    result = set()
-    matches = []
+option = st.selectbox("Input Source",
+    ["Upload Image", "Upload Video", "Live Camera"])
 
-    def find_matches(samples, Fs=analyzer.DEFAULT_FS):
-        hashes = analyzer.fingerprint(samples, Fs=Fs)
-        return return_matches(hashes)
+if option == "Upload Image":
+    uploaded = st.file_uploader("Upload an image",
+        type=["jpg", "png", "jpeg"])
+    if uploaded:
+        image = Image.open(uploaded)
+        results = model.predict(source=image, conf=0.5)
+        annotated = results[0].plot()
+        st.image(annotated, caption="Detection Results",
+                 use_column_width=True)
 
-    def return_matches(hashes):
-        mapper = {}
-        for hash, offset in hashes:
-            mapper[hash.upper()] = offset
-        values = mapper.keys()
-        for split_values in grouper(values, 1000):
-            query = """
-                SELECT upper(hash), song_fk, offset
-                FROM fingerprints
-                WHERE upper(hash) IN (%s)
-            """
-            vals = list(split_values).copy()
-            length = len(vals)
-            query = query % ', '.join('?' * length)
-            x = db.executeAll(query, values=vals)
-            matches_found = len(x)
-            if matches_found > 0:
-                msg = 'I found %d hash in db'
-                print(colored(msg, 'green') % matches_found)
-            for hash, sid, offset in x:
-                yield (sid, mapper[hash])
+        for box in results[0].boxes:
+            cls = int(box.cls[0])
+            conf = float(box.conf[0])
+            label = results[0].names[cls]
+            st.success(f"Detected: {label} ({conf:.2%})")
 
-    for channeln, channel in enumerate(data):
-        matches.extend(find_matches(channel))
-
-    def align_matches(matches):
-        diff_counter = {}
-        largest = 0
-        largest_count = 0
-        song_id = -1
-        for tup in matches:
-            sid, diff = tup
-            if diff not in diff_counter:
-                diff_counter[diff] = {}
-            if sid not in diff_counter[diff]:
-                diff_counter[diff][sid] = 0
-            diff_counter[diff][sid] += 1
-            if diff_counter[diff][sid] > largest_count:
-                largest = diff
-                largest_count = diff_counter[diff][sid]
-                song_id = sid
-
-        songM = db.get_song_by_id(song_id)
-        nseconds = round(float(largest) / analyzer.DEFAULT_FS *
-                         analyzer.DEFAULT_WINDOW_SIZE *
-                         analyzer.DEFAULT_OVERLAP_RATIO, 5)
-        return {
-            "SONG_ID": song_id,
-            "SONG_NAME": songM[1],
-            "CONFIDENCE": largest_count,
-            "OFFSET": int(largest),
-            "OFFSET_SECS": nseconds
-        }
-
-    total_matches_found = len(matches)
-    if total_matches_found > 0:
-        msg = 'Totally found %d hash'
-        print(colored(msg, 'green') % total_matches_found)
-        song = align_matches(matches)
-        msg = ' => song: %s (id=%d)\\n'
-        msg += '    offset: %d (%d secs)\\n'
-        print(colored(msg, 'green') % (
-            song['SONG_NAME'], song['SONG_ID'],
-            song['OFFSET'], song['OFFSET_SECS']
-        ))
-    else:
-        msg = 'Not anything matching'
-        print(colored(msg, 'red'))`,
+elif option == "Upload Video":
+    uploaded = st.file_uploader("Upload a video",
+        type=["mp4", "avi", "mov"])
+    if uploaded:
+        tfile = tempfile.NamedTemporaryFile(delete=False)
+        tfile.write(uploaded.read())
+        st.video(tfile.name)
+        st.info("Processing video for detections...")`,
     },
 ];
 
 const terminalOutput = [
-    { type: "cmd" as const, text: "python analyze.py" },
-    { type: "success" as const, text: "Analyzing music: 1.wav" },
-    { type: "info" as const, text: "Channel 0 saved 4823 hashes" },
-    { type: "success" as const, text: "Analyzing music: 2.wav" },
-    { type: "info" as const, text: "Channel 0 saved 5102 hashes" },
-    { type: "success" as const, text: "Analyzing music: 3.wav" },
-    { type: "info" as const, text: "Channel 0 saved 4956 hashes" },
-    { type: "success" as const, text: "Done" },
+    { type: "cmd" as const, text: "python detect.py --weights best.pt --source test_images/" },
+    { type: "info" as const, text: "Loading YOLOv8 model (best.pt)..." },
+    { type: "success" as const, text: "Model loaded successfully ✓" },
     { type: "divider" as const, text: "─".repeat(56) },
-    { type: "cmd" as const, text: "python listen.py -s 10" },
-    { type: "info" as const, text: "Warning: Recording for 10 seconds..." },
-    { type: "success" as const, text: "Listening...." },
-    { type: "info" as const, text: "Okey, enough" },
-    { type: "info" as const, text: "Took 44100 samples" },
-    { type: "success" as const, text: "I found 342 hash in db" },
-    { type: "success" as const, text: "Totally found 342 hash" },
+    { type: "info" as const, text: "Processing: snake_01.jpg" },
+    { type: "success" as const, text: "Detected: Indian Cobra (0.94)" },
+    { type: "info" as const, text: "Processing: snake_02.jpg" },
+    { type: "success" as const, text: "Detected: King Cobra (0.89)" },
+    { type: "info" as const, text: "Processing: snake_03.jpg" },
+    { type: "success" as const, text: "Detected: Russell's Viper (0.91)" },
     { type: "divider" as const, text: "─".repeat(56) },
-    { type: "result" as const, text: " => song: 1.wav (id=1)" },
-    { type: "result" as const, text: "    offset: 2048 (12 secs)" },
-    { type: "success" as const, text: "Match found! ✓" },
+    { type: "result" as const, text: "3 images processed, 3 detections found" },
+    { type: "success" as const, text: "Results saved to runs/detect/ ✓" },
     { type: "divider" as const, text: "─".repeat(56) },
     { type: "info" as const, text: "📌 This is sample terminal output." },
     { type: "info" as const, text: "For full source code & docs, visit GitHub ↓" },
-    { type: "result" as const, text: "→ github.com/prathapselvakumar/Audio-Search-Engine" },
+    { type: "result" as const, text: "→ github.com/prathapselvakumar/Snake-detection" },
 ];
 
 const repo = {
-    name: "Audio-Search-Engine",
-    description: "A Python-based audio fingerprinting and recognition system. Analyzes WAV files, generates acoustic fingerprints, stores them in SQLite, and matches recorded audio against the database in real-time.",
+    name: "Snake-detection",
+    description: "A YOLOv8-powered snake detection and classification system that identifies snake species from images, video, and live camera feed, helping users determine if a snake is venomous or non-venomous.",
     language: "Python",
     languageColor: "hsl(50 70% 50%)",
     stars: 0,
     forks: 0,
-    url: "https://github.com/prathapselvakumar/Audio-Search-Engine",
-    topics: ["python", "audio-fingerprinting", "sqlite", "signal-processing", "music-recognition"],
+    url: "https://github.com/prathapselvakumar/Snake-detection",
+    topics: ["python", "yolov8", "deep-learning", "object-detection", "snake-detection", "computer-vision"],
 };
 
 /* ─── Page ─── */
@@ -332,7 +255,7 @@ const Index = () => {
 
     const getLineColor = (type: string) => {
         switch (type) {
-            case "cmd": return "text-primary";
+            case "cmd": return "text-primary text-glow";
             case "success": return "text-primary";
             case "info": return "text-muted-foreground";
             case "header": return "text-foreground font-bold";
@@ -348,7 +271,7 @@ const Index = () => {
             {/* Project Title (Top Left) */}
             <div className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <Terminal className="w-4 h-4 text-primary" />
-                <span className="font-mono font-bold text-sm tracking-tight">Audio Search Engine</span>
+                <span className="font-mono font-bold text-sm tracking-tight">Snake Detection</span>
             </div>
 
             {/* Theme Toggle (Top Right) */}
@@ -438,7 +361,7 @@ const Index = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/a5838af0-769b-474e-a5fc-caa1e19c86e5/generated_images/modern-audio-search-engine-interface-wit-0e47d749-20251103021714.jpg"
+                        src="/image.png"
                         alt=""
                         className="w-full h-full object-cover opacity-80 dark:opacity-40"
                     />
@@ -446,51 +369,63 @@ const Index = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
                 </div>
 
+                {/* Grid background */}
+                <div className="absolute inset-0 opacity-10 z-0" style={{
+                    backgroundImage: `linear-gradient(hsl(140 70% 45% / 0.15) 1px, transparent 1px), linear-gradient(90deg, hsl(140 70% 45% / 0.15) 1px, transparent 1px)`,
+                    backgroundSize: '40px 40px'
+                }} />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background z-0" />
+
                 <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
                     <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded border border-primary/30 bg-primary/5 animate-fade-in">
                         <Terminal className="w-4 h-4 text-primary" />
-                        <span className="text-primary font-mono text-sm tracking-widest uppercase">Python CLI Project</span>
+                        <span className="text-primary font-mono text-sm tracking-widest uppercase">YOLOv8 + Python Project</span>
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight animate-fade-in" style={{ animationDelay: "0.1s" }}>
-                        <span className="gradient-text">Audio Search</span> <span className="text-foreground">Engine</span>
+                        <span className="gradient-text">Snake</span> <span className="text-foreground">Detection</span>
                     </h1>
 
-                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-mono animate-fade-in" style={{ animationDelay: "0.2s" }}>
-                        A Python-based audio fingerprinting and recognition system.<br />
-                        Analyze WAV files, generate fingerprints, and match audio in real-time.
+                    <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed font-mono animate-fade-in" style={{ animationDelay: "0.2s" }}>
+                        A YOLOv8-powered snake detection system that identifies and classifies<br />
+                        snake species from images, video, and live camera feed.
                     </p>
+
+
+
+
 
                     {/* Quick install */}
                     <div className="mt-10 animate-fade-in" style={{ animationDelay: "0.4s" }}>
                         <div className="inline-flex items-center gap-3 px-5 py-3 rounded border border-border bg-card font-mono text-sm">
                             <span className="text-primary">$</span>
-                            <span className="text-muted-foreground">git clone https://github.com/prathapselvakumar/Audio-Search-Engine.git</span>
+                            <span className="text-muted-foreground">git clone https://github.com/prathapselvakumar/Snake-detection.git</span>
                         </div>
                     </div>
                 </div>
-            </section >
+
+            </section>
 
             {/* ═══ Features ═══ */}
-            < section className="py-24 px-6" >
+            <section className="py-24 px-6">
                 <div className="max-w-6xl mx-auto">
-                    <SectionHeader label="# features" title="What It Does" description="Core capabilities of the auto search engine." />
+                    <SectionHeader label="# features" title="What It Does" description="Core capabilities of the Snake Detection system." />
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {features.map((f, i) => (
-                            <div key={i} className="group p-6 rounded border border-border bg-card hover:border-primary/40 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
-                                <f.icon className="w-8 h-8 text-primary mb-4 transition-all" />
+                            <div key={i} className="group p-6 rounded border border-border bg-card hover:border-primary/40 hover:box-glow transition-all duration-300 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                                <f.icon className="w-8 h-8 text-primary mb-4 group-hover:text-glow transition-all" />
                                 <h3 className="font-mono font-bold text-foreground mb-2 text-sm">{f.title}</h3>
                                 <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
                             </div>
                         ))}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Terminal Demo ═══ */}
-            < section id="demo" className="py-24 px-6 surface-elevated" >
+            <section id="demo" className="py-24 px-6 surface-elevated">
                 <div className="max-w-4xl mx-auto">
-                    <SectionHeader label="# demo" title="Live Terminal Output" description="See the audio fingerprinting and matching in action. Click Run to simulate." />
+                    <SectionHeader label="# demo" title="Live Terminal Output" description="See the Snake Detection system in action. Click Run to simulate." />
 
                     <div className="rounded-lg border border-border overflow-hidden bg-background animate-fade-in">
                         {/* Terminal title bar */}
@@ -534,12 +469,12 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Source Code ═══ */}
-            < section id="code" className="py-24 px-6" >
+            <section id="code" className="py-24 px-6">
                 <div className="max-w-6xl mx-auto">
-                    <SectionHeader label="# source" title="Project Source Code" description="Browse the core Python modules that power the audio search engine." />
+                    <SectionHeader label="# source" title="Project Source Code" description="Browse the core Python modules that power the Snake Detection system." />
 
                     <div className="grid lg:grid-cols-[280px_1fr] gap-4 animate-fade-in">
                         {/* File list */}
@@ -586,14 +521,14 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Repository ═══ */}
             <section id="repository" className="py-24 px-6 surface-elevated">
                 <div className="max-w-4xl mx-auto">
                     <SectionHeader label="# repository" title="Get the Code" description="Clone the repository and start searching from your terminal." />
 
-                    <a href={repo.url} target="_blank" rel="noopener noreferrer" className="group block rounded-lg border border-border bg-card p-8 hover:border-primary/40 transition-all duration-300 animate-fade-in">
+                    <a href={repo.url} target="_blank" rel="noopener noreferrer" className="group block rounded-lg border border-border bg-card p-8 hover:border-primary/40 hover:box-glow transition-all duration-300 animate-fade-in">
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                             <div className="flex-1">
                                 <div className="flex items-center gap-3 mb-4">
@@ -625,27 +560,26 @@ const Index = () => {
                     <div className="mt-6 rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in" style={{ animationDelay: "0.1s" }}>
                         <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
                         <div className="space-y-2 text-foreground">
-                            <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Audio-Search-Engine.git</div>
-                            <div><span className="text-primary">$</span> cd Audio-Search-Engine</div>
+                            <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Snake-detection.git</div>
+                            <div><span className="text-primary">$</span> cd Snake-detection</div>
                             <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
-                            <div><span className="text-primary">$</span> python analyze.py</div>
-                            <div><span className="text-primary">$</span> python listen.py -s 10</div>
+                            <div><span className="text-primary">$</span> python detect.py --source test_images/</div>
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Footer ═══ */}
-            < footer className="border-t border-border py-10 px-6" >
+            <footer className="border-t border-border py-10 px-6">
                 <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <span className="font-mono text-xs text-muted-foreground">
-                        <span className="text-primary">$</span> echo "© {new Date().getFullYear()} Audio-Search-Engine"
+                        <span className="text-primary">$</span> echo "© {new Date().getFullYear()} Snake-Detection"
                     </span>
                     <a href={repo.url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
                         <Github className="w-5 h-5" />
                     </a>
                 </div>
-            </footer >
+            </footer>
         </main >
     );
 };
