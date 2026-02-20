@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,7 @@ interface NavBarProps {
 export function NavBar({ items, className, onItemClick }: NavBarProps) {
   const [activeTab, setActiveTab] = useState(items[0].name);
   const [isMobile, setIsMobile] = useState(false);
+  const isClickingRef = useRef(false);
 
   // Scroll-based section detection
   useEffect(() => {
@@ -30,12 +31,15 @@ export function NavBar({ items, className, onItemClick }: NavBarProps) {
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      // Ignore scroll observer updates when manually clicking to scroll
+      if (isClickingRef.current) return;
+
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           // Find the matching nav item for this section
           const sectionId = entry.target.id;
           const matchingItem = items.find(item => item.url === `#${sectionId}`);
-          
+
           if (matchingItem) {
             setActiveTab(matchingItem.name);
           }
@@ -71,14 +75,21 @@ export function NavBar({ items, className, onItemClick }: NavBarProps) {
 
   const handleClick = (item: NavItem) => {
     setActiveTab(item.name);
+    isClickingRef.current = true;
+
     if (onItemClick) {
       onItemClick(item.url);
     }
+
+    // Unblock the observer after 1.5 seconds (adjust this timeout to match actual scroll speed)
+    setTimeout(() => {
+      isClickingRef.current = false;
+    }, 1500);
   };
 
   return (
     <>
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[1003px] h-[49px]">
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95vw] h-[49px]">
         <div className="relative flex items-center gap-4 py-1 px-1 rounded-full">
           {/* Liquid Glass Background */}
           <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 
@@ -108,22 +119,22 @@ export function NavBar({ items, className, onItemClick }: NavBarProps) {
                   <Icon size={18} strokeWidth={2.5} />
                 </span>
                 {isActive &&
-                <motion.div
-                  layoutId="lamp"
-                  className="absolute inset-0 w-full bg-primary/10 rounded-full -z-10"
-                  initial={false}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30
-                  }} />
+                  <motion.div
+                    layoutId="lamp"
+                    className="absolute inset-0 w-full bg-primary/10 rounded-full -z-10"
+                    initial={false}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30
+                    }} />
                 }
               </button>
             );
           })}
         </div>
       </div>
-      
+
       {/* SVG Filter for Glass Effect */}
       <svg className="hidden">
         <defs>

@@ -13,7 +13,8 @@ import { Experience } from '@/components/Experience';
 import { Skills } from '@/components/Skills';
 import { Testimonials } from '@/components/Testimonials';
 import { NavBar } from '@/components/ui/tubelight-navbar';
-import { Home, User, GraduationCap, Briefcase, Code, FolderOpen, Award, MessageSquare } from 'lucide-react';
+import { Home, User, GraduationCap, Briefcase, Code, FolderOpen, BookOpen, Award, MessageSquare } from 'lucide-react';
+import { Publications } from '@/components/Publications';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -75,6 +76,7 @@ export function PortfolioContent() {
     { name: 'Experience', url: '#experience', icon: Briefcase },
     { name: 'Skills', url: '#skills', icon: Code },
     { name: 'Projects', url: '#projects', icon: FolderOpen },
+    { name: 'Publications', url: '#publications', icon: BookOpen },
     { name: 'Certificates', url: '#certificates', icon: Award },
     { name: 'Testimonials', url: '#testimonials', icon: MessageSquare }];
 
@@ -135,7 +137,7 @@ export function PortfolioContent() {
                 >
                   {/* Robotics Engineer - Now at the top */}
                   <p className="text-sm md:text-base text-muted-foreground uppercase tracking-widest mb-4">
-                    Robotics Engineer
+                    Robotics Graduate
                   </p>
 
                   {/* Name - Theme Aware */}
@@ -378,6 +380,9 @@ export function PortfolioContent() {
           }
         </div>
       </section>
+
+      {/* Publications Section */}
+      <Publications />
 
       {/* Certificates Section */}
       <div id="certificates">
