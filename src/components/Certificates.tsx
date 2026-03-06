@@ -248,10 +248,10 @@ export function Certificates() {
   };
 
   return (
-    <section id="certificates" className="min-h-screen py-12 px-4 md:px-8 bg-background">
-      <div className="max-w-7xl mx-auto">
+    <section id="certificates" className="min-h-[100dvh] py-16 md:py-20 px-4 sm:px-8 md:px-16 bg-background flex flex-col justify-center">
+      <div className="max-w-7xl mx-auto w-full">
         <motion.h2
-          className="text-3xl md:text-4xl font-bold mb-12 text-foreground text-center"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 md:mb-12 text-foreground text-center"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}

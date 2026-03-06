@@ -7,6 +7,8 @@ import { ThemeProvider } from "next-themes";
 
 import { Protection } from "@/components/Protection";
 
+import { ParallaxComponent } from "@/components/ui/parallax-scrolling";
+
 export const metadata: Metadata = {
   title: "prathapsk",
   description: "Prathap Selvakumar - Robotic Graduate Portfolio",
@@ -33,6 +35,7 @@ export default function RootLayout({
             data-debug="true"
             data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
           />
+          <ParallaxComponent />
           {children}
           <VisualEditsMessenger />
         </ThemeProvider>

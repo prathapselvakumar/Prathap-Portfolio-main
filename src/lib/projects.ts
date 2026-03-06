@@ -41,6 +41,8 @@ export interface Project {
         title: string;
         desc: string;
     }[];
+    terminalOutput?: { type: "cmd" | "info" | "success" | "result" | "divider"; text: string }[];
+    codeSnippets?: { id: string; title: string; description: string; language: string; code: string }[];
 }
 
 export const projects: Project[] =
@@ -109,7 +111,80 @@ export const projects: Project[] =
                 { id: "4", name: "NUC mounting plate v4", format: ".step", description: "Mounting plate for the NUC computer.", fileSize: "40 KB", icon: "cad", previewImage: "/Cad Files/nuc-plate-thumb.svg", downloadUrl: "/Cad Files/NUC mounting plate v4.step", modelUrl: "/Cad Files/NUC mounting plate v4.glb" },
             ],
             repos: [
-                { id: "1", name: "Leo-Rover", description: "The complete source code for the Autonomous Robot project.", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 0, url: "https://github.com/prathapselvakumar/Leo-Rover.git", topics: ["robotics", "autonomous", "leo-rover"] }
+                { id: "1", name: "Leo-Rover", description: "The complete source code for the Autonomous Robot project.", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 0, url: "https://github.com/prathapselvakumar/Leo-Rover.git", topics: ["robotics", "autonomous", "leo-rover"] },
+                { id: "2", name: "Object-Detection-for-Leo-Rover", description: "Computer vision and object detection models deployed on the Leo Rover.", language: "Python", languageColor: "hsl(50 70% 50%)", stars: 0, url: "https://github.com/prathapselvakumar/Object-Detection-for-Leo-Rover.git", topics: ["yolov8", "ros2", "computer-vision"] }
+            ],
+            terminalOutput: [
+                { type: "cmd", text: "ros2 launch leo_rover_object_detection yolo_v8.launch.py" },
+                { type: "info", text: "[INFO] [launch]: All log files can be found below /root/.ros/log/..." },
+                { type: "info", text: "[INFO] [launch]: Defaulting to ROS_DOMAIN_ID=0" },
+                { type: "success", text: "[yolov8_node]: Node started successfully. Loading weights 'yolov8n.pt'" },
+                { type: "info", text: "[camera_node]: Subscribing to /camera/image_raw" },
+                { type: "divider", text: "─".repeat(56) },
+                { type: "success", text: "[yolov8_node]: Inference Engine initialized on Edge TPU" },
+                { type: "result", text: "Detected: 'Person' at [120, 45, 230, 450] - Confidence: 0.92" },
+                { type: "result", text: "Detected: 'Stop Sign' at [400, 100, 480, 180] - Confidence: 0.88" },
+                { type: "info", text: "[nav2_costmap]: Updating local costmap with obstacles..." },
+                { type: "success", text: "[nav2_planner]: Recalculating path to avoid 'Stop Sign'" },
+                { type: "divider", text: "─".repeat(56) },
+                { type: "info", text: "📌 This is sample terminal output showing live object detection." },
+                { type: "info", text: "For full ROS2 nodes & launch files, visit GitHub ↓" },
+                { type: "result", text: "→ github.com/prathapselvakumar/Object-Detection-for-Leo-Rover" },
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "yolov8_node.py",
+                    description: "ROS2 node for subscribing to camera stream and running object detection",
+                    language: "Python",
+                    code: `import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image
+from cv_bridge importCvBridge
+import cv2
+from ultralytics import YOLO
+from vision_msgs.msg import Detection2DArray
+
+class YoloV8Node(Node):
+    def __init__(self):
+        super().__init__('yolov8_node')
+        self.bridge = CvBridge()
+        self.model = YOLO('yolov8n.pt') # Load YOLOv8 Nano
+        
+        # Subscribe to camera
+        self.subscription = self.create_subscription(
+            Image, '/camera/image_raw', self.image_callback, 10)
+        
+        # Publisher for detections
+        self.detection_pub = self.create_publisher(
+            Detection2DArray, '/detections', 10)
+        
+        self.get_logger().info("YOLOv8 Node Initialized.")
+
+    def image_callback(self, msg):
+        try:
+            cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+            results = self.model(cv_image)
+            
+            for r in results:
+                for box in r.boxes:
+                    conf = box.conf[0]
+                    if conf > 0.5:
+                        self.get_logger().info(f"Detected class {box.cls} - Conf {conf:.2f}")
+                        
+        except Exception as e:
+            self.get_logger().error(f"Failed to process image: {e}")
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = YoloV8Node()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()`
+                }
             ]
         },
         {

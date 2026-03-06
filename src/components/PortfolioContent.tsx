@@ -106,7 +106,7 @@ export function PortfolioContent() {
       </div>
 
       {/* Hero Section - Full Screen Split */}
-      <section id="hero" className="relative h-screen w-full overflow-hidden">
+      <section id="hero" className="relative h-[100dvh] w-full overflow-hidden">
         <div className="absolute inset-0 bg-background">
           <Spotlight
             className="-top-40 left-0 md:left-60 md:-top-20"
@@ -141,7 +141,7 @@ export function PortfolioContent() {
                   </p>
 
                   {/* Name - Theme Aware */}
-                  <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground mb-8">
+                  <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground mb-4 md:mb-8">
                     Prathap Selvakumar
                   </h1>
 
@@ -176,7 +176,7 @@ export function PortfolioContent() {
       </section>
 
       {/* About Section - Asymmetric Grid */}
-      <section id="about" className="min-h-screen py-20 px-8 md:px-16 bg-background flex items-center">
+      <section id="about" className="min-h-[100dvh] py-16 md:py-20 px-6 sm:px-8 md:px-16 bg-background flex items-center">
         <motion.div
           className="max-w-7xl mx-auto w-full"
           initial={{ opacity: 0, y: 50 }}
@@ -187,7 +187,7 @@ export function PortfolioContent() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Text takes 7 columns */}
             <div className="lg:col-span-7 space-y-6">
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground text-center">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground text-center lg:text-left">
                 About Me
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
@@ -211,7 +211,7 @@ export function PortfolioContent() {
 
               {/* Download CV and LinkedIn Buttons */}
               <motion.div
-                className="pt-6 flex gap-4 flex-wrap"
+                className="pt-6 flex gap-3 sm:gap-4 flex-wrap justify-center lg:justify-start"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -270,10 +270,10 @@ export function PortfolioContent() {
       </div>
 
       {/* Projects Section - Bento Grid */}
-      <section id="projects" className="min-h-screen py-20 px-8 md:px-16 bg-background flex items-center">
+      <section id="projects" className="min-h-[100dvh] py-16 md:py-20 px-4 sm:px-8 md:px-16 bg-background flex items-center">
         <div className="max-w-7xl mx-auto w-full">
           <motion.h2
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground text-center"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground text-center"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -313,7 +313,7 @@ export function PortfolioContent() {
               return (
                 <motion.div
                   key={project.id}
-                  className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${isLarge ? 'h-[500px] lg:h-[700px] lg:row-span-2' : 'h-[340px]'}`
+                  className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${isLarge ? 'h-[400px] sm:h-[500px] lg:h-[700px] lg:row-span-2' : 'h-[300px] sm:h-[340px]'}`
                   }
                   initial={{ opacity: 0, x: isLarge ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -340,11 +340,11 @@ export function PortfolioContent() {
                       )}
                     </div>
 
-                    <h3 className={`font-bold text-white mb-2 ${isLarge ? 'text-4xl lg:text-5xl mb-4' : 'text-2xl lg:text-3xl'}`
+                    <h3 className={`font-bold text-white mb-2 ${isLarge ? 'text-3xl sm:text-4xl lg:text-5xl mb-3 sm:mb-4' : 'text-2xl lg:text-3xl'}`
                     }>
                       {project.title}
                     </h3>
-                    <p className={`text-neutral-300 ${isLarge ? 'text-lg mb-6 max-w-lg' : 'text-sm mb-4'}`
+                    <p className={`text-neutral-300 line-clamp-2 md:line-clamp-none ${isLarge ? 'text-base sm:text-lg mb-4 sm:mb-6 max-w-lg' : 'text-sm mb-4'}`
                     }>
                       {project.description}
                     </p>

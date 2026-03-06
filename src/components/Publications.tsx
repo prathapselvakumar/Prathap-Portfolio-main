@@ -9,10 +9,10 @@ import { publications } from '@/lib/publications';
 export function Publications() {
 
     return (
-        <section id="publications" className="min-h-screen py-20 px-8 md:px-16 bg-background flex items-center">
+        <section id="publications" className="min-h-[100dvh] py-16 md:py-20 px-4 sm:px-8 md:px-16 bg-background flex items-center">
             <div className="max-w-7xl mx-auto w-full">
                 <motion.h2
-                    className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground text-center"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground text-center"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
@@ -27,7 +27,7 @@ export function Publications() {
                         return (
                             <motion.div
                                 key={pub.id}
-                                className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${isLarge ? 'h-[500px] lg:h-[700px] lg:row-span-2' : 'h-[340px]'}`
+                                className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${isLarge ? 'h-[400px] sm:h-[500px] lg:h-[700px] lg:row-span-2' : 'h-[300px] sm:h-[340px]'}`
                                 }
                                 initial={{ opacity: 0, x: isLarge ? -50 : 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -43,7 +43,7 @@ export function Publications() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent flex flex-col justify-end p-6 lg:p-8">
 
 
-                                    <h3 className={`font-bold text-white mb-6 ${isLarge ? 'text-2xl lg:text-3xl' : 'text-xl lg:text-2xl'}`}>
+                                    <h3 className={`font-bold text-white mb-4 sm:mb-6 ${isLarge ? 'text-2xl sm:text-3xl lg:text-4xl' : 'text-xl sm:text-2xl'}`}>
                                         {pub.title}
                                     </h3>
 

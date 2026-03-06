@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
     Terminal,
     Github,
@@ -19,11 +19,14 @@ import {
     Activity,
     Server,
     Layers,
+    Square,
+    ChevronRight,
 } from "lucide-react";
 
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { Button } from "@/components/ui/button";
 import { Project } from "@/lib/projects";
+import LeoRoverExploded from "@/components/LeoRoverExploded";
 
 import {
     NavigationMenu,
@@ -67,24 +70,115 @@ const SectionHeader = ({
     label,
     title,
     description,
+    titleClassName,
+    descClassName,
+    underlineClassName,
 }: {
     label: string;
     title: string;
     description?: string;
+    titleClassName?: string;
+    descClassName?: string;
+    underlineClassName?: string;
 }) => (
     <div className="mb-12">
         <span className="text-primary font-mono text-xs tracking-[0.3em] uppercase block mb-3">
             {label}
         </span>
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+        <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${titleClassName || ''}`}>{title}</h2>
         {description && (
-            <p className="text-muted-foreground max-w-xl text-lg">
+            <p className={`max-w-xl text-lg ${descClassName || 'text-muted-foreground'}`}>
                 {description}
             </p>
         )}
-        <div className="mt-6 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
+        <div className={`mt-6 h-px w-20 ${underlineClassName || 'bg-gradient-to-r from-primary to-transparent'}`} />
     </div>
 );
+
+/* ─── Typing effect hook ─── */
+const useTypingEffect = (text: string, speed = 40, startDelay = 0) => {
+    const [displayed, setDisplayed] = useState("");
+    const [done, setDone] = useState(false);
+
+    useEffect(() => {
+        setDisplayed("");
+        setDone(false);
+        const timeout = setTimeout(() => {
+            let i = 0;
+            const interval = setInterval(() => {
+                setDisplayed(text.slice(0, i + 1));
+                i++;
+                if (i >= text.length) {
+                    clearInterval(interval);
+                    setDone(true);
+                }
+            }, speed);
+            return () => clearInterval(interval);
+        }, startDelay);
+        return () => clearTimeout(timeout);
+    }, [text, speed, startDelay]);
+
+    return { displayed, done };
+};
+
+/* ─── Terminal Line Component ─── */
+const TerminalLine = ({ prefix = "$", text, delay = 0, className = "" }: { prefix?: string; text: string; delay?: number; className?: string }) => {
+    const { displayed, done } = useTypingEffect(text, 30, delay);
+    return (
+        <div className={`flex gap-2 ${className}`}>
+            <span className="text-primary flex-shrink-0">{prefix}</span>
+            <span className="text-foreground">
+                {displayed}
+                {!done && <span className="cursor-blink text-primary">▋</span>}
+            </span>
+        </div>
+    );
+};
+
+/* ─── Basic syntactic highlighting ─── */
+function highlightCode(line: string): React.ReactNode {
+    const keywords = /\b(import|from|def|class|return|if|else|elif|for|in|with|as|async|await|not|and|or|try|except|raise|None|True|False|self|yield)\b/g;
+    const comments = /(#.*)$/;
+
+    const commentMatch = line.match(comments);
+    if (commentMatch && !line.trim().startsWith('"') && !line.trim().startsWith("'")) {
+        const idx = line.indexOf(commentMatch[1]);
+        const before = line.slice(0, idx);
+        const comment = commentMatch[1];
+        return (
+            <>
+                {highlightCode(before)}
+                <span className="text-muted-foreground/50 italic">{comment}</span>
+            </>
+        );
+    }
+
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    const combined = new RegExp(`("""[\\s\\S]*?"""|'''[\\s\\S]*?'''|"(?:[^"\\\\]|\\\\.)*"|'(?:[^'\\\\]|\\\\.)*'|f"(?:[^"\\\\]|\\\\.)*"|f'(?:[^'\\\\]|\\\\.)*')|(@\\w+)|\\b(import|from|def|class|return|if|else|elif|for|in|with|as|async|await|not|and|or|try|except|raise|None|True|False|self|yield)\\b|\\b(\\d+)\\b`, 'g');
+
+    let match;
+    while ((match = combined.exec(line)) !== null) {
+        if (match.index > lastIndex) {
+            parts.push(line.slice(lastIndex, match.index));
+        }
+        if (match[1]) {
+            parts.push(<span key={match.index} className="text-primary/70">{match[0]}</span>);
+        } else if (match[2]) {
+            parts.push(<span key={match.index} className="text-accent">{match[0]}</span>);
+        } else if (match[3]) {
+            parts.push(<span key={match.index} className="text-primary font-bold">{match[0]}</span>);
+        } else if (match[4]) {
+            parts.push(<span key={match.index} className="text-accent/80">{match[0]}</span>);
+        }
+        lastIndex = match.index + match[0].length;
+    }
+    if (lastIndex < line.length) {
+        parts.push(line.slice(lastIndex));
+    }
+
+    return parts.length > 0 ? <>{parts}</> : line;
+}
 
 interface ProjectLayoutProps {
     project: Project;
@@ -96,10 +190,42 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
         Icon: iconMap[f.icon] || Cpu,
     }));
 
-
-
-
     const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+
+    // Terminal and code state
+    const [activeSnippet, setActiveSnippet] = useState(project.codeSnippets?.[0]?.id || "1");
+    const [isRunning, setIsRunning] = useState(false);
+    const [visibleLines, setVisibleLines] = useState(0);
+    const terminalRef = useRef<HTMLDivElement>(null);
+
+    const handleRun = () => {
+        setIsRunning(true);
+        setVisibleLines(0);
+        let i = 0;
+        const interval = setInterval(() => {
+            i++;
+            setVisibleLines(i);
+            if (terminalRef.current) {
+                terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+            }
+            if (project.terminalOutput && i >= project.terminalOutput.length) {
+                clearInterval(interval);
+                setTimeout(() => setIsRunning(false), 500);
+            }
+        }, 200);
+    };
+
+    const getLineColor = (type: string) => {
+        switch (type) {
+            case "cmd": return "text-primary";
+            case "success": return "text-primary";
+            case "info": return "text-muted-foreground";
+            case "header": return "text-foreground font-bold";
+            case "result": return "text-foreground";
+            case "divider": return "text-border";
+            default: return "text-foreground";
+        }
+    };
 
     return (
         <main className="min-h-screen bg-background text-foreground">
@@ -129,6 +255,42 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
                 <NavigationMenu className="relative z-10">
                     <NavigationMenuList className="gap-1">
+                        {(project.id === "autonomous-robot" || (features && features.length > 0)) && (
+                            <NavigationMenuItem>
+                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
+                                    <a href="#features" className="hidden sm:inline-block">
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
+                                            <Layers className="w-3.5 h-3.5 mr-2" />Key Features
+                                        </Button>
+                                    </a>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+                        )}
+
+                        {project.terminalOutput && project.terminalOutput.length > 0 && (
+                            <NavigationMenuItem>
+                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
+                                    <a href="#demo">
+                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
+                                            <Terminal className="w-3.5 h-3.5 mr-2" />Terminal
+                                        </Button>
+                                    </a>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+                        )}
+
+                        {project.codeSnippets && project.codeSnippets.length > 0 && (
+                            <NavigationMenuItem>
+                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
+                                    <a href="#code">
+                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
+                                            <Code2 className="w-3.5 h-3.5 mr-2" />Code
+                                        </Button>
+                                    </a>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+                        )}
+
                         {project.demoUrl && (
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
@@ -245,13 +407,27 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                 </div>
             </section>
 
-            {/* ─── Features ─── */}
-            {features && features.length > 0 && (
-                <section className="py-24 px-6">
+            {/* ─── Features (or Custom Animation) ─── */}
+            {project.id === "autonomous-robot" ? (
+                <section id="features" className="w-full relative mt-32">
+                    <div className="pt-12 px-6 max-w-6xl mx-auto absolute z-20 left-0 right-0 top-0 pointer-events-none">
+                        <SectionHeader
+                            label="# features"
+                            title="Key Features"
+                            description="Interactive 3D structural breakdown of the LEO Rover."
+                            titleClassName="text-white drop-shadow-md"
+                            descClassName="text-white/80 drop-shadow-sm"
+                            underlineClassName="bg-gradient-to-r from-white to-transparent"
+                        />
+                    </div>
+                    <LeoRoverExploded />
+                </section>
+            ) : features && features.length > 0 && (
+                <section id="features" className="py-24 px-6">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# features"
-                            title="Key Capabilities"
+                            title="Key Features"
                             description="Core technologies and system features."
                         />
 
@@ -266,6 +442,113 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                     <p className="text-sm text-muted-foreground">{f.desc}</p>
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ─── Terminal Demo ─── */}
+            {project.terminalOutput && project.terminalOutput.length > 0 && (
+                <section id="demo" className="py-24 px-6 surface-elevated">
+                    <div className="max-w-4xl mx-auto">
+                        <SectionHeader label="# demo" title="Live Terminal Output" description="Simulated console execution." />
+
+                        <div className="rounded-lg border border-border overflow-hidden bg-background shadow-2xl">
+                            {/* Terminal title bar */}
+                            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 rounded-full bg-destructive/60" />
+                                    <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                    <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                    <span className="ml-3 text-xs text-muted-foreground font-mono">terminal</span>
+                                </div>
+                                <button
+                                    onClick={handleRun}
+                                    disabled={isRunning}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+                                >
+                                    {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
+                                </button>
+                            </div>
+
+                            {/* Terminal body */}
+                            <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto w-full">
+                                {visibleLines === 0 && (
+                                    <div className="flex gap-2">
+                                        <span className="text-primary">$</span>
+                                        <span className="text-muted-foreground">_</span>
+                                        <span className="cursor-blink text-primary">▋</span>
+                                    </div>
+                                )}
+                                {project.terminalOutput.slice(0, visibleLines).map((line, i) => (
+                                    <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
+                                        {line.type === "cmd" ? (
+                                            <span><span className="text-primary">$ </span>{line.text}</span>
+                                        ) : (
+                                            <span>{line.text}</span>
+                                        )}
+                                    </div>
+                                ))}
+                                {isRunning && (
+                                    <span className="cursor-blink text-primary">▋</span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ─── Source Code ─── */}
+            {project.codeSnippets && project.codeSnippets.length > 0 && (
+                <section id="code" className="py-24 px-6">
+                    <div className="max-w-6xl mx-auto">
+                        <SectionHeader label="# source" title="Project Source Code" description="Explore the primary logical modules." />
+
+                        <div className="grid lg:grid-cols-[280px_1fr] gap-4">
+                            {/* File list */}
+                            <div className="rounded-lg border border-border bg-card overflow-hidden">
+                                <div className="px-4 py-3 border-b border-border text-xs text-muted-foreground font-mono uppercase tracking-wider">
+                                    Files
+                                </div>
+                                {project.codeSnippets.map((s) => (
+                                    <button
+                                        key={s.id}
+                                        onClick={() => setActiveSnippet(s.id)}
+                                        className={`w-full text-left px-4 py-3 border-b border-border font-mono text-sm transition-colors ${activeSnippet === s.id
+                                            ? "bg-primary/10 text-primary border-l-2 border-l-primary"
+                                            : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <ChevronRight className={`w-3 h-3 transition-transform ${activeSnippet === s.id ? "rotate-90 text-primary" : ""}`} />
+                                            <span>{s.title}</span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground mt-1 ml-5">{s.description}</p>
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Code viewer */}
+                            <div className="rounded-lg border border-border bg-card overflow-hidden">
+                                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30">
+                                    <span className="font-mono text-sm text-foreground">
+                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.title}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground font-mono">
+                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.language}
+                                    </span>
+                                </div>
+                                <pre className="p-5 overflow-x-auto text-sm leading-6 font-mono">
+                                    <code className="text-foreground">
+                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.code.split('\n').map((line, i) => (
+                                            <div key={i} className="flex">
+                                                <span className="w-10 flex-shrink-0 text-right pr-4 text-muted-foreground/40 select-none">{i + 1}</span>
+                                                <span className="flex-1 whitespace-pre">{highlightCode(line)}</span>
+                                            </div>
+                                        ))}
+                                    </code>
+                                </pre>
+                            </div>
                         </div>
                     </div>
                 </section>

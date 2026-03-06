@@ -56,11 +56,11 @@ const reviews = [
 
 export function Testimonials() {
   return (
-    <section className="min-h-screen py-20 bg-background flex items-center">
-      <div className="w-full max-w-7xl mx-auto px-8 md:px-16">
+    <section className="min-h-[100dvh] py-16 md:py-20 bg-background flex items-center">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-16">
         <div className="text-center">
           <motion.h1
-            className="text-3xl md:text-4xl font-bold text-foreground"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}

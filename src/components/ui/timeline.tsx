@@ -49,11 +49,11 @@ export const Timeline = ({ data, title, description }: TimelineProps) => {
             className="w-full bg-background font-sans md:px-10"
             ref={containerRef}
         >
-            <div className="max-w-7xl mx-auto py-20 flex flex-col items-center text-center px-4 md:px-8 lg:px-10">
-                <h2 className="text-5xl md:text-6xl lg:text-7xl mb-8 text-foreground font-bold tracking-tight max-w-4xl">
+            <div className="max-w-7xl mx-auto py-16 md:py-20 flex flex-col items-center text-center px-4 md:px-8 lg:px-10">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-8 text-foreground font-bold tracking-tight max-w-4xl">
                     {title || "Changelog from my journey"}
                 </h2>
-                <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
+                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
                     {description || "I've been working on Aceternity for the past 2 years. Here's a timeline of my journey."}
                 </p>
             </div>

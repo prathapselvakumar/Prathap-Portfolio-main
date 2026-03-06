@@ -61,7 +61,7 @@ const skillsData = [
 
 export function Skills() {
   return (
-    <section className="py-20 px-8 md:px-16 bg-background relative overflow-hidden">
+    <section className="py-16 md:py-20 px-4 sm:px-8 md:px-16 bg-background relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
@@ -76,7 +76,7 @@ export function Skills() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4">
             Technical Arsenal
           </h2>
 
