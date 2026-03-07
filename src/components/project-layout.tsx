@@ -27,6 +27,8 @@ import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { Button } from "@/components/ui/button";
 import { Project } from "@/lib/projects";
 import LeoRoverExploded from "@/components/LeoRoverExploded";
+import { LiquidButton } from "@/components/ui/liquid-glass-button";
+import { motion } from "framer-motion";
 
 import {
     NavigationMenu,
@@ -191,6 +193,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
     }));
 
     const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+    const [selected3DModel, setSelected3DModel] = useState<string>('Arm mounting plate v7');
 
     // Terminal and code state
     const [activeSnippet, setActiveSnippet] = useState(project.codeSnippets?.[0]?.id || "1");
@@ -608,39 +611,125 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             description="Models, schematics, and assets."
                         />
 
-                        <div className="grid md:grid-cols-2 gap-6">
-                            {project.files.map((file) => (
-                                <div
-                                    key={file.id}
-                                    className="flex rounded-lg border bg-card overflow-hidden group"
+                        {project.id === 'autonomous-robot' && (
+                            <>
+                                <motion.div
+                                    className="flex flex-wrap gap-3 mb-8 justify-center"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5 }}
+                                    viewport={{ once: true }}
                                 >
-                                    <div className="relative w-48 h-full bg-zinc-900 overflow-hidden">
-                                        <img
-                                            src={file.previewImage}
-                                            alt={file.name}
-                                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                                        />
-                                    </div>
-                                    <div className="p-5 flex-1 flex flex-col justify-center">
-                                        <h3 className="font-semibold text-lg mb-1">{file.name}</h3>
-                                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                                            {file.description}
-                                        </p>
-                                        <div className="flex justify-between items-center mt-auto">
-                                            <span className="text-xs font-mono px-2 py-1 rounded bg-muted/50 text-muted-foreground">{file.fileSize}</span>
-                                            <div className="flex gap-2">
-                                                <a href={file.downloadUrl}>
-                                                    <Button size="sm">
-                                                        <Download className="w-4 h-4 mr-1" />
-                                                        Download
-                                                    </Button>
-                                                </a>
+                                    {['Arm mounting plate v7', 'LIDAR A2 mount v4', 'NUC mounting plate v4', 'L camera mount v6'].map((model) => (
+                                        <LiquidButton
+                                            key={model}
+                                            onClick={() => setSelected3DModel(model)}
+                                            size="default"
+                                            className={`pointer-events-auto cursor-pointer ${selected3DModel === model
+                                                ? 'bg-foreground text-background'
+                                                : 'bg-background text-muted-foreground hover:text-foreground'
+                                                }`}
+                                        >
+                                            {model}
+                                        </LiquidButton>
+                                    ))}
+                                </motion.div>
+
+                                <div className="mb-12 flex flex-col gap-6">
+                                    {(selected3DModel === 'Arm mounting plate v7') && (
+                                        <div className="w-full rounded-xl overflow-hidden border bg-card shadow-lg flex justify-center flex-col items-center pt-4">
+                                            <h3 className="font-semibold text-lg mb-4 w-full text-center">Arm mounting plate v7</h3>
+                                            <iframe
+                                                src="https://gmail5797073.autodesk360.com/shares/public/SH28cd1QT2badd0ea72be128034cae94a4f8?mode=embed"
+                                                title="Arm mounting plate v7"
+                                                width="100%"
+                                                height="600"
+                                                allowFullScreen={true}
+                                                frameBorder="0"
+                                            ></iframe>
+                                        </div>
+                                    )}
+
+                                    {(selected3DModel === 'LIDAR A2 mount v4') && (
+                                        <div className="w-full rounded-xl overflow-hidden border bg-card shadow-lg flex justify-center flex-col items-center pt-4">
+                                            <h3 className="font-semibold text-lg mb-4 w-full text-center">LIDAR A2 mount v4</h3>
+                                            <iframe
+                                                src="https://gmail5797073.autodesk360.com/shares/public/SH28cd1QT2badd0ea72b5beb4d37c0b7bf26?mode=embed"
+                                                title="LIDAR A2 mount v4"
+                                                width="100%"
+                                                height="600"
+                                                allowFullScreen={true}
+                                                frameBorder="0"
+                                            ></iframe>
+                                        </div>
+                                    )}
+
+                                    {(selected3DModel === 'NUC mounting plate v4') && (
+                                        <div className="w-full rounded-xl overflow-hidden border bg-card shadow-lg flex justify-center flex-col items-center pt-4">
+                                            <h3 className="font-semibold text-lg mb-4 w-full text-center">NUC mounting plate v4</h3>
+                                            <iframe
+                                                src="https://gmail5797073.autodesk360.com/shares/public/SH28cd1QT2badd0ea72b8d58d1e2059fcddf?mode=embed"
+                                                title="NUC mounting plate v4"
+                                                width="100%"
+                                                height="600"
+                                                allowFullScreen={true}
+                                                frameBorder="0"
+                                            ></iframe>
+                                        </div>
+                                    )}
+
+                                    {(selected3DModel === 'L camera mount v6') && (
+                                        <div className="w-full rounded-xl overflow-hidden border bg-card shadow-lg flex justify-center flex-col items-center pt-4">
+                                            <h3 className="font-semibold text-lg mb-4 w-full text-center">L camera mount v6</h3>
+                                            <iframe
+                                                src="https://gmail5797073.autodesk360.com/shares/public/SH28cd1QT2badd0ea72b91dbac7d9902d74c?mode=embed"
+                                                title="L camera mount v6"
+                                                width="100%"
+                                                height="600"
+                                                allowFullScreen={true}
+                                                frameBorder="0"
+                                            ></iframe>
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        )}
+
+                        {(!project.id.includes('autonomous')) && (
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {project.files.map((file) => (
+                                    <div
+                                        key={file.id}
+                                        className="flex rounded-lg border bg-card overflow-hidden group"
+                                    >
+                                        <div className="relative w-48 h-full bg-zinc-900 overflow-hidden">
+                                            <img
+                                                src={file.previewImage}
+                                                alt={file.name}
+                                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                                            />
+                                        </div>
+                                        <div className="p-5 flex-1 flex flex-col justify-center">
+                                            <h3 className="font-semibold text-lg mb-1">{file.name}</h3>
+                                            <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                                                {file.description}
+                                            </p>
+                                            <div className="flex justify-between items-center mt-auto">
+                                                <span className="text-xs font-mono px-2 py-1 rounded bg-muted/50 text-muted-foreground">{file.fileSize}</span>
+                                                <div className="flex gap-2">
+                                                    <a href={file.downloadUrl}>
+                                                        <Button size="sm">
+                                                            <Download className="w-4 h-4 mr-1" />
+                                                            Download
+                                                        </Button>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </section>
             )}
