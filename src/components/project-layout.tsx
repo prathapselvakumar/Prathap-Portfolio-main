@@ -84,10 +84,10 @@ const SectionHeader = ({
     underlineClassName?: string;
 }) => (
     <div className="mb-12">
-        <span className="text-primary font-mono text-xs tracking-[0.3em] uppercase block mb-3">
+        <span className="text-primary font-mono text-xs tracking-[0.3em] uppercase block mb-2 md:mb-3">
             {label}
         </span>
-        <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${titleClassName || ''}`}>{title}</h2>
+        <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 ${titleClassName || ''}`}>{title}</h2>
         {description && (
             <p className={`max-w-xl text-lg ${descClassName || 'text-muted-foreground'}`}>
                 {description}
@@ -234,7 +234,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
         <main className="min-h-screen bg-background text-foreground">
             {/* ─── Navigation ─── */}
             {/* Project Title (Top Left) */}
-            <div className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
+            <div className="hidden lg:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <Terminal className="w-4 h-4 text-primary" />
                 <span className="font-mono font-bold text-sm tracking-tight">{project.title}</span>
             </div>
@@ -245,7 +245,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
             </div>
 
             {/* Centered Navigation Menu */}
-            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full px-2 py-0.5">
+            <div className="fixed top-6 left-1/2 -translate-x-[60%] md:-translate-x-1/2 z-50 rounded-full px-1 py-0.5 w-max max-w-[95vw]">
                 {/* Liquid Glass Background */}
                 <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 
                     shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)] 
@@ -256,14 +256,14 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                     className="absolute top-0 left-0 isolate -z-10 h-full w-full overflow-hidden rounded-full"
                     style={{ backdropFilter: 'url("#navbar-glass")' }} />
 
-                <NavigationMenu className="relative z-10">
-                    <NavigationMenuList className="gap-1">
+                <NavigationMenu className="relative z-10 overflow-x-auto sm:overflow-x-visible no-scrollbar">
+                    <NavigationMenuList className="gap-0 sm:gap-0.5 px-0.5">
                         {(project.id === "autonomous-robot" || (features && features.length > 0)) && (
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#features" className="hidden sm:inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                            <Layers className="w-3.5 h-3.5 mr-2" />Key Features
+                                    <a href="#features" className="inline-block">
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Layers className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Features</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -273,9 +273,9 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         {project.terminalOutput && project.terminalOutput.length > 0 && (
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#demo">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                            <Terminal className="w-3.5 h-3.5 mr-2" />Terminal
+                                    <a href="#demo" className="inline-block">
+                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Terminal className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Terminal</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -285,9 +285,9 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         {project.codeSnippets && project.codeSnippets.length > 0 && (
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#code">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                            <Code2 className="w-3.5 h-3.5 mr-2" />Code
+                                    <a href="#code" className="inline-block">
+                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Code2 className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Code</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -297,9 +297,9 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         {project.demoUrl && (
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                            <Play className="w-3.5 h-3.5 mr-2" />Live Demo
+                                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="inline-block">
+                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Play className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Demo</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -309,9 +309,9 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         {project.videos && project.videos.length > 0 && (
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#videos">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                            <Play className="w-3.5 h-3.5 mr-2" />Walkthroughs
+                                    <a href="#videos" className="inline-block">
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Play className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Videos</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -321,9 +321,9 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         {project.files && project.files.length > 0 && (
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#files" className="hidden sm:inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                            <Box className="w-3.5 h-3.5 mr-2" />Design Files
+                                    <a href="#files" className="inline-block">
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Box className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Design</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -333,9 +333,9 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         {project.repoUrl && (
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#repos" className="hidden sm:inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                            <Github className="w-3.5 h-3.5 mr-2" />GitHub
+                                    <a href="#repos" className="inline-block">
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Github className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">GitHub</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -376,7 +376,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
             </svg>
 
             {/* ─── Hero ═══ */}
-            <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-24 px-6 text-center">
+            <section className="relative min-h-[60vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden pt-20 px-4 sm:px-6 text-center">
 
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
@@ -389,11 +389,11 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                     <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
                 </div>
 
-                <div className="relative z-10 max-w-4xl">
-                    <h1 className="text-6xl md:text-8xl font-bold mb-6">
+                <div className="relative z-10 max-w-4xl pt-8 md:pt-0">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
                         <span className="gradient-text">{project.title}</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-muted-foreground">
+                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
                         {project.description}
                     </p>
 
@@ -426,7 +426,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                     <LeoRoverExploded />
                 </section>
             ) : features && features.length > 0 && (
-                <section id="features" className="py-24 px-6">
+                <section id="features" className="py-16 md:py-24 px-4 sm:px-6">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# features"
@@ -434,7 +434,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             description="Core technologies and system features."
                         />
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             {features.map((f, i) => (
                                 <div
                                     key={i}
@@ -452,7 +452,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
             {/* ─── Terminal Demo ─── */}
             {project.terminalOutput && project.terminalOutput.length > 0 && (
-                <section id="demo" className="py-24 px-6 surface-elevated">
+                <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
                     <div className="max-w-4xl mx-auto">
                         <SectionHeader label="# demo" title="Live Terminal Output" description="Simulated console execution." />
 
@@ -503,11 +503,11 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
             {/* ─── Source Code ─── */}
             {project.codeSnippets && project.codeSnippets.length > 0 && (
-                <section id="code" className="py-24 px-6">
+                <section id="code" className="py-16 md:py-24 px-4 sm:px-6">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader label="# source" title="Project Source Code" description="Explore the primary logical modules." />
 
-                        <div className="grid lg:grid-cols-[280px_1fr] gap-4">
+                        <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-4">
                             {/* File list */}
                             <div className="rounded-lg border border-border bg-card overflow-hidden">
                                 <div className="px-4 py-3 border-b border-border text-xs text-muted-foreground font-mono uppercase tracking-wider">
@@ -559,7 +559,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
             {/* ─── Videos ─── */}
             {project.videos && project.videos.length > 0 && (
-                <section id="videos" className="py-24 px-6 bg-muted/20">
+                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# videos"
@@ -567,7 +567,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             description="Click any video to play."
                         />
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {project.videos.map((video) => (
                                 <div
                                     key={video.id}
@@ -603,7 +603,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
             {/* ─── Files ─── */}
             {project.files && project.files.length > 0 && (
-                <section id="files" className="py-24 px-6">
+                <section id="files" className="py-16 md:py-24 px-4 sm:px-6">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# files"
@@ -696,13 +696,13 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         )}
 
                         {(!project.id.includes('autonomous')) && (
-                            <div className="grid md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {project.files.map((file) => (
                                     <div
                                         key={file.id}
-                                        className="flex rounded-lg border bg-card overflow-hidden group"
+                                        className="flex flex-col sm:flex-row rounded-lg border bg-card overflow-hidden group"
                                     >
-                                        <div className="relative w-48 h-full bg-zinc-900 overflow-hidden">
+                                        <div className="relative w-full sm:w-48 h-48 sm:h-auto bg-zinc-900 overflow-hidden flex-shrink-0">
                                             <img
                                                 src={file.previewImage}
                                                 alt={file.name}
@@ -736,7 +736,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
             {/* ─── Repositories ─── */}
             {project.repos && project.repos.length > 0 && (
-                <section id="repos" className="py-24 px-6 bg-muted/20">
+                <section id="repos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
                     <div className="max-w-4xl mx-auto">
                         <SectionHeader
                             label="# repositories"

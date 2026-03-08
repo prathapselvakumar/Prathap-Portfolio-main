@@ -113,7 +113,7 @@ export function PortfolioContent() {
             fill="currentColor" />
 
           {/* 3D Scene - Absolute Background */}
-          <div className="absolute top-0 right-0 h-full w-full md:w-[60%] z-0">
+          <div className="absolute bottom-0 md:top-0 md:bottom-auto right-0 h-[60%] md:h-full w-full md:w-[60%] z-0">
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
               className="w-full h-full"
@@ -121,19 +121,20 @@ export function PortfolioContent() {
             />
           </div>
 
-          <div className="flex h-full flex-col lg:flex-row relative z-10 pointer-events-none">
+          <div className="flex h-full flex-col md:flex-row relative z-10 pointer-events-none">
             {/* Left: Text Content */}
             <motion.div
-              className="flex-1 p-8 md:p-16 lg:p-24 flex flex-col justify-center pointer-events-auto max-w-4xl"
+              className="flex-1 p-4 sm:p-8 md:p-12 lg:p-24 flex flex-col justify-start md:justify-center pt-[12vh] md:pt-0 items-center md:items-start text-center md:text-left pointer-events-auto max-w-2xl lg:max-w-4xl mx-auto md:mx-0 mt-8 md:mt-0 w-full"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6 flex flex-col items-center md:items-start w-full">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
+                  className="w-full flex flex-col items-center md:items-start"
                 >
                   {/* Robotics Engineer - Now at the top */}
                   <p className="text-sm md:text-base text-muted-foreground uppercase tracking-widest mb-4">
@@ -141,17 +142,17 @@ export function PortfolioContent() {
                   </p>
 
                   {/* Name - Theme Aware */}
-                  <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground mb-4 md:mb-8">
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground mb-4 md:mb-8 break-words text-wrap">
                     Prathap Selvakumar
                   </h1>
 
                   {/* Sparkles Effect - Theme-Aware for Both Light and Dark Mode */}
-                  <div className="w-full md:w-[40rem] h-40 relative mt-4">
+                  <div className="w-full max-w-[80vw] md:max-w-none md:w-[25rem] lg:w-[40rem] h-24 md:h-40 relative mt-4 md:mt-8 mx-auto md:mx-0">
                     {/* Gradients - Theme Aware */}
-                    <div className="absolute left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-[2px] w-3/4 blur-sm" />
-                    <div className="absolute left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-px w-3/4" />
-                    <div className="absolute left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-[5px] w-1/4 blur-sm" />
-                    <div className="absolute left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-px w-1/4" />
+                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-[2px] w-3/4 blur-sm" />
+                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-px w-3/4" />
+                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-[5px] w-1/4 blur-sm" />
+                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-px w-1/4" />
 
                     {/* Core component - Theme Aware Particles */}
                     {mounted && (
@@ -184,10 +185,10 @@ export function PortfolioContent() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-12 items-center">
             {/* Text takes 7 columns */}
-            <div className="lg:col-span-7 space-y-6">
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground text-center lg:text-left">
+            <div className="md:col-span-7 space-y-4 lg:space-y-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-foreground text-center md:text-left">
                 About Me
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
@@ -201,17 +202,17 @@ export function PortfolioContent() {
               </p>
 
               {/* Skills Grid */}
-              <div className="grid grid-cols-2 gap-4 pt-8">
+              <div className="grid grid-cols-2 gap-3 lg:gap-4 pt-4 lg:pt-8">
                 {['Robotics', 'AI/ML', 'Computer Vision', 'Embedded Systems'].map((skill) =>
-                  <div key={skill} className="p-4 border border-border rounded-lg bg-card">
-                    <p className="text-foreground font-semibold">{skill}</p>
+                  <div key={skill} className="p-3 lg:p-4 border border-border rounded-lg bg-card">
+                    <p className="text-foreground text-sm lg:text-base font-semibold">{skill}</p>
                   </div>
                 )}
               </div>
 
               {/* Download CV and LinkedIn Buttons */}
               <motion.div
-                className="pt-6 flex gap-3 sm:gap-4 flex-wrap justify-center lg:justify-start"
+                className="pt-6 flex gap-3 sm:gap-4 flex-wrap justify-center md:justify-start"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -241,7 +242,7 @@ export function PortfolioContent() {
             </div>
 
             {/* Image takes 5 columns */}
-            <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <div className="md:col-span-5 flex justify-center md:justify-end">
               <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden border-2 border-border">
                 <img
                   src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/DSC00380-1762246337337.JPG?width=8000&height=8000&resize=contain"
@@ -273,7 +274,7 @@ export function PortfolioContent() {
       <section id="projects" className="min-h-[100dvh] py-16 md:py-20 px-4 sm:px-8 md:px-16 bg-background flex items-center">
         <div className="max-w-7xl mx-auto w-full">
           <motion.h2
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground text-center"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground text-center"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -306,14 +307,14 @@ export function PortfolioContent() {
           </motion.div>
 
           {/* Asymmetric Layout: Large Left + Stacked Right */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredProjects.map((project, index) => {
               const isLarge = project.size === 'large';
 
               return (
                 <motion.div
                   key={project.id}
-                  className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${isLarge ? 'h-[400px] sm:h-[500px] lg:h-[700px] lg:row-span-2' : 'h-[300px] sm:h-[340px]'}`
+                  className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${isLarge ? 'h-[400px] sm:h-[500px] md:h-[700px] md:row-span-2' : 'h-[280px] sm:h-[340px]'}`
                   }
                   initial={{ opacity: 0, x: isLarge ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -327,24 +328,24 @@ export function PortfolioContent() {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
 
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent flex flex-col justify-end p-6 lg:p-8">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent flex flex-col justify-end p-5 md:p-6 lg:p-8">
                     {/* Category Tags */}
-                    <div className="flex flex-wrap gap-2 mb-3">
+                    <div className="flex flex-wrap gap-1.5 md:gap-2 mb-2 md:mb-3">
                       {project.categories.map((cat) =>
                         <span
                           key={cat}
-                          className="px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs text-white">
+                          className="px-2 md:px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-[10px] md:text-xs text-white">
 
                           {cat}
                         </span>
                       )}
                     </div>
 
-                    <h3 className={`font-bold text-white mb-2 ${isLarge ? 'text-3xl sm:text-4xl lg:text-5xl mb-3 sm:mb-4' : 'text-2xl lg:text-3xl'}`
+                    <h3 className={`font-bold text-white mb-2 ${isLarge ? 'text-2xl sm:text-3xl lg:text-5xl mb-2 sm:mb-4' : 'text-xl md:text-2xl lg:text-3xl'}`
                     }>
                       {project.title}
                     </h3>
-                    <p className={`text-neutral-300 line-clamp-2 md:line-clamp-none ${isLarge ? 'text-base sm:text-lg mb-4 sm:mb-6 max-w-lg' : 'text-sm mb-4'}`
+                    <p className={`text-neutral-300 line-clamp-2 md:line-clamp-none ${isLarge ? 'text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 max-w-lg' : 'text-xs md:text-sm mb-3 md:mb-4'}`
                     }>
                       {project.description}
                     </p>

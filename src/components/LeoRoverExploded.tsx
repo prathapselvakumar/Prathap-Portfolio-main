@@ -122,7 +122,7 @@ export default function LeoRoverExploded() {
                 {/* Text Overlays overlay */}
                 <div className="absolute inset-0 z-10 pointer-events-none">
                     {/* Step 1 */}
-                    <motion.div style={{ opacity: textOpacity1 }} className="absolute top-[20%] left-[5%] md:left-[10%] max-w-sm px-4">
+                    <motion.div style={{ opacity: textOpacity1 }} className="absolute bottom-[10%] lg:bottom-auto lg:top-[20%] left-[5%] lg:left-[10%] max-w-sm px-4">
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">SLAM</h2>
                         <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
                             <p className="text-neutral-200 text-base md:text-lg leading-relaxed">Simultaneous Localization and Mapping utilizing 2D/3D LiDAR fusion to construct high-fidelity spatial maps of unknown environments in real-time.</p>
@@ -130,7 +130,7 @@ export default function LeoRoverExploded() {
                     </motion.div>
 
                     {/* Step 2 */}
-                    <motion.div style={{ opacity: textOpacity2 }} className="absolute top-[30%] right-[5%] md:right-[10%] max-w-sm px-4 text-left md:text-right">
+                    <motion.div style={{ opacity: textOpacity2 }} className="absolute bottom-[10%] lg:bottom-auto lg:top-[30%] left-[5%] lg:left-auto lg:right-[10%] max-w-sm px-4 text-left lg:text-right">
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">Autonomous Navigation</h2>
                         <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
                             <p className="text-neutral-200 text-base md:text-lg leading-relaxed">Dynamic path planning and robust obstacle avoidance algorithms ensuring seamless point-to-point traversal across complex terrain.</p>
@@ -138,7 +138,7 @@ export default function LeoRoverExploded() {
                     </motion.div>
 
                     {/* Step 3 */}
-                    <motion.div style={{ opacity: textOpacity3 }} className="absolute bottom-[20%] left-[5%] md:left-[10%] max-w-sm px-4">
+                    <motion.div style={{ opacity: textOpacity3 }} className="absolute bottom-[10%] lg:bottom-[20%] left-[5%] lg:left-[10%] max-w-sm px-4">
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">Computer Vision</h2>
                         <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
                             <p className="text-neutral-200 text-base md:text-lg leading-relaxed">Edge-deployed YOLOv8 inference enabling rapid object detection, semantic segmentation, and advanced environmental perception.</p>
@@ -146,7 +146,7 @@ export default function LeoRoverExploded() {
                     </motion.div>
 
                     {/* Step 4 */}
-                    <motion.div style={{ opacity: textOpacity4 }} className="absolute top-[20%] right-[5%] md:right-[10%] max-w-sm px-4 text-left md:text-right">
+                    <motion.div style={{ opacity: textOpacity4 }} className="absolute bottom-[10%] lg:bottom-auto lg:top-[20%] left-[5%] lg:left-auto lg:right-[10%] max-w-sm px-4 text-left lg:text-right">
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">ROS2 Architecture</h2>
                         <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
                             <p className="text-neutral-200 text-base md:text-lg leading-relaxed">A decentralized, highly modular communication framework managing sensor data streams and autonomous state machines continuously.</p>
@@ -154,7 +154,7 @@ export default function LeoRoverExploded() {
                     </motion.div>
 
                     {/* Step 5 */}
-                    <motion.div style={{ opacity: textOpacity5 }} className="absolute bottom-[25%] left-[5%] md:left-[15%] max-w-sm px-4">
+                    <motion.div style={{ opacity: textOpacity5 }} className="absolute bottom-[10%] lg:bottom-[25%] left-[5%] lg:left-[15%] max-w-sm px-4">
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">Path Logging</h2>
                         <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
                             <p className="text-neutral-200 text-base md:text-lg leading-relaxed">Comprehensive telemetry recording system tracking odometry, executed paths, and obstacle metadata for post-mission kinematic analysis.</p>

@@ -58,11 +58,11 @@ const TerminalLine = ({ prefix = "$", text, delay = 0, className = "" }: { prefi
 
 /* ─── Section Header ─── */
 const SectionHeader = ({ label, title, description }: { label: string; title: string; description?: string }) => (
-    <div className="mb-12">
-        <span className="text-primary font-mono text-xs tracking-[0.3em] uppercase block mb-3">{label}</span>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-foreground">{title}</h2>
-        {description && <p className="text-muted-foreground max-w-xl text-lg leading-relaxed">{description}</p>}
-        <div className="mt-6 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
+    <div className="mb-12 text-center">
+        <span className="text-primary font-mono text-xs tracking-[0.3em] uppercase block mb-2 md:mb-3">{label}</span>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-3 md:mb-4 text-foreground">{title}</h2>
+        {description && <p className="text-muted-foreground max-w-xl mx-auto text-lg leading-relaxed">{description}</p>}
+        <div className="mt-6 h-px w-20 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto" />
     </div>
 );
 
@@ -343,10 +343,10 @@ const Index = () => {
     };
 
     return (
-        <main className="min-h-screen bg-background">
+        <main className="min-h-screen bg-background w-full overflow-hidden">
             {/* ═══ Navigation ═══ */}
             {/* Project Title (Top Left) */}
-            <div className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
+            <div className="hidden lg:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <Terminal className="w-4 h-4 text-primary" />
                 <span className="font-mono font-bold text-sm tracking-tight">Audio Search Engine</span>
             </div>
@@ -357,7 +357,7 @@ const Index = () => {
             </div>
 
             {/* Centered Navigation Menu */}
-            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full px-2 py-0.5">
+            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full px-1 py-0.5 w-max max-w-[95vw]">
                 {/* Liquid Glass Background */}
                 <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 
                     shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)] 
@@ -368,13 +368,13 @@ const Index = () => {
                     className="absolute top-0 left-0 isolate -z-10 h-full w-full overflow-hidden rounded-full"
                     style={{ backdropFilter: 'url("#navbar-glass")' }} />
 
-                <NavigationMenu className="relative z-10">
-                    <NavigationMenuList className="gap-1">
+                <NavigationMenu className="relative z-10 overflow-x-auto sm:overflow-x-visible no-scrollbar">
+                    <NavigationMenuList className="gap-0.5 sm:gap-1 px-1">
                         <NavigationMenuItem>
                             <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                <a href="#demo">
-                                    <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                        <Play className="w-3.5 h-3.5 mr-2" />Run Demo
+                                <a href="#demo" className="inline-block">
+                                    <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                        <Play className="w-3.5 h-3.5 sm:mr-2" /><span className="hidden sm:inline">Run Demo</span>
                                     </Button>
                                 </a>
                             </NavigationMenuLink>
@@ -382,9 +382,9 @@ const Index = () => {
 
                         <NavigationMenuItem>
                             <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                <a href="#code" className="hidden sm:inline-block">
-                                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                        <Code2 className="w-3.5 h-3.5 mr-2" />Source
+                                <a href="#code" className="inline-block">
+                                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                        <Code2 className="w-3.5 h-3.5 sm:mr-2" /><span className="hidden sm:inline">Source</span>
                                     </Button>
                                 </a>
                             </NavigationMenuLink>
@@ -392,9 +392,9 @@ const Index = () => {
 
                         <NavigationMenuItem>
                             <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                <a href="#repository" className="hidden sm:inline-block">
-                                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                        <Github className="w-3.5 h-3.5 mr-2" />GitHub
+                                <a href="#repository" className="inline-block">
+                                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                        <Github className="w-3.5 h-3.5 sm:mr-2" /><span className="hidden sm:inline">GitHub</span>
                                     </Button>
                                 </a>
                             </NavigationMenuLink>
@@ -434,7 +434,7 @@ const Index = () => {
             </svg>
 
             {/* ═══ Hero ═══ */}
-            <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-20">
+            <section className="relative min-h-[60vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden pt-16 md:pt-20 px-4 sm:px-6">
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -452,19 +452,23 @@ const Index = () => {
                         <span className="text-primary font-mono text-sm tracking-widest uppercase">Python CLI Project</span>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight animate-fade-in" style={{ animationDelay: "0.1s" }}>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 tracking-tight animate-fade-in" style={{ animationDelay: "0.1s" }}>
                         <span className="gradient-text">Audio Search</span> <span className="text-foreground">Engine</span>
                     </h1>
 
-                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-mono animate-fade-in" style={{ animationDelay: "0.2s" }}>
-                        A Python-based audio fingerprinting and recognition system.<br />
-                        Analyze WAV files, generate fingerprints, and match audio in real-time.
+                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-mono animate-fade-in break-words text-center" style={{ animationDelay: "0.2s" }}>
+                        A Python-based audio fingerprinting <br className="block sm:hidden" />
+                        and recognition system. <br className="block md:hidden" />
+                        <br className="hidden md:block" />
+                        Analyze WAV files, generate fingerprints, <br className="block sm:hidden" />
+                        and match audio in real-time.
                     </p>
 
+
                     {/* Quick install */}
-                    <div className="mt-10 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-                        <div className="inline-flex items-center gap-3 px-5 py-3 rounded border border-border bg-card font-mono text-sm">
-                            <span className="text-primary">$</span>
+                    <div className="mt-10 animate-fade-in hidden sm:block" style={{ animationDelay: "0.4s" }}>
+                        <div className="inline-flex max-w-full items-center gap-3 px-5 py-3 rounded border border-border bg-card font-mono text-sm overflow-x-auto whitespace-nowrap scrollbar-hide">
+                            <span className="text-primary flex-shrink-0">$</span>
                             <span className="text-muted-foreground">git clone https://github.com/prathapselvakumar/Audio-Search-Engine.git</span>
                         </div>
                     </div>
@@ -472,10 +476,10 @@ const Index = () => {
             </section >
 
             {/* ═══ Features ═══ */}
-            < section className="py-24 px-6" >
+            < section className="py-16 md:py-24 px-4 sm:px-6" >
                 <div className="max-w-6xl mx-auto">
                     <SectionHeader label="# features" title="What It Does" description="Core capabilities of the auto search engine." />
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {features.map((f, i) => (
                             <div key={i} className="group p-6 rounded border border-border bg-card hover:border-primary/40 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
                                 <f.icon className="w-8 h-8 text-primary mb-4 transition-all" />
@@ -488,7 +492,7 @@ const Index = () => {
             </section >
 
             {/* ═══ Terminal Demo ═══ */}
-            < section id="demo" className="py-24 px-6 surface-elevated" >
+            < section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated" >
                 <div className="max-w-4xl mx-auto">
                     <SectionHeader label="# demo" title="Live Terminal Output" description="See the audio fingerprinting and matching in action. Click Run to simulate." />
 
@@ -513,14 +517,14 @@ const Index = () => {
                         {/* Terminal body */}
                         <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto">
                             {visibleLines === 0 && (
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 break-all">
                                     <span className="text-primary">$</span>
                                     <span className="text-muted-foreground">_</span>
                                     <span className="cursor-blink text-primary">▋</span>
                                 </div>
                             )}
                             {terminalOutput.slice(0, visibleLines).map((line, i) => (
-                                <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
+                                <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""} break-all sm:break-normal whitespace-pre-wrap`}>
                                     {line.type === "cmd" ? (
                                         <span><span className="text-primary">$ </span>{line.text}</span>
                                     ) : (
@@ -537,11 +541,11 @@ const Index = () => {
             </section >
 
             {/* ═══ Source Code ═══ */}
-            < section id="code" className="py-24 px-6" >
+            < section id="code" className="py-16 md:py-24 px-4 sm:px-6" >
                 <div className="max-w-6xl mx-auto">
                     <SectionHeader label="# source" title="Project Source Code" description="Browse the core Python modules that power the audio search engine." />
 
-                    <div className="grid lg:grid-cols-[280px_1fr] gap-4 animate-fade-in">
+                    <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-4 animate-fade-in">
                         {/* File list */}
                         <div className="rounded-lg border border-border bg-card overflow-hidden">
                             <div className="px-4 py-3 border-b border-border text-xs text-muted-foreground font-mono uppercase tracking-wider">
@@ -573,11 +577,11 @@ const Index = () => {
                                 </span>
                                 <span className="text-xs text-muted-foreground font-mono">Python</span>
                             </div>
-                            <pre className="p-5 overflow-x-auto text-sm leading-6 font-mono">
+                            <pre className="p-4 sm:p-5 overflow-x-auto text-xs sm:text-sm leading-6 font-mono">
                                 <code className="text-foreground">
                                     {codeSnippets.find(s => s.id === activeSnippet)?.code.split('\n').map((line, i) => (
                                         <div key={i} className="flex">
-                                            <span className="w-10 flex-shrink-0 text-right pr-4 text-muted-foreground/40 select-none">{i + 1}</span>
+                                            <span className="w-8 sm:w-10 flex-shrink-0 text-right pr-2 sm:pr-4 text-muted-foreground/40 select-none">{i + 1}</span>
                                             <span className="flex-1">{highlightPython(line)}</span>
                                         </div>
                                     ))}
@@ -589,22 +593,22 @@ const Index = () => {
             </section >
 
             {/* ═══ Repository ═══ */}
-            <section id="repository" className="py-24 px-6 surface-elevated">
+            <section id="repository" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
                 <div className="max-w-4xl mx-auto">
                     <SectionHeader label="# repository" title="Get the Code" description="Clone the repository and start searching from your terminal." />
 
                     <a href={repo.url} target="_blank" rel="noopener noreferrer" className="group block rounded-lg border border-border bg-card p-8 hover:border-primary/40 transition-all duration-300 animate-fade-in">
-                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
-                            <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <Github className="w-6 h-6 text-primary" />
-                                    <h3 className="font-mono text-xl font-bold text-foreground group-hover:text-primary transition-colors">{repo.name}</h3>
-                                    <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 text-center sm:text-left">
+                            <div className="flex-1 flex flex-col items-center sm:items-start">
+                                <div className="flex items-center justify-center sm:justify-start gap-3 mb-4 w-full overflow-hidden">
+                                    <Github className="w-6 h-6 text-primary flex-shrink-0" />
+                                    <h3 className="font-mono text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors truncate">{repo.name}</h3>
+                                    <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
                                 </div>
-                                <p className="text-sm text-muted-foreground leading-relaxed mb-5">{repo.description}</p>
-                                <div className="flex flex-wrap gap-2">
+                                <p className="text-sm text-muted-foreground leading-relaxed mb-5 break-words max-w-lg">{repo.description}</p>
+                                <div className="flex flex-wrap justify-center sm:justify-start gap-2">
                                     {repo.topics.map((topic) => (
-                                        <span key={topic} className="px-2.5 py-1 rounded border border-border bg-secondary text-secondary-foreground text-xs font-mono">{topic}</span>
+                                        <span key={topic} className="px-2.5 py-1 rounded border border-border bg-secondary text-secondary-foreground text-xs font-mono break-all sm:break-normal">{topic}</span>
                                     ))}
                                 </div>
                             </div>
@@ -622,9 +626,9 @@ const Index = () => {
                     </a>
 
                     {/* Clone command */}
-                    <div className="mt-6 rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in" style={{ animationDelay: "0.1s" }}>
+                    <div className="mt-6 rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in overflow-x-auto" style={{ animationDelay: "0.1s" }}>
                         <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
-                        <div className="space-y-2 text-foreground">
+                        <div className="space-y-2 text-foreground min-w-max">
                             <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Audio-Search-Engine.git</div>
                             <div><span className="text-primary">$</span> cd Audio-Search-Engine</div>
                             <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
@@ -636,7 +640,7 @@ const Index = () => {
             </section >
 
             {/* ═══ Footer ═══ */}
-            < footer className="border-t border-border py-10 px-6" >
+            < footer className="border-t border-border py-10 px-4 sm:px-6" >
                 <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <span className="font-mono text-xs text-muted-foreground">
                         <span className="text-primary">$</span> echo "© {new Date().getFullYear()} Audio-Search-Engine"
