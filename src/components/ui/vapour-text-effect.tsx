@@ -7,9 +7,28 @@ import { useTheme } from "next-themes";
 export const Component = () => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [fontSize, setFontSize] = useState("70px");
+  const [currentTexts, setCurrentTexts] = useState(["Welcome to Prathap's portfolio"]);
 
   useEffect(() => {
     setMounted(true);
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setFontSize("32px");
+        setCurrentTexts(["Welcome\nto\nPrathap's portfolio"]);
+      } else if (width <= 1100) {
+        setFontSize("40px");
+        setCurrentTexts(["Welcome to Prathap's portfolio"]);
+      } else {
+        setFontSize("70px");
+        setCurrentTexts(["Welcome to Prathap's portfolio"]);
+      }
+    };
+    // Set initial size
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (!mounted) return null;
@@ -17,10 +36,10 @@ export const Component = () => {
   return (
     <div className='bg-white dark:bg-black text-black dark:text-white h-screen w-screen flex justify-center items-center'>
       <VaporizeTextCycle
-        texts={["Welcome to Prathap's portfolio"]}
+        texts={currentTexts}
         font={{
           fontFamily: "Inter, sans-serif",
-          fontSize: "70px",
+          fontSize: fontSize,
           fontWeight: 600
         }}
         color={resolvedTheme === 'dark' ? "#ffffff" : "#000000"}
@@ -537,8 +556,10 @@ const renderCanvas = ({
     textX = canvas.width;
   }
 
+  const lineHeight = fontSize * globalDpr * 1.2;
+
   // Create particles from the rendered text and get text boundaries
-  const { particles, textBoundaries } = createParticles(ctx, canvas, currentText, textX, textY, font, color, framerProps.alignment || "left");
+  const { particles, textBoundaries } = createParticles(ctx, canvas, currentText, textX, textY, font, color, framerProps.alignment || "left", lineHeight);
 
   // Store particles and text boundaries for animation
   particlesRef.current = particles;
@@ -556,7 +577,8 @@ const createParticles = (
   textY: number,
   font: string,
   color: string,
-  alignment: "left" | "center" | "right"
+  alignment: "left" | "center" | "right",
+  lineHeight: number = 50
 ) => {
   const particles = [];
 
@@ -579,27 +601,43 @@ const createParticles = (
     (ctx as any).textRendering = "geometricPrecision";
   }
 
-  // Calculate text boundaries
-  const metrics = ctx.measureText(text);
-  let textLeft;
-  const textWidth = metrics.width;
+  // Calculate text boundaries for all lines
+  const lines = text.split('\n');
+  let minTextLeft = canvas.width;
+  let maxTextWidth = 0;
+  let maxTextRight = 0;
 
-  if (alignment === "center") {
-    textLeft = textX - textWidth / 2;
-  } else if (alignment === "left") {
-    textLeft = textX;
-  } else {
-    textLeft = textX - textWidth;
-  }
+  lines.forEach((line) => {
+    const metrics = ctx.measureText(line);
+    const textWidth = metrics.width;
+    let textLeft;
+
+    if (alignment === "center") {
+      textLeft = textX - textWidth / 2;
+    } else if (alignment === "left") {
+      textLeft = textX;
+    } else {
+      textLeft = textX - textWidth;
+    }
+
+    minTextLeft = Math.min(minTextLeft, textLeft);
+    maxTextWidth = Math.max(maxTextWidth, textWidth);
+    maxTextRight = Math.max(maxTextRight, textLeft + textWidth);
+  });
 
   const textBoundaries = {
-    left: textLeft,
-    right: textLeft + textWidth,
-    width: textWidth,
+    left: minTextLeft,
+    right: maxTextRight,
+    width: maxTextRight - minTextLeft,
   };
 
   // Render the text for sampling
-  ctx.fillText(text, textX, textY);
+  const totalHeight = lines.length * lineHeight;
+  const startY = textY - (totalHeight / 2) + (lineHeight / 2);
+
+  lines.forEach((line, index) => {
+    ctx.fillText(line, textX, startY + index * lineHeight);
+  });
 
   // Sample the rendered text
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);

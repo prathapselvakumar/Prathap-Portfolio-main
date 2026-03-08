@@ -90,7 +90,7 @@ export function NavBar({ items, className, onItemClick }: NavBarProps) {
   return (
     <>
       <div className="fixed top-6 left-1/2 -translate-x-[60%] md:-translate-x-1/2 z-50 w-max max-w-[95vw]">
-        <div className="relative flex items-center gap-0.5 sm:gap-2 lg:gap-4 py-1 px-1 rounded-full overflow-x-auto sm:overflow-x-visible no-scrollbar">
+        <div className="relative flex items-center gap-0.5 sm:gap-1 lg:gap-2 py-1 px-1 rounded-full overflow-x-auto sm:overflow-x-visible no-scrollbar">
           {/* Liquid Glass Background */}
           <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 
             shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)] 
@@ -110,13 +110,13 @@ export function NavBar({ items, className, onItemClick }: NavBarProps) {
                 key={item.name}
                 onClick={() => handleClick(item)}
                 className={cn(
-                  "relative cursor-pointer text-sm font-semibold px-1.5 sm:px-4 md:px-5 lg:px-7 py-2 rounded-full transition-all duration-300 z-10 flex-shrink-0",
+                  "relative cursor-pointer text-[11px] md:text-xs lg:text-sm font-semibold px-2 sm:px-3 md:px-2.5 lg:px-4 py-1.5 md:py-2 rounded-full transition-all duration-300 z-10 flex-shrink-0 flex items-center justify-center gap-1.5",
                   "text-foreground hover:text-primary hover:scale-105",
                   isActive && "text-primary"
                 )}>
-                <span className="hidden lg:inline">{item.name}</span>
-                <span className="lg:hidden">
-                  <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
+                <span className="hidden md:inline">{item.name}</span>
+                <span className="md:hidden pt-[1px]">
+                  <Icon className="w-[14px] h-[14px] sm:w-[16px] sm:h-[16px]" strokeWidth={2.5} />
                 </span>
                 {isActive &&
                   <motion.div

@@ -262,8 +262,8 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
                                     <a href="#features" className="inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Layers className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Features</span>
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Layers className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Features</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -274,8 +274,8 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
                                     <a href="#demo" className="inline-block">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Terminal className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Terminal</span>
+                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Terminal className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Terminal</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -286,8 +286,8 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
                                     <a href="#code" className="inline-block">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Code2 className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Code</span>
+                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Code2 className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Code</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -298,8 +298,8 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
                                     <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="inline-block">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Play className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Demo</span>
+                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Play className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Demo</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -310,8 +310,8 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
                                     <a href="#videos" className="inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Play className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Videos</span>
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Play className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Videos</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -322,8 +322,8 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
                                     <a href="#files" className="inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Box className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">Design</span>
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Box className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Design</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
@@ -334,8 +334,8 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
                                     <a href="#repos" className="inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-2 text-[11px] md:text-xs tracking-tight focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Github className="w-3.5 h-3.5 md:mr-1" /><span className="hidden md:inline">GitHub</span>
+                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
+                                            <Github className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">GitHub</span>
                                         </Button>
                                     </a>
                                 </NavigationMenuLink>
