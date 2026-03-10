@@ -21,6 +21,7 @@ import {
     Layers,
     Square,
     ChevronRight,
+    Home,
 } from "lucide-react";
 
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
@@ -30,12 +31,8 @@ import LeoRoverExploded from "@/components/LeoRoverExploded";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { motion } from "framer-motion";
 
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+import { NavBar } from "@/components/ui/tubelight-navbar";
+import { MoireDeterrent } from "@/components/MoireDeterrent";
 
 import {
     Dialog,
@@ -192,6 +189,23 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
         Icon: iconMap[f.icon] || Cpu,
     }));
 
+    // Build nav items from project sections
+    const navItems = [
+        { name: "Home", url: "#hero", icon: Home },
+        ...((project.id === "autonomous-robot" || (features && features.length > 0))
+            ? [{ name: "Features", url: "#features", icon: Layers }] : []),
+        ...(project.terminalOutput && project.terminalOutput.length > 0
+            ? [{ name: "Terminal", url: "#demo", icon: Terminal }] : []),
+        ...(project.codeSnippets && project.codeSnippets.length > 0
+            ? [{ name: "Code", url: "#code", icon: Code2 }] : []),
+        ...(project.videos && project.videos.length > 0
+            ? [{ name: "Videos", url: "#videos", icon: Play }] : []),
+        ...(project.files && project.files.length > 0
+            ? [{ name: "Design", url: "#files", icon: Box }] : []),
+        ...(project.repoUrl
+            ? [{ name: "GitHub", url: "#repos", icon: Github }] : []),
+    ];
+
     const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
     const [selected3DModel, setSelected3DModel] = useState<string>('Arm mounting plate v7');
 
@@ -244,139 +258,21 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                 <AnimatedThemeToggler className="w-11 h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
             </div>
 
-            {/* Centered Navigation Menu */}
-            <div className="fixed top-6 left-1/2 -translate-x-[60%] md:-translate-x-1/2 z-50 rounded-full px-1 py-0.5 w-max max-w-[95vw]">
-                {/* Liquid Glass Background */}
-                <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 
-                    shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)] 
-                    transition-all 
-                    dark:shadow-[0_0_8px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3.5px_rgba(255,255,255,0.09),inset_-3px_-3px_0.5px_-3.5px_rgba(255,255,255,0.85),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.6),inset_0_0_6px_6px_rgba(255,255,255,0.12),inset_0_0_2px_2px_rgba(255,255,255,0.06),0_0_12px_rgba(0,0,0,0.15)]" />
-
-                <div
-                    className="absolute top-0 left-0 isolate -z-10 h-full w-full overflow-hidden rounded-full"
-                    style={{ backdropFilter: 'url("#navbar-glass")' }} />
-
-                <NavigationMenu className="relative z-10 overflow-x-auto sm:overflow-x-visible no-scrollbar">
-                    <NavigationMenuList className="gap-0 sm:gap-0.5 px-0.5">
-                        {(project.id === "autonomous-robot" || (features && features.length > 0)) && (
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#features" className="inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Layers className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Features</span>
-                                        </Button>
-                                    </a>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        )}
-
-                        {project.terminalOutput && project.terminalOutput.length > 0 && (
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#demo" className="inline-block">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Terminal className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Terminal</span>
-                                        </Button>
-                                    </a>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        )}
-
-                        {project.codeSnippets && project.codeSnippets.length > 0 && (
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#code" className="inline-block">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Code2 className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Code</span>
-                                        </Button>
-                                    </a>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        )}
-
-                        {project.demoUrl && (
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="inline-block">
-                                        <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Play className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Demo</span>
-                                        </Button>
-                                    </a>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        )}
-
-                        {project.videos && project.videos.length > 0 && (
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#videos" className="inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Play className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Videos</span>
-                                        </Button>
-                                    </a>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        )}
-
-                        {project.files && project.files.length > 0 && (
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#files" className="inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Box className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">Design</span>
-                                        </Button>
-                                    </a>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        )}
-
-                        {project.repoUrl && (
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                    <a href="#repos" className="inline-block">
-                                        <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-1.5 md:px-[6px] lg:px-2 text-[11px] md:text-[10px] lg:text-xs tracking-tight lg:tracking-normal focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary flex-shrink-0">
-                                            <Github className="w-3.5 h-3.5 lg:w-3.5 lg:h-3.5 md:w-3 md:h-3 md:mr-1 lg:mr-1.5" /><span className="hidden md:inline">GitHub</span>
-                                        </Button>
-                                    </a>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        )}
-                    </NavigationMenuList>
-                </NavigationMenu>
-            </div>
-
-            {/* SVG Filter for Glass Effect */}
-            <svg className="hidden">
-                <defs>
-                    <filter
-                        id="navbar-glass"
-                        x="0%"
-                        y="0%"
-                        width="100%"
-                        height="100%"
-                        colorInterpolationFilters="sRGB">
-                        <feTurbulence
-                            type="fractalNoise"
-                            baseFrequency="0.05 0.05"
-                            numOctaves="1"
-                            seed="1"
-                            result="turbulence" />
-                        <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise" />
-                        <feDisplacementMap
-                            in="SourceGraphic"
-                            in2="blurredNoise"
-                            scale="70"
-                            xChannelSelector="R"
-                            yChannelSelector="B"
-                            result="displaced" />
-                        <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur" />
-                        <feComposite in="finalBlur" in2="finalBlur" operator="over" />
-                    </filter>
-                </defs>
-            </svg>
+            {/* Centered Navigation - matches main page */}
+            <NavBar
+                items={navItems}
+                onItemClick={(url) => {
+                    if (url.startsWith('http')) {
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                    } else {
+                        const el = document.getElementById(url.replace('#', ''));
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }}
+            />
 
             {/* ─── Hero ═══ */}
-            <section className="relative min-h-[60vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden pt-20 px-4 sm:px-6 text-center">
+            <section id="hero" className="relative min-h-[60vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden pt-20 px-4 sm:px-6 text-center">
 
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
@@ -385,6 +281,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         alt=""
                         className="w-full h-full object-cover opacity-80 dark:opacity-40"
                     />
+                    <MoireDeterrent />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
                     <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
                 </div>
@@ -426,7 +323,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                     <LeoRoverExploded />
                 </section>
             ) : features && features.length > 0 && (
-                <section id="features" className="py-16 md:py-24 px-4 sm:px-6">
+                <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# features"
@@ -647,6 +544,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 allowFullScreen={true}
                                                 frameBorder="0"
                                             ></iframe>
+                                            <MoireDeterrent />
                                         </div>
                                     )}
 
@@ -661,6 +559,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 allowFullScreen={true}
                                                 frameBorder="0"
                                             ></iframe>
+                                            <MoireDeterrent />
                                         </div>
                                     )}
 
@@ -675,6 +574,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 allowFullScreen={true}
                                                 frameBorder="0"
                                             ></iframe>
+                                            <MoireDeterrent />
                                         </div>
                                     )}
 
@@ -708,6 +608,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 alt={file.name}
                                                 className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                                             />
+                                            <MoireDeterrent />
                                         </div>
                                         <div className="p-5 flex-1 flex flex-col justify-center">
                                             <h3 className="font-semibold text-lg mb-1">{file.name}</h3>

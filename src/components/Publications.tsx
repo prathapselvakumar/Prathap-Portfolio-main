@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { publications } from '@/lib/publications';
+import { MoireDeterrent } from '@/components/MoireDeterrent';
 
 export function Publications() {
 
@@ -39,6 +40,7 @@ export function Publications() {
                                         src={pub.image}
                                         alt={pub.title}
                                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                    <MoireDeterrent />
                                 </div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent flex flex-col justify-end p-6 lg:p-8">
 

@@ -1,16 +1,10 @@
 'use client';
 
 import { useState } from "react";
-import { BookOpen, ExternalLink, Quote, Award, User, Calendar, FileText, Lightbulb, Target, BarChart3, Music, Layers, Github, ArrowRight, Play, Code2 } from "lucide-react";
+import { Home, BookOpen, ExternalLink, Quote, Award, User, Calendar, FileText, Lightbulb, Target, BarChart3, Music, Layers, Github, ArrowRight, Play, Code2 } from "lucide-react";
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { Button } from "@/components/ui/button";
-
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+import { NavBar } from "@/components/ui/tubelight-navbar";
 
 /* ─── Section Header ─── */
 const SectionHeader = ({ label, title, description }: { label: string; title: string; description?: string }) => (
@@ -87,121 +81,40 @@ const stats = [
 const Index = () => {
     const [expandedStep, setExpandedStep] = useState<number | null>(null);
 
+    const navItems = [
+        { name: 'Home', url: '#hero', icon: Home },
+        { name: 'Publication', url: '#publication', icon: FileText },
+        { name: 'Contributions', url: '#highlights', icon: Target },
+        { name: 'Objectives', url: '#objectives', icon: Layers },
+        { name: 'Approach', url: '#methodology', icon: BarChart3 },
+        { name: 'Future', url: '#future-work', icon: Lightbulb },
+    ];
+
     return (
         <main className="min-h-screen bg-background text-foreground">
             {/* ═══ Navigation ═══ */}
             {/* Project Title (Top Left) */}
-            <div className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm animate-fade-in">
+            <div className="hidden lg:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <BookOpen className="w-4 h-4 text-primary" />
-                <span className="font-mono font-bold text-sm tracking-tight hidden sm:block">Audio Clustering</span>
+                <span className="font-mono font-bold text-sm tracking-tight">Audio Clustering</span>
             </div>
 
             {/* Theme Toggle (Top Right) */}
-            <div className="fixed top-6 right-6 z-50 animate-fade-in">
+            <div className="fixed top-6 right-6 z-50">
                 <AnimatedThemeToggler className="w-11 h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
             </div>
 
-            {/* Centered Navigation Menu */}
-            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full px-2 py-0.5 animate-fade-in">
-                {/* Liquid Glass Background */}
-                <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 
-                    shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)] 
-                    transition-all 
-                    dark:shadow-[0_0_8px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3.5px_rgba(255,255,255,0.09),inset_-3px_-3px_0.5px_-3.5px_rgba(255,255,255,0.85),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.6),inset_0_0_6px_6px_rgba(255,255,255,0.12),inset_0_0_2px_2px_rgba(255,255,255,0.06),0_0_12px_rgba(0,0,0,0.15)]" />
-
-                <div
-                    className="absolute top-0 left-0 isolate -z-10 h-full w-full overflow-hidden rounded-full"
-                    style={{ backdropFilter: 'url("#navbar-glass")' }} />
-
-                <NavigationMenu className="relative z-10">
-                    <NavigationMenuList className="gap-1">
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                <a href="#publication" className="hidden sm:inline-block">
-                                    <Button size="sm" variant="ghost" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                        <FileText className="w-3.5 h-3.5 mr-2" />Journal Publication
-                                    </Button>
-                                </a>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
-
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                <a href="#highlights" className="hidden sm:inline-block">
-                                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                        <Target className="w-3.5 h-3.5 mr-2" />Key Contributions
-                                    </Button>
-                                </a>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
-
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                <a href="#objectives" className="hidden sm:inline-block">
-                                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                        <Layers className="w-3.5 h-3.5 mr-2" />Research Objectives
-                                    </Button>
-                                </a>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
-
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                <a href="#methodology" className="hidden sm:inline-block">
-                                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                        <BarChart3 className="w-3.5 h-3.5 mr-2" />Research Approach
-                                    </Button>
-                                </a>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
-
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild className="bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:bg-transparent active:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent">
-                                <a href="#future-work" className="hidden sm:inline-block">
-                                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-primary/10 h-7 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-muted-foreground hover:text-primary data-[active=true]:text-primary">
-                                        <Lightbulb className="w-3.5 h-3.5 mr-2" />What's Next
-                                    </Button>
-                                </a>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
-
-
-                    </NavigationMenuList>
-                </NavigationMenu>
-            </div>
-
-            {/* SVG Filter for Glass Effect */}
-            <svg className="hidden">
-                <defs>
-                    <filter
-                        id="navbar-glass"
-                        x="0%"
-                        y="0%"
-                        width="100%"
-                        height="100%"
-                        colorInterpolationFilters="sRGB">
-                        <feTurbulence
-                            type="fractalNoise"
-                            baseFrequency="0.05 0.05"
-                            numOctaves="1"
-                            seed="1"
-                            result="turbulence" />
-                        <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise" />
-                        <feDisplacementMap
-                            in="SourceGraphic"
-                            in2="blurredNoise"
-                            scale="70"
-                            xChannelSelector="R"
-                            yChannelSelector="B"
-                            result="displaced" />
-                        <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur" />
-                        <feComposite in="finalBlur" in2="finalBlur" operator="over" />
-                    </filter>
-                </defs>
-            </svg>
+            {/* Centered Navigation - matches main page */}
+            <NavBar
+                items={navItems}
+                onItemClick={(url) => {
+                    const el = document.getElementById(url.replace('#', ''));
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+            />
 
             {/* ═══ Hero ═══ */}
-            <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20">
+            <section id="hero" className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20">
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img

@@ -19,14 +19,22 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { projects } from '@/lib/projects';
+import { MoireDeterrent } from '@/components/MoireDeterrent';
 
 export function PortfolioContent() {
-  const { theme } = useTheme();
+  const { resolvedTheme: theme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
+  const [isDark, setIsDark] = React.useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   React.useEffect(() => {
     setMounted(true);
+    // Directly observe the html class so particle color updates instantly on theme change
+    const update = () => setIsDark(document.documentElement.classList.contains('dark'));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
   }, []);
 
   const scrollToSection = (url: string) => {
@@ -141,8 +149,8 @@ export function PortfolioContent() {
                     Robotics Graduate
                   </p>
 
-                  {/* Name - Theme Aware */}
-                  <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground mb-4 md:mb-8 break-words text-wrap">
+                  {/* Name */}
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground mt-6 mb-4 md:mb-8 whitespace-nowrap">
                     Prathap Selvakumar
                   </h1>
 
@@ -157,12 +165,13 @@ export function PortfolioContent() {
                     {/* Core component - Theme Aware Particles */}
                     {mounted && (
                       <SparklesCore
+                        key={String(isDark)}
                         background="transparent"
                         minSize={0.4}
                         maxSize={1}
                         particleDensity={1200}
                         className="w-full h-full"
-                        particleColor={theme === 'dark' ? '#FFFFFF' : '#000000'}
+                        particleColor={isDark ? '#FFFFFF' : '#000000'}
                       />
                     )}
                   </div>
@@ -249,6 +258,7 @@ export function PortfolioContent() {
                   alt="Profile"
                   className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500" />
 
+                <MoireDeterrent variant="ultra" />
               </div>
             </div>
           </div>
@@ -326,7 +336,7 @@ export function PortfolioContent() {
                       src={project.image}
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-
+                    <MoireDeterrent />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent flex flex-col justify-end p-5 md:p-6 lg:p-8">
                     {/* Category Tags */}
@@ -380,23 +390,23 @@ export function PortfolioContent() {
             </motion.div>
           }
         </div>
-      </section>
+      </section >
 
       {/* Publications Section */}
-      <Publications />
+      < Publications />
 
       {/* Certificates Section */}
-      <div id="certificates">
+      < div id="certificates" >
         <Certificates />
-      </div>
+      </div >
 
       {/* Testimonials Section */}
-      <div id="testimonials">
+      < div id="testimonials" >
         <Testimonials />
-      </div>
+      </div >
 
       {/* Footer */}
 
-    </div>);
+    </div >);
 
 }
