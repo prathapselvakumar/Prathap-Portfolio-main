@@ -30,22 +30,22 @@ export const projects: Project[] = [
     id: 'autonomous-robot',
     title: 'Autonomous Robot',
     description: 'Self-navigating robot using SLAM and path planning algorithms with real-time obstacle detection',
-    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80',
+    image: '/maxresdefault.jpg',
     media: [
       {
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80',
+        url: '/maxresdefault.jpg',
         alt: 'Autonomous Robot Front View'
       },
       {
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=800&q=80',
+        url: '/Products/Lidars.png',
         alt: 'Robot Navigation System'
       },
       {
         type: 'video',
         url: 'https://www.w3schools.com/html/mov_bbb.mp4', // Placeholder video
-        thumbnail: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&q=80'
+        thumbnail: '/maxresdefault.jpg'
       }
     ],
     categories: ['Robotics', 'AI/ML'],

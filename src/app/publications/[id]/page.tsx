@@ -5,6 +5,7 @@ import { Home, BookOpen, ExternalLink, Quote, Award, User, Calendar, FileText, L
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
+import { Testimonials } from "@/components/Testimonials";
 
 /* ─── Section Header ─── */
 const SectionHeader = ({ label, title, description }: { label: string; title: string; description?: string }) => (
@@ -21,7 +22,7 @@ const publication = {
     title: "Comparative Analysis Implementation of Queuing Songs in Players Using Audio Clustering Algorithm",
     journal: "IGI Global Publication",
     year: "2024",
-    authors: ["Aarthi B", "Prathap Selvakumar", "Subiksha S", "Chhavi", "Swetha Parathasarathy"],
+    authors: ["Dr.B.Aarthi", "Prathap Selvakumar", "Subiksha S", "Chhavi", "Swetha Parathasarathy"],
     doi: "#",
     abstract: `This research presents a comparative performance analysis of K-Means, DBSCAN, and Adaptive Clustering algorithms for grouping audio data in intelligent music player queuing systems. The study evaluates clustering robustness, parameter sensitivity, time complexity, growth rate, and asymptotic behavior. Results indicate that DBSCAN and Adaptive Clustering achieve higher recall and F-measure, while K-Means demonstrates high precision but lower recall. The findings highlight the importance of density-based and adaptive clustering approaches for dynamic multimedia applications.`,
     keywords: ["K-Means", "DBSCAN", "Adaptive Clustering", "Audio Signal Processing", "Precision", "Recall", "F-Measure", "Time Complexity", "Density-Based Clustering"],
@@ -88,6 +89,7 @@ const Index = () => {
         { name: 'Objectives', url: '#objectives', icon: Layers },
         { name: 'Approach', url: '#methodology', icon: BarChart3 },
         { name: 'Future', url: '#future-work', icon: Lightbulb },
+        { name: 'Team', url: '#team', icon: User },
     ];
 
     return (
@@ -320,7 +322,7 @@ const Index = () => {
 
 
 
-            {/* ═══ Future Work ═══ */}
+
             <section id="future-work" className="py-24 px-6">
                 <div className="max-w-5xl mx-auto">
                     <SectionHeader label="# future work" title="What's Next" description="Upcoming research directions and planned publications." />
@@ -344,9 +346,49 @@ const Index = () => {
                 </div>
             </section>
 
-
-
-
+            {/* ═══ Team ═══ */}
+            <section id="team" className="py-24 px-6">
+                <div className="max-w-5xl mx-auto">
+                    <Testimonials 
+                        title="Author Team" 
+                        description="The researchers and engineers who contributed to this publication."
+                        variant="animated"
+                        data={[
+                            {
+                                name: "Dr.B.Aarthi",
+                                designation: "Lead Researcher & Faculty Advisor",
+                                quote: "This research addresses critical gaps in audio data clustering, providing a benchmark for intelligent multimedia systems.",
+                                src: "/Team_and_Testimonial/dr-aarthi-b.jpg",
+                            },
+                            {
+                                name: "Prathap Selvakumar",
+                                designation: "Robotics & ML Engineer",
+                                quote: "Implementing and optimizing these algorithms for real-time audio analysis was a challenging yet rewarding experience.",
+                                src: "/Team_and_Testimonial/PrathapSelvakumar.jpg",
+                               
+                            },
+                            {
+                                name: "Swetha Parathasarathy",
+                                designation: "Signal Processing Engineer",
+                                quote: "Clustering spectral features allowed us to achieve unprecedented accuracy in categorical audio sorting.",
+                                src: "/Team_and_Testimonial/swetha.jpg",
+                            },
+                            {
+                                name: "Chhavi",
+                                designation: "Research Analyst",
+                                quote: "Analyzing the asymptotic behavior across different clustering models provided deep insights into system scalability.",
+                                src: "/Team_and_Testimonial/chhavi.jpg",
+                            },
+                            {
+                                name: "Swetha Parathasarathy",
+                                designation: "Associate Researcher",
+                                quote: "The integration of adaptive clustering allows for more dynamic and user-centric music player experiences.",
+                                src: "/Team_and_Testimonial/swetha.jpg",
+                            },
+                        ]}
+                    />
+                </div>
+            </section>
         </main>
     );
 };

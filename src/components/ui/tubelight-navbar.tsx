@@ -15,9 +15,10 @@ interface NavBarProps {
   items: NavItem[];
   className?: string;
   onItemClick?: (url: string) => void;
+  forceDark?: boolean;
 }
 
-export function NavBar({ items, className, onItemClick }: NavBarProps) {
+export function NavBar({ items, className, onItemClick, forceDark }: NavBarProps) {
   const [activeTab, setActiveTab] = useState(items[0].name);
   const [isMobile, setIsMobile] = useState(false);
   const isClickingRef = useRef(false);
@@ -89,7 +90,7 @@ export function NavBar({ items, className, onItemClick }: NavBarProps) {
 
   return (
     <>
-      <div className="fixed top-6 left-1/2 -translate-x-[60%] md:-translate-x-1/2 z-50 w-max max-w-[95vw]">
+      <div className={cn("fixed top-6 left-1/2 -translate-x-[60%] md:-translate-x-1/2 z-50 w-max max-w-[95vw]", forceDark && "dark")}>
         <div className="relative flex items-center gap-0.5 sm:gap-1 lg:gap-2 py-1 px-1 rounded-full overflow-x-auto sm:overflow-x-visible no-scrollbar">
           {/* Liquid Glass Background */}
           <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 

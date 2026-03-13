@@ -22,6 +22,9 @@ import {
     Square,
     ChevronRight,
     Home,
+    MessageSquare,
+    Ruler,
+    User,
 } from "lucide-react";
 
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
@@ -31,8 +34,10 @@ import LeoRoverExploded from "@/components/LeoRoverExploded";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { motion } from "framer-motion";
 
+import { Testimonials } from '@/components/Testimonials';
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { MoireDeterrent } from "@/components/MoireDeterrent";
+import HardwareShowcase from "@/components/ui/spatial-product-showcase";
 
 import {
     Dialog,
@@ -189,30 +194,59 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
         Icon: iconMap[f.icon] || Cpu,
     }));
 
+    const isAIMLProject = ["audio-search", "agro-analytics", "snake-detection"].includes(project.id);
+
     // Build nav items from project sections
     const navItems = [
-        { name: "Home", url: "#hero", icon: Home },
-        ...((project.id === "autonomous-robot" || (features && features.length > 0))
-            ? [{ name: "Features", url: "#features", icon: Layers }] : []),
-        ...(project.terminalOutput && project.terminalOutput.length > 0
-            ? [{ name: "Terminal", url: "#demo", icon: Terminal }] : []),
-        ...(project.codeSnippets && project.codeSnippets.length > 0
-            ? [{ name: "Code", url: "#code", icon: Code2 }] : []),
-        ...(project.videos && project.videos.length > 0
-            ? [{ name: "Videos", url: "#videos", icon: Play }] : []),
-        ...(project.files && project.files.length > 0
-            ? [{ name: "Design", url: "#files", icon: Box }] : []),
-        ...(project.repoUrl
-            ? [{ name: "GitHub", url: "#repos", icon: Github }] : []),
+        { name: 'Home', url: '#hero', icon: Home },
+        ...(features && features.length > 0 ? [{ name: 'Features', url: '#features', icon: Cpu }] : []),
+        ...(project.id === "autonomous-robot" ? [{ name: 'Products', url: '#products', icon: Box }] : []),
+        ...(project.files && project.files.length > 0 ? [{ name: 'Design', url: '#files', icon: Ruler }] : []),
+        ...(project.videos && project.videos.length > 0 ? [{ name: 'Videos', url: '#videos', icon: Play }] : []),
+        ...(project.codeSnippets && project.codeSnippets.length > 0 ? [{ name: isAIMLProject ? 'Source' : 'Code', url: isAIMLProject ? '#sources' : '#code', icon: Code2 }] : []),
+        ...(project.terminalOutput && project.terminalOutput.length > 0 ? [{ name: isAIMLProject ? 'Demo' : 'Demo', url: '#demo', icon: Terminal }] : []),
+        ...(project.repoUrl ? [{ name: isAIMLProject ? 'GitHub' : 'GitHub', url: '#github', icon: Github }] : []),
+        ...(project.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
     ];
 
+    const [activeSection, setActiveSection] = useState("hero");
+
+    // Scroll-based section detection for localized dark mode
+    useEffect(() => {
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        };
+
+        const observerCallback = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        const sections = ['hero', 'features', 'products', 'files', 'videos', 'sources', 'code', 'demo', 'github', 'team'];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    const isDarkSection = activeSection === "features";
+
     const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-    const [selected3DModel, setSelected3DModel] = useState<string>('Arm mounting plate v7');
+    const [selected3DModel, setSelected3DModel] = useState<string>('Autonomous Mobile Robot');
 
     // Terminal and code state
     const [activeSnippet, setActiveSnippet] = useState(project.codeSnippets?.[0]?.id || "1");
     const [isRunning, setIsRunning] = useState(false);
     const [visibleLines, setVisibleLines] = useState(0);
+
     const terminalRef = useRef<HTMLDivElement>(null);
 
     const handleRun = () => {
@@ -261,6 +295,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
             {/* Centered Navigation - matches main page */}
             <NavBar
                 items={navItems}
+                forceDark={isDarkSection}
                 onItemClick={(url) => {
                     if (url.startsWith('http')) {
                         window.open(url, '_blank', 'noopener,noreferrer');
@@ -309,7 +344,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
             {/* ─── Features (or Custom Animation) ─── */}
             {project.id === "autonomous-robot" ? (
-                <section id="features" className="w-full relative mt-32">
+                <section id="features" className="w-full relative mt-32 dark">
                     <div className="pt-12 px-6 max-w-6xl mx-auto absolute z-20 left-0 right-0 top-0 pointer-events-none">
                         <SectionHeader
                             label="# features"
@@ -324,7 +359,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                 </section>
             ) : features && features.length > 0 && (
                 <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6">
-                    <div className="max-w-6xl mx-auto">
+                    <div className="max-w-6xl mx-auto w-full">
                         <SectionHeader
                             label="# features"
                             title="Key Features"
@@ -347,156 +382,22 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                 </section>
             )}
 
-            {/* ─── Terminal Demo ─── */}
-            {project.terminalOutput && project.terminalOutput.length > 0 && (
-                <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
-                    <div className="max-w-4xl mx-auto">
-                        <SectionHeader label="# demo" title="Live Terminal Output" description="Simulated console execution." />
-
-                        <div className="rounded-lg border border-border overflow-hidden bg-background shadow-2xl">
-                            {/* Terminal title bar */}
-                            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-destructive/60" />
-                                    <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                    <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                    <span className="ml-3 text-xs text-muted-foreground font-mono">terminal</span>
-                                </div>
-                                <button
-                                    onClick={handleRun}
-                                    disabled={isRunning}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
-                                >
-                                    {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
-                                </button>
-                            </div>
-
-                            {/* Terminal body */}
-                            <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto w-full">
-                                {visibleLines === 0 && (
-                                    <div className="flex gap-2">
-                                        <span className="text-primary">$</span>
-                                        <span className="text-muted-foreground">_</span>
-                                        <span className="cursor-blink text-primary">▋</span>
-                                    </div>
-                                )}
-                                {project.terminalOutput.slice(0, visibleLines).map((line, i) => (
-                                    <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
-                                        {line.type === "cmd" ? (
-                                            <span><span className="text-primary">$ </span>{line.text}</span>
-                                        ) : (
-                                            <span>{line.text}</span>
-                                        )}
-                                    </div>
-                                ))}
-                                {isRunning && (
-                                    <span className="cursor-blink text-primary">▋</span>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            {/* ─── Source Code ─── */}
-            {project.codeSnippets && project.codeSnippets.length > 0 && (
-                <section id="code" className="py-16 md:py-24 px-4 sm:px-6">
-                    <div className="max-w-6xl mx-auto">
-                        <SectionHeader label="# source" title="Project Source Code" description="Explore the primary logical modules." />
-
-                        <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-4">
-                            {/* File list */}
-                            <div className="rounded-lg border border-border bg-card overflow-hidden">
-                                <div className="px-4 py-3 border-b border-border text-xs text-muted-foreground font-mono uppercase tracking-wider">
-                                    Files
-                                </div>
-                                {project.codeSnippets.map((s) => (
-                                    <button
-                                        key={s.id}
-                                        onClick={() => setActiveSnippet(s.id)}
-                                        className={`w-full text-left px-4 py-3 border-b border-border font-mono text-sm transition-colors ${activeSnippet === s.id
-                                            ? "bg-primary/10 text-primary border-l-2 border-l-primary"
-                                            : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <ChevronRight className={`w-3 h-3 transition-transform ${activeSnippet === s.id ? "rotate-90 text-primary" : ""}`} />
-                                            <span>{s.title}</span>
-                                        </div>
-                                        <p className="text-xs text-muted-foreground mt-1 ml-5">{s.description}</p>
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Code viewer */}
-                            <div className="rounded-lg border border-border bg-card overflow-hidden">
-                                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30">
-                                    <span className="font-mono text-sm text-foreground">
-                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.title}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground font-mono">
-                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.language}
-                                    </span>
-                                </div>
-                                <pre className="p-5 overflow-x-auto text-sm leading-6 font-mono">
-                                    <code className="text-foreground">
-                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.code.split('\n').map((line, i) => (
-                                            <div key={i} className="flex">
-                                                <span className="w-10 flex-shrink-0 text-right pr-4 text-muted-foreground/40 select-none">{i + 1}</span>
-                                                <span className="flex-1 whitespace-pre">{highlightCode(line)}</span>
-                                            </div>
-                                        ))}
-                                    </code>
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            {/* ─── Videos ─── */}
-            {project.videos && project.videos.length > 0 && (
-                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
+            {/* ─── Product Showcase ─── */}
+            {project.id === "autonomous-robot" && (
+                <section id="products" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/10">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
-                            label="# videos"
-                            title="Project Walkthroughs"
-                            description="Click any video to play."
+                            label="# products"
+                            title="Product Showcase"
+                            description="Deep dive into the specialized hardware components used in our mobile autonomous systems."
                         />
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {project.videos.map((video) => (
-                                <div
-                                    key={video.id}
-                                    onClick={() => setSelectedVideo(video.url)}
-                                    className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition"
-                                >
-                                    <div className="relative aspect-video">
-                                        <img
-                                            src={getYouTubeThumbnail(video.url)}
-                                            alt={video.title}
-                                            className="w-full h-full object-cover"
-                                        />
-                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                            <Play className="w-12 h-12 text-white" />
-                                        </div>
-                                        <span className="absolute bottom-2 right-2 bg-black/70 text-xs px-2 py-1 rounded">
-                                            {video.duration}
-                                        </span>
-                                    </div>
-
-                                    <div className="p-4">
-                                        <h3 className="font-semibold mb-1">{video.title}</h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {video.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
+                        <div className="mt-8">
+                            <HardwareShowcase />
                         </div>
                     </div>
                 </section>
             )}
+
 
             {/* ─── Files ─── */}
             {project.files && project.files.length > 0 && (
@@ -517,7 +418,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                     transition={{ duration: 0.5 }}
                                     viewport={{ once: true }}
                                 >
-                                    {['Arm mounting plate v7', 'LIDAR A2 mount v4', 'NUC mounting plate v4', 'L camera mount v6'].map((model) => (
+                                    {['Autonomous Mobile Robot', 'Arm mounting plate v7', 'LIDAR A2 mount v4', 'NUC mounting plate v4', 'L camera mount v6'].map((model) => (
                                         <LiquidButton
                                             key={model}
                                             onClick={() => setSelected3DModel(model)}
@@ -533,6 +434,21 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                 </motion.div>
 
                                 <div className="mb-12 flex flex-col gap-6">
+                                    {(selected3DModel === 'Autonomous Mobile Robot') && (
+                                        <div className="w-full rounded-xl overflow-hidden border bg-card shadow-lg flex justify-center flex-col items-center pt-4">
+                                            <h3 className="font-semibold text-lg mb-4 w-full text-center">Autonomous Mobile Robot Assembly</h3>
+                                            <iframe
+                                                src="https://gmail5797073.autodesk360.com/shares/public/SH28cd1QT2badd0ea72b3c9248b3cee23223?mode=embed"
+                                                title="Autonomous Mobile Robot"
+                                                width="100%"
+                                                height="600"
+                                                allowFullScreen={true}
+                                                frameBorder="0"
+                                            ></iframe>
+                                            <MoireDeterrent />
+                                        </div>
+                                    )}
+
                                     {(selected3DModel === 'Arm mounting plate v7') && (
                                         <div className="w-full rounded-xl overflow-hidden border bg-card shadow-lg flex justify-center flex-col items-center pt-4">
                                             <h3 className="font-semibold text-lg mb-4 w-full text-center">Arm mounting plate v7</h3>
@@ -635,41 +551,201 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                 </section>
             )}
 
-            {/* ─── Repositories ─── */}
-            {project.repos && project.repos.length > 0 && (
-                <section id="repos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
-                    <div className="max-w-4xl mx-auto">
+            {/* ─── Videos ─── */}
+            {project.videos && project.videos.length > 0 && (
+                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
+                    <div className="max-w-6xl mx-auto">
                         <SectionHeader
-                            label="# repositories"
-                            title="Source Code"
-                            description="GitHub repositories for this project."
+                            label="# videos"
+                            title="Project Walkthroughs"
+                            description="Click any video to play."
                         />
 
-                        <div className="space-y-4">
-                            {project.repos.map((repo) => (
-                                <a
-                                    key={repo.id}
-                                    href={repo.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block p-6 rounded-lg border bg-card hover:border-primary transition"
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {project.videos.map((video) => (
+                                <div
+                                    key={video.id}
+                                    onClick={() => setSelectedVideo(video.url)}
+                                    className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition"
                                 >
-                                    <div className="flex justify-between">
-                                        <div>
-                                            <h3 className="font-mono font-bold text-lg">
-                                                {repo.name}
-                                            </h3>
-                                            <p className="text-sm text-muted-foreground">
-                                                {repo.description}
-                                            </p>
+                                    <div className="relative aspect-video">
+                                        <img
+                                            src={getYouTubeThumbnail(video.url)}
+                                            alt={video.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <Play className="w-12 h-12 text-white" />
                                         </div>
-                                        <ExternalLink className="w-4 h-4" />
+                                        <span className="absolute bottom-2 right-2 bg-black/70 text-xs px-2 py-1 rounded">
+                                            {video.duration}
+                                        </span>
                                     </div>
-                                </a>
+
+                                    <div className="p-4">
+                                        <h3 className="font-semibold mb-1">{video.title}</h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            {video.description}
+                                        </p>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     </div>
                 </section>
+            )}
+
+            {/* ─── Source ─── */}
+            {project.codeSnippets && project.codeSnippets.length > 0 && (
+                <section id={isAIMLProject ? "sources" : "code"} className="py-16 md:py-24 px-4 sm:px-6">
+                    <div className="max-w-6xl mx-auto">
+                        <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? "Source" : "Project Source Code"} description="Explore the primary logical modules." />
+
+                        <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-4">
+                            {/* File list */}
+                            <div className="rounded-lg border border-border bg-card overflow-hidden">
+                                <div className="px-4 py-3 border-b border-border text-xs text-muted-foreground font-mono uppercase tracking-wider">
+                                    Files
+                                </div>
+                                {project.codeSnippets.map((s) => (
+                                    <button
+                                        key={s.id}
+                                        onClick={() => setActiveSnippet(s.id)}
+                                        className={`w-full text-left px-4 py-3 border-b border-border font-mono text-sm transition-colors ${activeSnippet === s.id
+                                            ? "bg-primary/10 text-primary border-l-2 border-l-primary"
+                                            : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <ChevronRight className={`w-3 h-3 transition-transform ${activeSnippet === s.id ? "rotate-90 text-primary" : ""}`} />
+                                            <span>{s.title}</span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground mt-1 ml-5">{s.description}</p>
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Code viewer */}
+                            <div className="rounded-lg border border-border bg-card overflow-hidden">
+                                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30">
+                                    <span className="font-mono text-sm text-foreground">
+                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.title}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground font-mono">
+                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.language}
+                                    </span>
+                                </div>
+                                <pre className="p-5 overflow-x-auto text-sm leading-6 font-mono">
+                                    <code className="text-foreground">
+                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.code.split('\n').map((line, i) => (
+                                            <div key={i} className="flex">
+                                                <span className="w-10 flex-shrink-0 text-right pr-4 text-muted-foreground/40 select-none">{i + 1}</span>
+                                                <span className="flex-1 whitespace-pre">{highlightCode(line)}</span>
+                                            </div>
+                                        ))}
+                                    </code>
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ─── Demo ─── */}
+            {project.terminalOutput && project.terminalOutput.length > 0 && (
+                <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
+                    <div className="max-w-4xl mx-auto">
+                        <SectionHeader label="# demo" title={isAIMLProject ? "Demo" : "Live Terminal Output"} description="Simulated console execution." />
+
+                        <div className="rounded-lg border border-border overflow-hidden bg-background shadow-2xl">
+                            {/* Terminal title bar */}
+                            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 rounded-full bg-destructive/60" />
+                                    <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                    <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                    <span className="ml-3 text-xs text-muted-foreground font-mono">terminal</span>
+                                </div>
+                                <button
+                                    onClick={handleRun}
+                                    disabled={isRunning}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+                                >
+                                    {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
+                                </button>
+                            </div>
+
+                            {/* Terminal body */}
+                            <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto w-full">
+                                {visibleLines === 0 && (
+                                    <div className="flex gap-2">
+                                        <span className="text-primary">$</span>
+                                        <span className="text-muted-foreground">_</span>
+                                        <span className="cursor-blink text-primary">▋</span>
+                                    </div>
+                                )}
+                                {project.terminalOutput.slice(0, visibleLines).map((line, i) => (
+                                    <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
+                                        {line.type === "cmd" ? (
+                                            <span><span className="text-primary">$ </span>{line.text}</span>
+                                        ) : (
+                                            <span>{line.text}</span>
+                                        )}
+                                    </div>
+                                ))}
+                                {isRunning && (
+                                    <span className="cursor-blink text-primary">▋</span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ─── GitHub ─── */}
+            {project.repoUrl && (
+                <section id="github" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
+                    <div className="max-w-4xl mx-auto">
+                        <SectionHeader
+                            label={isAIMLProject ? "# github" : "# repositories"}
+                            title={isAIMLProject ? "GitHub" : "Source Code"}
+                            description="GitHub repositories for this project."
+                        />
+
+                        <div className="space-y-4">
+                            <a
+                                href={project.repoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block p-6 rounded-lg border bg-card hover:border-primary transition"
+                            >
+                                <div className="flex justify-between">
+                                    <div>
+                                        <h3 className="font-mono font-bold text-lg">
+                                            {project.title} Repository
+                                        </h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            Access the complete source code on GitHub.
+                                        </p>
+                                    </div>
+                                    <ExternalLink className="w-4 h-4" />
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ─── Team ─── */}
+            {project.team && (
+                <div id="team">
+                    <Testimonials 
+                        title={project.team.title || "Team"} 
+                        description={project.team.description}
+                        variant="animated"
+                        data={project.team.members}
+                    />
+                </div>
             )}
 
             {/* ─── Footer ─── */}

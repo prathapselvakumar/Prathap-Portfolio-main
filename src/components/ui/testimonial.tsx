@@ -13,7 +13,7 @@ export default function Example() {
             <div className="flex flex-wrap items-center justify-center gap-6">
                 <div className="max-w-80 bg-black text-white rounded-2xl">
                     <div className="relative -mt-px overflow-hidden rounded-2xl">
-                        <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=600" alt="" className="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top" />
+                        <img src="/Team_and_Testimonial/dr-aarthi-b.jpg" alt="" className="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top" />
                         <div className="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
                     </div>
                     <div className="px-4 pb-4">
@@ -24,7 +24,7 @@ export default function Example() {
                 </div>
                 <div className="max-w-80 bg-black text-white rounded-2xl">
                     <div className="relative -mt-px overflow-hidden rounded-2xl">
-                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600" alt="" className="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top" />
+                        <img src="/Team_and_Testimonial/dr-sri-devi.png" alt="" className="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top" />
                         <div className="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
                     </div>
                     <div className="px-4 pb-4">
@@ -35,7 +35,7 @@ export default function Example() {
                 </div>
                 <div className="max-w-80 bg-black text-white rounded-2xl">
                     <div className="relative -mt-px overflow-hidden rounded-2xl">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&h=600&auto=format&fit=crop" alt="" className="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top" />
+                        <img src="/Team_and_Testimonial/dr-faritha-banu.png" alt="" className="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top" />
                         <div className="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
                     </div>
                     <div className="px-4 pb-4">

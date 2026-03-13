@@ -19,7 +19,7 @@ export const publications: Publication[] = [
         image: '/audio-clustering.png',
         size: 'large',
         url: 'https://doi.org/10.4018/979-8-3693-1301-5.ch004',
-        authors: ['B. Aarthi', 'Prathap Selvakumar', 'S. Subiksha', 'S. Chhavi', 'Swetha Parathasarathy'],
+        authors: ['Dr.B. Aarthi', 'Prathap Selvakumar', 'S. Subiksha', 'S. Chhavi', 'Swetha Parathasarathy'],
         date: '2023',
         publisher: 'Advances in Artificial and Human Intelligence in the Modern Era'
     }

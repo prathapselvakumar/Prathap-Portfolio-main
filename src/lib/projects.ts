@@ -43,6 +43,16 @@ export interface Project {
     }[];
     terminalOutput?: { type: "cmd" | "info" | "success" | "result" | "divider"; text: string }[];
     codeSnippets?: { id: string; title: string; description: string; language: string; code: string }[];
+    team?: {
+        title?: string;
+        description?: string;
+        members: {
+            quote: string;
+            name: string;
+            designation: string;
+            src: string;
+        }[];
+    };
 }
 
 export const projects: Project[] =
@@ -66,7 +76,7 @@ export const projects: Project[] =
                     id: "1",
                     title: "Computer Vision",
                     description: "The output of the object detection using YOLOv8.",
-                    thumbnail: "/IMG_4876.JPG",
+                    thumbnail: "/Products/Camera.png",
                     duration: "4:32",
                     url: "https://www.youtube.com/embed/qvzDwsoLuuM?si=Yi3NlumaOGGyOG8A"
                 },
@@ -74,7 +84,7 @@ export const projects: Project[] =
                     id: "2",
                     title: "Lidars",
                     description: "Initial testing of the lidars.",
-                    thumbnail: "/IMG_4876.JPG",
+                    thumbnail: "/Products/Lidars.png",
                     duration: "2:10",
                     url: "https://www.youtube.com/embed/VSYWAxqKxZ8?si=jUMfohMpg7cIfBh"
                 },
@@ -82,7 +92,7 @@ export const projects: Project[] =
                     id: "3",
                     title: "Arm Movement Testing",
                     description: "Testing the movement of the arm.",
-                    thumbnail: "/IMG_4876.JPG",
+                    thumbnail: "/Products/Robotic ARM.png",
                     duration: "3:48",
                     url: "https://www.youtube.com/embed/XS9NESWWpK8?si=EJpZDgY3A2b5d7aR"
                 },
@@ -90,24 +100,25 @@ export const projects: Project[] =
                     id: "4",
                     title: "Structural Construction",
                     description: "The construction of the robot.",
-                    thumbnail: "/IMG_4876.JPG",
+                    thumbnail: "/Products/Gripper.png",
                     duration: "5:20",
-                    url: "https://www.youtube.com/embed/JKL012XYZ"
+                    url: "https://www.youtube.com/embed/vs7O9ohwxwc?si=1lukm8WUqp22UDjS"
                 },
                 {
                     id: "5",
                     title: "Trail Run",
                     description: "First run of the robot in a trail environment.",
-                    thumbnail: "/IMG_4876.JPG",
+                    thumbnail: "/maxresdefault.jpg",
                     duration: "7:15",
                     url: "https://www.youtube.com/embed/FMmaug6hqB4?si=TfzrjiVYwOa-qobM"
                 }
             ],
 
             files: [
-                { id: "1", name: "Arm mounting plate v7", format: ".step", description: "Mounting plate for the robotic arm assembly.", fileSize: "30 KB", icon: "cad", previewImage: "/Cad Files/arm-plate-thumb.svg", downloadUrl: "/Cad Files/Arm mounting plate v7.step", modelUrl: "/Cad Files/Arm mounting plate v7.glb" },
-                { id: "2", name: "L camera mount v6", format: ".step", description: "L-shaped bracket for camera mounting.", fileSize: "44 KB", icon: "cad", previewImage: "/Cad Files/camera-mount-thumb.svg", downloadUrl: "/Cad Files/L camera mount v6.step", modelUrl: "/Cad Files/L camera mount v6.glb" },
-                { id: "3", name: "LIDAR A2 mount v4_", format: ".step", description: "Mounting unit for LIDAR A2 sensor.", fileSize: "80 KB", icon: "cad", previewImage: "/Cad Files/lidar-mount-thumb.svg", downloadUrl: "/Cad Files/LIDAR A2 mount v4_.step", modelUrl: "/Cad Files/LIDAR A2 mount v4_.glb" },
+                { id: "5", name: "Autonomous Mobile Robot", format: ".step", description: "Complete assembly of the Autonomous Mobile Robot.", fileSize: "2.4 MB", icon: "cad", previewImage: "/Cad Files/robot-assembly-thumb.svg", downloadUrl: "#", modelUrl: "#" },
+                { id: "1", name: "Arm mounting plate v7", format: ".step", description: "Mounting plate for the robotic arm assembly.", fileSize: "30 KB", icon: "cad", previewImage: "/Products/Robotic ARM.png", downloadUrl: "/Cad Files/Arm mounting plate v7.step", modelUrl: "/Cad Files/Arm mounting plate v7.glb" },
+                { id: "2", name: "L camera mount v6", format: ".step", description: "L-shaped bracket for camera mounting.", fileSize: "44 KB", icon: "cad", previewImage: "/Products/Camera.png", downloadUrl: "/Cad Files/L camera mount v6.step", modelUrl: "/Cad Files/L camera mount v6.glb" },
+                { id: "3", name: "LIDAR A2 mount v4_", format: ".step", description: "Mounting unit for LIDAR A2 sensor.", fileSize: "80 KB", icon: "cad", previewImage: "/Products/Lidars.png", downloadUrl: "/Cad Files/LIDAR A2 mount v4_.step", modelUrl: "/Cad Files/LIDAR A2 mount v4_.glb" },
                 { id: "4", name: "NUC mounting plate v4", format: ".step", description: "Mounting plate for the NUC computer.", fileSize: "40 KB", icon: "cad", previewImage: "/Cad Files/nuc-plate-thumb.svg", downloadUrl: "/Cad Files/NUC mounting plate v4.step", modelUrl: "/Cad Files/NUC mounting plate v4.glb" },
             ],
             repos: [
@@ -185,7 +196,25 @@ def main(args=None):
 if __name__ == '__main__':
     main()`
                 }
-            ]
+            ],
+            team: {
+                title: "Team",
+                description: "The dedicated team of engineers and innovators behind the Autonomous Robot project.",
+                members: [
+                    {
+                        quote: "Leading the systems integration and software architecture for our autonomous platforms.",
+                        name: "Prathap Selvakumar",
+                        designation: "Robotics & ML Engineer",
+                        src: "/Team_and_Testimonial/PrathapSelvakumar.jpg",
+                    },
+                    {
+                        quote: "Specializing in SLAM and spatial awareness for real-time robotic navigation.",
+                        name: "Ruiyang",
+                        designation: "Computer Vision Researcher",
+                        src: "/Team_and_Testimonial/ruyang.jpg",
+                    },
+                ]
+            }
         },
         {
             id: 'audio-search',
@@ -195,6 +224,28 @@ if __name__ == '__main__':
             categories: ['AI/ML'],
             size: 'small',
             repoUrl: 'https://github.com/prathapselvakumar/Audio-Search-Engine',
+            features: [
+                { icon: 'Mic', title: "Speech Recognition", desc: "State-of-the-art NLP models for high-precision voice-to-text conversion in noisy environments." },
+                { icon: 'Zap', title: "Semantic Search", desc: "Goes beyond keywords to understand the context and intent behind every voice query." },
+                { icon: 'Database', title: "Scalable Indexing", desc: "Fast and memory-efficient indexing architecture for searching through millions of audio files." },
+                { icon: 'Search', title: "Audio Fingerprinting", desc: "Identify audio clips through unique acoustic signatures with minimal data requirements." },
+                { icon: 'MessageSquare', title: "Natural Language Understanding", desc: "Advanced NLU layer for extracting actionable intent from conversational audio commands." },
+                { icon: 'Share2', title: "API Integration", desc: "Robust REST API and SDKs for seamless integration into mobile and web applications." },
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "audio_processor.py",
+                    description: "Main logic for audio feature extraction and indexing.",
+                    language: "Python",
+                    code: `import numpy as np\nimport librosa\n\ndef extract_features(audio_path):\n    y, sr = librosa.load(audio_path)\n    mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)\n    return np.mean(mfcc.T, axis=0)`
+                }
+            ],
+            terminalOutput: [
+                { type: "cmd", text: "python3 search.py --query 'classical music'" },
+                { type: "info", text: "[INFO] Processing audio query..." },
+                { type: "success", text: "[SUCCESS] Match found: 'Beethoven_Symphony5.mp3' (Score: 0.98)" }
+            ],
             videos: [],
             files: [],
             repos: []
@@ -207,9 +258,54 @@ if __name__ == '__main__':
             categories: ['AI/ML'],
             size: 'small',
             repoUrl: 'https://github.com/prathapselvakumar/Agro-Analytics',
+            features: [
+                { icon: 'Cpu', title: "Satellite Monitoring", desc: "Real-time crop health assessment using high-resolution hyperspectral satellite imagery." },
+                { icon: 'Zap', title: "Predictive Yield", desc: "AI models that forecast agricultural output based on soil, weather, and historical data." },
+                { icon: 'Box', title: "Resource optimization", desc: "Precision irrigation and fertilizer application maps to maximize efficiency and reduce waste." },
+                { icon: 'Globe', title: "Climate Analysis", desc: "Historical weather pattern analysis to predict long-term environmental impacts on harvests." },
+                { icon: 'Database', title: "Soil Health Index", desc: "Comprehensive tracking of nutrient levels and moisture across varied topography." },
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "yield_model.py",
+                    description: "Predictive model implementation using regression analysis.",
+                    language: "Python",
+                    code: `import pandas as pd\nfrom sklearn.ensemble import RandomForestRegressor\n\ndef train_model(data_path):\n    df = pd.read_csv(data_path)\n    X = df.drop('yield', axis=1)\n    y = df['yield']\n    model = RandomForestRegressor().fit(X, y)\n    return model`
+                }
+            ],
+            terminalOutput: [
+                { type: "cmd", text: "agro-analytics scan --region 'south-sector'" },
+                { type: "info", text: "[INFO] Analyzing hyperspectral imagery..." },
+                { type: "result", text: "Predicted Yield: 4.2 tons/hectare (+12% vs last year)" }
+            ],
             videos: [],
             files: [],
-            repos: []
+            repos: [],
+            team: {
+                title: "Team",
+                description: "The team behind the Agro Analytics platform, bridging AI and agriculture.",
+                members: [
+                    {
+                        quote: "Architecting the data pipeline and machine learning models for predictive agricultural insights.",
+                        name: "Prathap Selvakumar",
+                        designation: "Robotics & ML Engineer",
+                        src: "/Team_and_Testimonial/PrathapSelvakumar.jpg",
+                    },
+                    {
+                        quote: "Optimizing hyperspectral imagery processing and satellite data integration.",
+                        name: "Mrthunjai Dhanasekhar",
+                        designation: "Computer Vision Specialist",
+                        src: "/Team_and_Testimonial/mrthunjai-dhanasekhar.jpeg",
+                    },
+                    {
+                        quote: "Ensuring robust system scalability and cloud infrastructure for real-time farm monitoring.",
+                        name: "Adithya",
+                        designation: "Full Stack Developer",
+                        src: "/Team_and_Testimonial/adithya.jpeg",
+                    },
+                ]
+            }
         },
         {
             id: 'snake-detection',
@@ -220,8 +316,26 @@ if __name__ == '__main__':
             size: 'small',
             repoUrl: 'https://github.com/prathapselvakumar/Snake-detection',
             features: [
-                { icon: 'Cpu', title: "YOLOv8 Detection", desc: "Real-time snake detection using a custom-trained YOLOv8 model." },
-                { icon: 'Zap', title: "Species Classification", desc: "Classifies detected snakes as venomous or non-venomous." },
+                { icon: 'Cpu', title: "YOLOv8 Detection", desc: "Real-time snake detection using a custom-trained YOLOv8 model for high accuracy." },
+                { icon: 'Zap', title: "Species Classification", desc: "Instantly classifies detected snakes as venomous or non-venomous." },
+                { icon: 'Activity', title: "Real-time Processing", desc: "Low-latency inference optimized for edge devices and mobile deployment." },
+                { icon: 'Bell', title: "Automated Alerts", desc: "Instant notifications sent to local authorities when high-risk species are spotted." },
+                { icon: 'MapPin', title: "Geospatial Logging", desc: "Logs detection events with precise GPS coordinates for wildlife population tracking." },
+                { icon: 'Shield', title: "Safety Protocols", desc: "Integrated safety guidelines and emergency contacts for snake-prone areas." },
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "detector.py",
+                    description: "Inference script for custom YOLOv8 model.",
+                    language: "Python",
+                    code: `from ultralytics import YOLO\nimport cv2\n\ndef run_inference(image_path):\n    model = YOLO('best.pt')\n    results = model(image_path)\n    for result in results:\n        result.show()`
+                }
+            ],
+            terminalOutput: [
+                { type: "cmd", text: "python detect.py --source 'camera_0'" },
+                { type: "success", text: "[DETECTION] Cobra detected (Confidence: 0.94) - WARNING: VENOMOUS" },
+                { type: "info", text: "[INFO] Logging event to wildlife database." }
             ],
             videos: [],
             files: [],

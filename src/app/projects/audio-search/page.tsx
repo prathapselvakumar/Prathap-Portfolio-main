@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Layers, Home, Search, Terminal, Github, ExternalLink, Star, Code2, Play, Square, ChevronRight, Cpu, Zap, Database, Check, AlertCircle, Loader2 } from "lucide-react";
+import { Layers, Home, Search, Terminal, Github, ExternalLink, Star, Code2, Play, Square, ChevronRight, Cpu, Zap, Database, Check, AlertCircle, Loader2, User } from "lucide-react";
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
+import { Testimonials } from "@/components/Testimonials";
+import { projects } from "@/lib/projects";
 
 /* ─── Typing effect hook ─── */
 const useTypingEffect = (text: string, speed = 40, startDelay = 0) => {
@@ -304,13 +306,47 @@ const Index = () => {
     const [visibleLines, setVisibleLines] = useState(0);
     const terminalRef = useRef<HTMLDivElement>(null);
 
+    const audioProject = projects.find(p => p.id === 'audio-search');
     const navItems = [
         { name: 'Home', url: '#hero', icon: Home },
         { name: 'Features', url: '#features', icon: Layers },
-        { name: 'Terminal', url: '#demo', icon: Terminal },
         { name: 'Source', url: '#code', icon: Code2 },
-        { name: 'GitHub', url: '#repository', icon: Github },
+        { name: 'Demo', url: '#demo', icon: Terminal },
+        { name: 'GitHub', url: '#github', icon: Github },
+        ...(audioProject?.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
     ];
+
+    useEffect(() => {
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        };
+
+        const observerCallback = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    const navItem = navItems.find(item => item.url === `#${id}`);
+                    if (navItem) {
+                        // The NavBar component handles its own state if active name is passed, 
+                        // but here we are using the tubelight-navbar which might not expose setActive.
+                        // However, we can use a custom event or just trust the click if we don't want to overcomplicate.
+                        // For now, let's just ensure the IDs match.
+                    }
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        const sections = ['hero', 'features', 'code', 'demo', 'github'];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+    }, [navItems]);
 
     const handleRun = () => {
         setIsRunning(true);
@@ -422,57 +458,8 @@ const Index = () => {
                 </div>
             </section >
 
-            {/* ═══ Terminal Demo ═══ */}
-            < section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated" >
-                <div className="max-w-4xl mx-auto">
-                    <SectionHeader label="# demo" title="Live Terminal Output" description="See the audio fingerprinting and matching in action. Click Run to simulate." />
-
-                    <div className="rounded-lg border border-border overflow-hidden bg-background animate-fade-in">
-                        {/* Terminal title bar */}
-                        <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
-                            <div className="flex items-center gap-2">
-                                <div className="w-3 h-3 rounded-full bg-destructive/60" />
-                                <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                <span className="ml-3 text-xs text-muted-foreground font-mono">terminal — python</span>
-                            </div>
-                            <button
-                                onClick={handleRun}
-                                disabled={isRunning}
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
-                            >
-                                {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
-                            </button>
-                        </div>
-
-                        {/* Terminal body */}
-                        <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto">
-                            {visibleLines === 0 && (
-                                <div className="flex gap-2 break-all">
-                                    <span className="text-primary">$</span>
-                                    <span className="text-muted-foreground">_</span>
-                                    <span className="cursor-blink text-primary">▋</span>
-                                </div>
-                            )}
-                            {terminalOutput.slice(0, visibleLines).map((line, i) => (
-                                <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""} break-all sm:break-normal whitespace-pre-wrap`}>
-                                    {line.type === "cmd" ? (
-                                        <span><span className="text-primary">$ </span>{line.text}</span>
-                                    ) : (
-                                        <span>{line.text}</span>
-                                    )}
-                                </div>
-                            ))}
-                            {isRunning && (
-                                <span className="cursor-blink text-primary">▋</span>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </section >
-
             {/* ═══ Source Code ═══ */}
-            < section id="code" className="py-16 md:py-24 px-4 sm:px-6" >
+            <section id="code" className="py-16 md:py-24 px-4 sm:px-6">
                 <div className="max-w-6xl mx-auto">
                     <SectionHeader label="# source" title="Project Source Code" description="Browse the core Python modules that power the audio search engine." />
 
@@ -521,10 +508,59 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
-            {/* ═══ Repository ═══ */}
-            <section id="repository" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
+            {/* ═══ Terminal Demo ═══ */}
+            <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
+                <div className="max-w-4xl mx-auto">
+                    <SectionHeader label="# demo" title="Live Terminal Output" description="See the audio fingerprinting and matching in action. Click Run to simulate." />
+
+                    <div className="rounded-lg border border-border overflow-hidden bg-background animate-fade-in">
+                        {/* Terminal title bar */}
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
+                            <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 rounded-full bg-destructive/60" />
+                                <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                <span className="ml-3 text-xs text-muted-foreground font-mono">terminal — python</span>
+                            </div>
+                            <button
+                                onClick={handleRun}
+                                disabled={isRunning}
+                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+                            >
+                                {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
+                            </button>
+                        </div>
+
+                        {/* Terminal body */}
+                        <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto">
+                            {visibleLines === 0 && (
+                                <div className="flex gap-2 break-all">
+                                    <span className="text-primary">$</span>
+                                    <span className="text-muted-foreground">_</span>
+                                    <span className="cursor-blink text-primary">▋</span>
+                                </div>
+                            )}
+                            {terminalOutput.slice(0, visibleLines).map((line, i) => (
+                                <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""} break-all sm:break-normal whitespace-pre-wrap`}>
+                                    {line.type === "cmd" ? (
+                                        <span><span className="text-primary">$ </span>{line.text}</span>
+                                    ) : (
+                                        <span>{line.text}</span>
+                                    )}
+                                </div>
+                            ))}
+                            {isRunning && (
+                                <span className="cursor-blink text-primary">▋</span>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══ GitHub ═══ */}
+            <section id="github" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
                 <div className="max-w-4xl mx-auto">
                     <SectionHeader label="# repository" title="Get the Code" description="Clone the repository and start searching from your terminal." />
 
@@ -568,10 +604,22 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
+
+            {/* ═══ Team ═══ */}
+            {audioProject?.team && (
+                <div id="team">
+                    <Testimonials 
+                        title={audioProject.team.title || "Team"} 
+                        description={audioProject.team.description}
+                        variant="animated"
+                        data={audioProject.team.members}
+                    />
+                </div>
+            )}
 
             {/* ═══ Footer ═══ */}
-            < footer className="border-t border-border py-10 px-4 sm:px-6" >
+            <footer className="border-t border-border py-10 px-4 sm:px-6">
                 <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <span className="font-mono text-xs text-muted-foreground">
                         <span className="text-primary">$</span> echo "© {new Date().getFullYear()} Audio-Search-Engine"
@@ -580,7 +628,7 @@ const Index = () => {
                         <Github className="w-5 h-5" />
                     </a>
                 </div>
-            </footer >
+            </footer>
         </main >
     );
 };

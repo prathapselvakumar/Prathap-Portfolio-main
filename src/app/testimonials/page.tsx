@@ -5,62 +5,43 @@ import { TestimonialSlider } from "@/components/ui/testimonial-slider-1";
 const reviews = [
   {
     id: 1,
-    name: "Ashley Right",
-    affiliation: "Pinterest",
-    quote:
-      "Professionals in their craft! All products were super amazing with strong attention to details, comps and overall vibe.",
-    // Image from the provided screenshot
-    imageSrc:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=600&fit=crop&q=80",
-    thumbnailSrc:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=120&fit=crop&q=80",
+    name: "Dr.B.Aarthi",
+    affiliation: "Faculty Advisor, SRM Institute",
+    quote: "Prathap was one of the most promising students in my Advanced Algorithms class. His analytical thinking and problem-solving approach set him apart.",
+    imageSrc: "/Team_and_Testimonial/dr-aarthi-b.jpg",
+    thumbnailSrc: "/Team_and_Testimonial/dr-aarthi-b.jpg",
   },
   {
     id: 2,
-    name: "Jacob Jose",
-    affiliation: "New York Times",
-    quote:
-      "Unlimited, instant access to hundreds of premium quality resources created by designers for designers.",
-    // Image from the provided screenshot
-    imageSrc:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&q=80",
-    thumbnailSrc:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=120&fit=crop&q=80",
+    name: "Dr. Sri Devi",
+    affiliation: "Professor, SRM Institute",
+    quote: "As Prathap's Professor, I was impressed by his dedication and innovative thinking. His research on machine learning applications showed remarkable depth.",
+    imageSrc: "/Team_and_Testimonial/dr-sri-devi.png",
+    thumbnailSrc: "/Team_and_Testimonial/dr-sri-devi.png",
   },
   {
     id: 3,
-    name: "Elara Sands",
-    affiliation: "Behance",
-    quote:
-      "The attention to detail is immaculate. Every component feels polished and ready for production.",
-    // Thumbnail from the provided screenshot
-    imageSrc:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&q=80",
-    thumbnailSrc:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=120&fit=crop&q=80",
+    name: "Dr. Faritha Banu",
+    affiliation: "Depute HOD of CSE, SRM Institute",
+    quote: "Prathap's enthusiasm for learning and his ability to grasp complex concepts quickly made him stand out. His project on algorithm optimization was exceptional.",
+    imageSrc: "/Team_and_Testimonial/dr-faritha-banu.png",
+    thumbnailSrc: "/Team_and_Testimonial/dr-faritha-banu.png",
   },
   {
     id: 4,
-    name: "Marcus Cole",
-    affiliation: "Dribbble",
-    quote:
-      "A true time-saver. I can focus on my core logic instead of pixel-pushing. Highly recommended.",
-    // Thumbnail from the provided screenshot
-    imageSrc:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=600&fit=crop&q=80",
-    thumbnailSrc:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=120&fit=crop&q=80",
+    name: "Mohan Raj",
+    affiliation: "C-Square Info Solutions",
+    quote: "Working with Prathap was a great experience. His problem-solving skills and attention to detail helped us deliver the project ahead of schedule.",
+    imageSrc: "/Team_and_Testimonial/mohan-raj.jpeg",
+    thumbnailSrc: "/Team_and_Testimonial/mohan-raj.jpeg",
   },
   {
     id: 5,
-    name: "Serena V.",
-    affiliation: "Figma",
-    quote:
-      "This is the design system I've been waiting for. It's flexible, accessible, and beautiful.",
-    imageSrc:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=600&fit=crop&q=80",
-    thumbnailSrc:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=120&fit=crop&q=80",
+    name: "Vijay Kanna",
+    affiliation: "C-Square Info Solutions",
+    quote: "Prathap's technical expertise and collaborative approach made a significant impact on our team. He consistently delivered high-quality work.",
+    imageSrc: "/Team_and_Testimonial/vijay-kanna.jpg",
+    thumbnailSrc: "/Team_and_Testimonial/vijay-kanna.jpg",
   },
 ];
 
