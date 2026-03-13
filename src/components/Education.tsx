@@ -25,7 +25,7 @@ const education: EducationItem[] = [
       "Collaborative projects with industry partners and research institutions"
     ],
     achievements: ["Admitted to prestigious MSc program", "Research opportunities", "Industry collaborations"],
-    logo: "/University_of_Manchester.svg"
+    logo: "/Organization Logs/University_of_Manchester.svg"
   },
   {
     id: "btech-cse",
@@ -40,7 +40,7 @@ const education: EducationItem[] = [
       "Strong foundation that prepared for advanced robotics studies"
     ],
     achievements: ["CGPA: 8.49", "Dean's List Recognition", "Active participation in technical societies"],
-    logo: "/SRM University.svg"
+    logo: "/Organization Logs/SRM University.svg"
   },
 ];
 

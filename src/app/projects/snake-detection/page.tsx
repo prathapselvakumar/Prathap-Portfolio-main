@@ -325,7 +325,7 @@ const Index = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="/image.png"
+                        src="/Thumbnails/Project Thumbnails/image.png"
                         alt=""
                         className="w-full h-full object-cover opacity-80 dark:opacity-40"
                     />

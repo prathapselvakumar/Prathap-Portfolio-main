@@ -23,7 +23,7 @@ const experiences: ExperienceItem[] = [
       "Implementing responsive designs and ensuring optimal performance across devices"
     ],
     technologies: ["React.js", "JavaScript", "HTML/CSS", "Git"],
-    logo: "/C-Square Info solution.png"
+    logo: "/Organization Logs/C-Square Info solution.png"
   },
   {
     id: "qentelli-intern",
@@ -36,7 +36,7 @@ const experiences: ExperienceItem[] = [
       "Gained hands-on experience with machine learning frameworks and tools"
     ],
     technologies: ["Python", "Machine Learning", "Predictive Analytics", "Data Science"],
-    logo: "/Qentelli.png"
+    logo: "/Organization Logs/Qentelli.png"
   },
   {
     id: "nus-academic-intern",
@@ -49,7 +49,7 @@ const experiences: ExperienceItem[] = [
       "Collaborated with academic researchers on cutting-edge deep learning approaches"
     ],
     technologies: ["Python", "TensorFlow", "Deep Learning", "Big Data Analytics"],
-    logo: "/National University of Singapore.svg"
+    logo: "/Organization Logs/National University of Singapore.svg"
   },
   {
     id: "csq-intern",
@@ -62,7 +62,7 @@ const experiences: ExperienceItem[] = [
       "Gained experience with database operations and API integration"
     ],
     technologies: ["Python", "SQL", "Data Processing", "MongoDB"],
-    logo: "/C-Square Info solution.png"
+    logo: "/Organization Logs/C-Square Info solution.png"
   },
 ];
 

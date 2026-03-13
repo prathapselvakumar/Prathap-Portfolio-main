@@ -16,7 +16,7 @@ export const publications: Publication[] = [
         id: 'audio-clustering',
         title: 'Comparative Analysis Implementation of Queuing Songs in Players Using Audio Clustering Algorithm',
         description: 'Comparative study of k-means, DBSCAN, and adaptive algorithms for clustering audio data. Analyzes performance, accuracy, and efficiency to determine ideal grouping methods.',
-        image: '/audio-clustering.png',
+        image: '/Thumbnails/Publication-Thumbnails/audio-clustering.png',
         size: 'large',
         url: 'https://doi.org/10.4018/979-8-3693-1301-5.ch004',
         authors: ['Dr.B. Aarthi', 'Prathap Selvakumar', 'S. Subiksha', 'S. Chhavi', 'Swetha Parathasarathy'],

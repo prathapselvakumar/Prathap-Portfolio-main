@@ -62,7 +62,7 @@ export const projects: Project[] =
             id: 'autonomous-robot',
             title: 'Autonomous Robot',
             description: 'Self-navigating robot using SLAM and path planning algorithms with real-time obstacle detection',
-            image: '/maxresdefault.jpg',
+            image: '/Thumbnails/Project Thumbnails/maxresdefault.jpg',
             categories: ['Robotics'],
             size: 'large',
             repoUrl: 'https://github.com/prathapselvakumar/Leo-Rover.git',
@@ -76,7 +76,7 @@ export const projects: Project[] =
                     id: "1",
                     title: "Computer Vision",
                     description: "The output of the object detection using YOLOv8.",
-                    thumbnail: "/Products/Camera.png",
+                    thumbnail: "/Autonomous-Mobile-Robot/Products/Camera.png",
                     duration: "4:32",
                     url: "https://www.youtube.com/embed/qvzDwsoLuuM?si=Yi3NlumaOGGyOG8A"
                 },
@@ -84,7 +84,7 @@ export const projects: Project[] =
                     id: "2",
                     title: "Lidars",
                     description: "Initial testing of the lidars.",
-                    thumbnail: "/Products/Lidars.png",
+                    thumbnail: "/Autonomous-Mobile-Robot/Products/Lidars.png",
                     duration: "2:10",
                     url: "https://www.youtube.com/embed/VSYWAxqKxZ8?si=jUMfohMpg7cIfBh"
                 },
@@ -92,7 +92,7 @@ export const projects: Project[] =
                     id: "3",
                     title: "Arm Movement Testing",
                     description: "Testing the movement of the arm.",
-                    thumbnail: "/Products/Robotic ARM.png",
+                    thumbnail: "/Autonomous-Mobile-Robot/Products/Robotic ARM.png",
                     duration: "3:48",
                     url: "https://www.youtube.com/embed/XS9NESWWpK8?si=EJpZDgY3A2b5d7aR"
                 },
@@ -100,7 +100,7 @@ export const projects: Project[] =
                     id: "4",
                     title: "Structural Construction",
                     description: "The construction of the robot.",
-                    thumbnail: "/Products/Gripper.png",
+                    thumbnail: "/Autonomous-Mobile-Robot/Products/Gripper.png",
                     duration: "5:20",
                     url: "https://www.youtube.com/embed/vs7O9ohwxwc?si=1lukm8WUqp22UDjS"
                 },
@@ -108,18 +108,18 @@ export const projects: Project[] =
                     id: "5",
                     title: "Trail Run",
                     description: "First run of the robot in a trail environment.",
-                    thumbnail: "/maxresdefault.jpg",
+                    thumbnail: '/Thumbnails/Project Thumbnails/maxresdefault.jpg',
                     duration: "7:15",
                     url: "https://www.youtube.com/embed/FMmaug6hqB4?si=TfzrjiVYwOa-qobM"
                 }
             ],
 
             files: [
-                { id: "5", name: "Autonomous Mobile Robot", format: ".step", description: "Complete assembly of the Autonomous Mobile Robot.", fileSize: "2.4 MB", icon: "cad", previewImage: "/Cad Files/robot-assembly-thumb.svg", downloadUrl: "#", modelUrl: "#" },
-                { id: "1", name: "Arm mounting plate v7", format: ".step", description: "Mounting plate for the robotic arm assembly.", fileSize: "30 KB", icon: "cad", previewImage: "/Products/Robotic ARM.png", downloadUrl: "/Cad Files/Arm mounting plate v7.step", modelUrl: "/Cad Files/Arm mounting plate v7.glb" },
-                { id: "2", name: "L camera mount v6", format: ".step", description: "L-shaped bracket for camera mounting.", fileSize: "44 KB", icon: "cad", previewImage: "/Products/Camera.png", downloadUrl: "/Cad Files/L camera mount v6.step", modelUrl: "/Cad Files/L camera mount v6.glb" },
-                { id: "3", name: "LIDAR A2 mount v4_", format: ".step", description: "Mounting unit for LIDAR A2 sensor.", fileSize: "80 KB", icon: "cad", previewImage: "/Products/Lidars.png", downloadUrl: "/Cad Files/LIDAR A2 mount v4_.step", modelUrl: "/Cad Files/LIDAR A2 mount v4_.glb" },
-                { id: "4", name: "NUC mounting plate v4", format: ".step", description: "Mounting plate for the NUC computer.", fileSize: "40 KB", icon: "cad", previewImage: "/Cad Files/nuc-plate-thumb.svg", downloadUrl: "/Cad Files/NUC mounting plate v4.step", modelUrl: "/Cad Files/NUC mounting plate v4.glb" },
+                { id: "5", name: "Autonomous Mobile Robot", format: ".step", description: "Complete assembly of the Autonomous Mobile Robot.", fileSize: "2.4 MB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Cad Files/robot-assembly-thumb.svg", downloadUrl: "#", modelUrl: "#" },
+                { id: "1", name: "Arm mounting plate v7", format: ".step", description: "Mounting plate for the robotic arm assembly.", fileSize: "30 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Products/Robotic ARM.png", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/Arm mounting plate v7.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/Arm mounting plate v7.glb" },
+                { id: "2", name: "L camera mount v6", format: ".step", description: "L-shaped bracket for camera mounting.", fileSize: "44 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Products/Camera.png", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/L camera mount v6.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/L camera mount v6.glb" },
+                { id: "3", name: "LIDAR A2 mount v4_", format: ".step", description: "Mounting unit for LIDAR A2 sensor.", fileSize: "80 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Products/Lidars.png", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/LIDAR A2 mount v4_.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/LIDAR A2 mount v4_.glb" },
+                { id: "4", name: "NUC mounting plate v4", format: ".step", description: "Mounting plate for the NUC computer.", fileSize: "40 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Cad Files/nuc-plate-thumb.svg", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/NUC mounting plate v4.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/NUC mounting plate v4.glb" },
             ],
             repos: [
                 { id: "1", name: "Leo-Rover", description: "The complete source code for the Autonomous Robot project.", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 0, url: "https://github.com/prathapselvakumar/Leo-Rover.git", topics: ["robotics", "autonomous", "leo-rover"] },
@@ -311,7 +311,7 @@ if __name__ == '__main__':
             id: 'snake-detection',
             title: 'Snake Detection',
             description: 'Real-time snake detection and classification system using YOLOv8',
-            image: '/image.png',
+            image: '/Thumbnails/Project Thumbnails/image.png',
             categories: ['AI/ML', 'Computer Vision'],
             size: 'small',
             repoUrl: 'https://github.com/prathapselvakumar/Snake-detection',

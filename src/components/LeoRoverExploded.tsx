@@ -24,7 +24,7 @@ export default function LeoRoverExploded() {
         for (let i = 1; i <= FRAME_COUNT; i++) {
             const img = new Image();
             const frameNumber = i.toString().padStart(3, '0');
-            img.src = `/Leo-rover/ezgif-frame-${frameNumber}.jpg`;
+            img.src = `/Autonomous-Mobile-Robot/Leo-rover/ezgif-frame-${frameNumber}.jpg`;
             img.onload = () => {
                 loaded++;
                 setImagesLoaded(loaded);

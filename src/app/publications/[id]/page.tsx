@@ -120,7 +120,7 @@ const Index = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="/audio-clustering.png"
+                        src="/Thumbnails/Publication-Thumbnails/audio-clustering.png"
                         alt="Background"
                         className="w-full h-full object-cover opacity-80 dark:opacity-40"
                     />

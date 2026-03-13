@@ -44,7 +44,7 @@ const PRODUCT_DATA: Record<ProductId, ProductData> = {
     label: 'Sensor',
     title: 'RPLidar Sensor',
     description: 'A high-performance 360-degree laser range scanner. Provides the robot with precise spatial awareness and real-time mapping capabilities.',
-    image: '/Products/Lidars.png',
+    image: '/Autonomous-Mobile-Robot/Products/Lidars.png',
     colors: {
       gradient: 'from-blue-600 to-indigo-900',
       glow: 'bg-blue-500',
@@ -62,7 +62,7 @@ const PRODUCT_DATA: Record<ProductId, ProductData> = {
     label: 'Camera',
     title: 'Intel RealSense Depth Camera',
     description: 'High-speed stereo depth sensing for reliable obstacle avoidance and spatial mapping in dynamic environments.',
-    image: '/Products/Camera.png',
+    image: '/Autonomous-Mobile-Robot/Products/Camera.png',
     colors: {
       gradient: 'from-emerald-600 to-teal-900',
       glow: 'bg-emerald-500',
@@ -80,7 +80,7 @@ const PRODUCT_DATA: Record<ProductId, ProductData> = {
     label: 'NUC',
     title: 'Intel NUC',
     description: 'Core compute unit for robot control, SLAM, and high-level mission planning logic.',
-    image: '/Products/Intel NUC.png',
+    image: '/Autonomous-Mobile-Robot/Products/Intel NUC.png',
     colors: {
       gradient: 'from-orange-600 to-red-900',
       glow: 'bg-orange-500',
@@ -98,7 +98,7 @@ const PRODUCT_DATA: Record<ProductId, ProductData> = {
     label: 'ARM',
     title: 'Elephant Robotics ARM',
     description: 'Precision 6-DOF robotic arm for advanced manipulation, sorting, and interaction with the environment.',
-    image: '/Products/Robotic ARM.png',
+    image: '/Autonomous-Mobile-Robot/Products/Robotic ARM.png',
     colors: {
       gradient: 'from-purple-600 to-fuchsia-900',
       glow: 'bg-purple-500',
@@ -116,7 +116,7 @@ const PRODUCT_DATA: Record<ProductId, ProductData> = {
     label: 'Gripper',
     title: 'Adaptive Robotic Gripper',
     description: 'A versatile end-effector designed for robust grasping of various objects, integrated with force sensors for delicate handling.',
-    image: '/Products/Gripper.png',
+    image: '/Autonomous-Mobile-Robot/Products/Gripper.png',
     colors: {
       gradient: 'from-pink-600 to-rose-900',
       glow: 'bg-pink-500',
