@@ -371,7 +371,7 @@ const Index = () => {
                                 name: "Swetha Parathasarathy",
                                 designation: "Associate Researcher",
                                 quote: "The integration of adaptive clustering allows for more dynamic and user-centric music player experiences.",
-                                src: "/Team_and_Testimonial/swetha.jpg",
+                                src: "/Team_and_Testimonial/Swetha.jpg",
                             },
                             // {
                             //     name: "Subiksha S",
