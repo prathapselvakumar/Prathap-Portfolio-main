@@ -367,24 +367,25 @@ const Index = () => {
                                 src: "/Team_and_Testimonial/PrathapSelvakumar.jpg",
                                
                             },
-                            {
+                             {
                                 name: "Swetha Parathasarathy",
-                                designation: "Signal Processing Engineer",
-                                quote: "Clustering spectral features allowed us to achieve unprecedented accuracy in categorical audio sorting.",
+                                designation: "Associate Researcher",
+                                quote: "The integration of adaptive clustering allows for more dynamic and user-centric music player experiences.",
                                 src: "/Team_and_Testimonial/swetha.jpg",
                             },
+                            // {
+                            //     name: "Subiksha S",
+                            //     designation: "Associate Researcher",
+                            //     quote: "Clustering spectral features allowed us to achieve unprecedented accuracy in categorical audio sorting.",
+                            //     src: "/Team_and_Testimonial/subiksha-s.jpg",
+                            // },
                             {
                                 name: "Chhavi",
                                 designation: "Research Analyst",
                                 quote: "Analyzing the asymptotic behavior across different clustering models provided deep insights into system scalability.",
                                 src: "/Team_and_Testimonial/chhavi.jpg",
                             },
-                            {
-                                name: "Swetha Parathasarathy",
-                                designation: "Associate Researcher",
-                                quote: "The integration of adaptive clustering allows for more dynamic and user-centric music player experiences.",
-                                src: "/Team_and_Testimonial/swetha.jpg",
-                            },
+                           
                         ]}
                     />
                 </div>
