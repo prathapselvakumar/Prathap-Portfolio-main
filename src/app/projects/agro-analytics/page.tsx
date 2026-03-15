@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Testimonials } from "@/components/Testimonials";
 import { projects } from "@/lib/projects";
-import { MoireDeterrent } from "@/components/MoireDeterrent";
 
 /* ─── Typing effect hook ─── */
 const useTypingEffect = (text: string, speed = 40, startDelay = 0) => {
@@ -381,7 +380,6 @@ const Index = () => {
                                     alt=""
                                     className="w-full h-full object-cover opacity-80 dark:opacity-40"
                                 />
-                                <MoireDeterrent />
                                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
                                 <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
                             </div>

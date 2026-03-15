@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { LandingPage } from '@/components/LandingPage';
+import { LandingPage } from '@/components/Landingpage/LandingPage';
 import { PortfolioContent } from '@/components/PortfolioContent';
 
 export default function Home() {

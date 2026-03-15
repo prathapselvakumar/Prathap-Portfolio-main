@@ -1,6 +1,6 @@
 import { projects } from "@/lib/projects";
 import { notFound } from "next/navigation";
-import ProjectLayout from "@/components/project-layout";
+import ProjectLayout from "@/components/ui/project-layout";
 
 export const metadata = {
     title: "LEO Rover Exploded View | Prathap Selvakumar",

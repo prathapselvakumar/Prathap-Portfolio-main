@@ -36,8 +36,8 @@ import { motion } from "framer-motion";
 
 import { Testimonials } from '@/components/Testimonials';
 import { NavBar } from "@/components/ui/tubelight-navbar";
-import { MoireDeterrent } from "@/components/MoireDeterrent";
 import HardwareShowcase from "@/components/ui/spatial-product-showcase";
+import { getYouTubeThumbnail } from "@/lib/utils";
 
 import {
     Dialog,
@@ -61,13 +61,6 @@ const iconMap: Record<string, any> = {
     FileCode,
 };
 
-/* ─── YouTube Thumbnail Helper ─── */
-const getYouTubeThumbnail = (url: string) => {
-    const match = url.match(/embed\/([^?]+)/);
-    return match
-        ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`
-        : "";
-};
 
 /* ─── Section Header ─── */
 const SectionHeader = ({
@@ -220,6 +213,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
         };
 
         const observerCallback = (entries: IntersectionObserverEntry[]) => {
+            if (isModalOpenRef.current) return;
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     setActiveSection(entry.target.id);
@@ -241,6 +235,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
     const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
     const [selected3DModel, setSelected3DModel] = useState<string>('Autonomous Mobile Robot');
+    const isModalOpenRef = useRef(false);
 
     // Terminal and code state
     const [activeSnippet, setActiveSnippet] = useState(project.codeSnippets?.[0]?.id || "1");
@@ -315,7 +310,6 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                         alt=""
                         className="w-full h-full object-cover opacity-80 dark:opacity-40"
                     />
-                    <MoireDeterrent />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
                     <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
                 </div>
@@ -444,7 +438,6 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 allowFullScreen={true}
                                                 frameBorder="0"
                                             ></iframe>
-                                            <MoireDeterrent />
                                         </div>
                                     )}
 
@@ -459,7 +452,6 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 allowFullScreen={true}
                                                 frameBorder="0"
                                             ></iframe>
-                                            <MoireDeterrent />
                                         </div>
                                     )}
 
@@ -474,7 +466,6 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 allowFullScreen={true}
                                                 frameBorder="0"
                                             ></iframe>
-                                            <MoireDeterrent />
                                         </div>
                                     )}
 
@@ -489,7 +480,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 allowFullScreen={true}
                                                 frameBorder="0"
                                             ></iframe>
-                                            <MoireDeterrent />
+                                           
                                         </div>
                                     )}
 
@@ -523,7 +514,6 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                                 alt={file.name}
                                                 className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                                             />
-                                            <MoireDeterrent />
                                         </div>
                                         <div className="p-5 flex-1 flex flex-col justify-center">
                                             <h3 className="font-semibold text-lg mb-1">{file.name}</h3>
@@ -564,7 +554,10 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             {project.videos.map((video) => (
                                 <div
                                     key={video.id}
-                                    onClick={() => setSelectedVideo(video.url)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedVideo(video.url);
+                                    }}
                                     className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition"
                                 >
                                     <div className="relative aspect-video">
@@ -755,14 +748,21 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
             {/* ─── Video Modal (iframe) ─── */}
             <Dialog
                 open={!!selectedVideo}
-                onOpenChange={(open) => !open && setSelectedVideo(null)}
+                onOpenChange={(open) => {
+                    isModalOpenRef.current = open;
+                    if (!open) setSelectedVideo(null);
+                }}
             >
-                <DialogContent className="sm:max-w-4xl p-0 bg-black border-none">
+                <DialogContent 
+                    className="sm:max-w-4xl p-0 bg-black border-none"
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                    onCloseAutoFocus={(e) => e.preventDefault()}
+                >
                     <DialogTitle className="sr-only">Video Player</DialogTitle>
                     <div className="aspect-video w-full">
                         {selectedVideo && (
                             <iframe
-                                src={selectedVideo}
+                                src={`${selectedVideo}${selectedVideo.includes('?') ? '&' : '?'}autoplay=1&mute=1`}
                                 className="w-full h-full"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen

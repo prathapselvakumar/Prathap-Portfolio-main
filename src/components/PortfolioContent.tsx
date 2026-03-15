@@ -19,7 +19,6 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { projects } from '@/lib/projects';
-import { MoireDeterrent } from '@/components/MoireDeterrent';
 
 export function PortfolioContent() {
   const { resolvedTheme: theme } = useTheme();
@@ -259,8 +258,6 @@ export function PortfolioContent() {
                   src="/Team_and_Testimonial/PrathapSelvakumar.jpg"
                   alt="Profile"
                   className="w-full h-full object-cover transition-all duration-500" />
-
-                <MoireDeterrent variant="ultra" />
               </div>
             </div>
           </div>
@@ -352,7 +349,6 @@ export function PortfolioContent() {
                       src={project.image}
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                    <MoireDeterrent />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent flex flex-col justify-end p-5 md:p-6 lg:p-8">
                     {/* Category Tags */}

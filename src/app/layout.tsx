@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
-import ErrorReporter from "@/components/ErrorReporter";
+import ErrorReporter from "@/components/ui/ErrorReporter";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
-
-import { Protection } from "@/components/Protection";
+import { Protection } from "@/components/ui/Protection";
 
 import { ParallaxComponent } from "@/components/ui/parallax-scrolling";
 

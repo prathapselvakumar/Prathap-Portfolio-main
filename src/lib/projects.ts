@@ -11,7 +11,7 @@ export interface Project {
         id: string;
         title: string;
         description: string;
-        thumbnail: string;
+       
         duration: string;
         url: string;
     }[];
@@ -76,7 +76,7 @@ export const projects: Project[] =
                     id: "1",
                     title: "Computer Vision",
                     description: "The output of the object detection using YOLOv8.",
-                    thumbnail: "/Autonomous-Mobile-Robot/Products/Camera.png",
+                  
                     duration: "4:32",
                     url: "https://www.youtube.com/embed/qvzDwsoLuuM?si=Yi3NlumaOGGyOG8A"
                 },
@@ -84,7 +84,7 @@ export const projects: Project[] =
                     id: "2",
                     title: "Lidars",
                     description: "Initial testing of the lidars.",
-                    thumbnail: "/Autonomous-Mobile-Robot/Products/Lidars.png",
+                   
                     duration: "2:10",
                     url: "https://www.youtube.com/embed/VSYWAxqKxZ8?si=jUMfohMpg7cIfBh"
                 },
@@ -92,7 +92,7 @@ export const projects: Project[] =
                     id: "3",
                     title: "Arm Movement Testing",
                     description: "Testing the movement of the arm.",
-                    thumbnail: "/Autonomous-Mobile-Robot/Products/Robotic ARM.png",
+                   
                     duration: "3:48",
                     url: "https://www.youtube.com/embed/XS9NESWWpK8?si=EJpZDgY3A2b5d7aR"
                 },
@@ -100,7 +100,7 @@ export const projects: Project[] =
                     id: "4",
                     title: "Structural Construction",
                     description: "The construction of the robot.",
-                    thumbnail: "/Autonomous-Mobile-Robot/Products/Gripper.png",
+                  
                     duration: "5:20",
                     url: "https://www.youtube.com/embed/vs7O9ohwxwc?si=1lukm8WUqp22UDjS"
                 },
@@ -108,7 +108,7 @@ export const projects: Project[] =
                     id: "5",
                     title: "Trail Run",
                     description: "First run of the robot in a trail environment.",
-                    thumbnail: '/Thumbnails/Project Thumbnails/maxresdefault.jpg',
+                   
                     duration: "7:15",
                     url: "https://www.youtube.com/embed/FMmaug6hqB4?si=TfzrjiVYwOa-qobM"
                 }

@@ -1,6 +1,6 @@
 import { projects } from "@/lib/projects";
 import { notFound } from "next/navigation";
-import ProjectLayout from "@/components/project-layout";
+import ProjectLayout from "@/components/ui/project-layout";
 
 /* ─── Page ─── */
 const ProjectPage = async ({ params }: { params: Promise<{ id: string }> }) => {
