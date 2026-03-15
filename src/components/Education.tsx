@@ -61,7 +61,7 @@ export function Education() {
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 mb-6">
           <div>
             <h3 className="text-2xl font-bold text-foreground mb-2">{edu.degree}</h3>
-            <p className="text-lg text-muted-foreground font-medium">{edu.institution}</p>
+            <p className="text-lg text-foreground font-medium">{edu.institution}</p>
             <p className="text-sm text-primary font-mono mt-1">{edu.period}</p>
             {edu.cgpa && (
               <div className="inline-block mt-3 px-3 py-1 bg-primary/10 border border-primary/30 rounded-full">
@@ -85,7 +85,7 @@ export function Education() {
             {edu.description.map((item, index) => (
               <li key={index} className="flex items-start">
                 <span className="text-primary mr-3 mt-1 text-lg leading-none">•</span>
-                <span className="text-muted-foreground leading-relaxed">{item}</span>
+                <span className="text-foreground leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>

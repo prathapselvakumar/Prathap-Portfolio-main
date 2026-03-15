@@ -86,7 +86,7 @@ export function Experience() {
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 mb-6">
           <div>
             <h3 className="text-2xl font-bold text-foreground mb-2">{exp.title}</h3>
-            <p className="text-lg text-muted-foreground font-medium">{exp.company}</p>
+            <p className="text-lg text-foreground font-medium">{exp.company}</p>
             <p className="text-sm text-primary font-mono mt-1">{exp.period}</p>
           </div>
           {exp.logo && (
@@ -106,7 +106,7 @@ export function Experience() {
             {exp.description.map((item, index) => (
               <li key={index} className="flex items-start">
                 <span className="text-primary mr-3 mt-1 text-lg leading-none">•</span>
-                <span className="text-muted-foreground leading-relaxed">{item}</span>
+                <span className="text-foreground leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>

@@ -53,7 +53,7 @@ export const Timeline = ({ data, title, description }: TimelineProps) => {
                 <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-8 text-foreground font-bold tracking-tight max-w-4xl">
                     {title || "Changelog from my journey"}
                 </h2>
-                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+                <p className="text-lg md:text-xl text-foreground max-w-2xl leading-relaxed">
                     {description || "I've been working on Aceternity for the past 2 years. Here's a timeline of my journey."}
                 </p>
             </div>
