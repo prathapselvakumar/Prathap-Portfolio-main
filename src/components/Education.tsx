@@ -6,7 +6,7 @@ interface EducationItem {
   degree: string;
   institution: string;
   period: string;
-  description: string[];
+  description: (string | React.ReactNode)[];
   achievements: string[];
   cgpa?: string;
   logo: string;
@@ -19,10 +19,15 @@ const education: EducationItem[] = [
     institution: "University of Manchester, Manchester, United Kingdom",
     period: "2025 - Current",
     description: [
-      "Advanced study in robotics systems, autonomous navigation, and intelligent control",
-      "Research focus on AI-driven robotic applications and human-robot interaction",
-      "Hands-on experience with cutting-edge robotics hardware and simulation environments",
-      "Collaborative projects with industry partners and research institutions"
+      <>
+        <strong>Designed and deployed robotic systems</strong> using <strong>ROS2</strong>, <strong>Python</strong>, and <strong>computer vision</strong>, achieving <strong>95% navigation accuracy</strong> on the <strong>Leo Rover robot</strong>.
+      </>,
+      <>
+        Collaborated in a <strong>five-member team</strong> to <strong>troubleshoot and calibrate control algorithms</strong>, cutting <strong>positional drift by 20%</strong>.
+      </>,
+      <>
+        Used <strong>MATLAB</strong>, <strong>TensorFlow</strong>, and <strong>OpenCV</strong> to <strong>simulate and automate robotic tasks</strong>, reducing <strong>testing time by 30%</strong>.
+      </>,
     ],
     achievements: ["Admitted to prestigious MSc program", "Research opportunities", "Industry collaborations"],
     logo: "/Organization Logs/University_of_Manchester.svg"
@@ -34,10 +39,14 @@ const education: EducationItem[] = [
     period: "2020 - 2024",
     cgpa: "8.49",
     description: [
-      "Comprehensive study of computer science fundamentals including algorithms, data structures, and software engineering",
-      "Specialized coursework in artificial intelligence, machine learning, and robotics",
-      "Hands-on experience with various programming languages and development frameworks",
-      "Strong foundation that prepared for advanced robotics studies"
+      <>
+        Applied <strong>AI</strong>, <strong>Machine Learning</strong>, and <strong>Data Science</strong> methods to complete 
+        <strong> six applied research and development projects</strong>.
+      </>,
+      <>
+        Built an <strong>AI-based image recognition system</strong> for <strong>automation</strong>, increasing 
+        <strong> classification accuracy by 12%</strong> and reducing <strong>manual verification time by 25%</strong>.
+      </>,
     ],
     achievements: ["CGPA: 8.49", "Dean's List Recognition", "Active participation in technical societies"],
     logo: "/Organization Logs/SRM University.svg"
