@@ -343,7 +343,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
 
             {/* ─── Features (or Custom Animation) ─── */}
             {project.id === "autonomous-robot" ? (
-                <section id="features" className="w-full relative mt-32 dark">
+                <section id="features" className="w-full relative dark">
                     <div className="pt-12 px-6 max-w-6xl mx-auto absolute z-20 left-0 right-0 top-0 pointer-events-none">
                         <SectionHeader
                             label="# features"
