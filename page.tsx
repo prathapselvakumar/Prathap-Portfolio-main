@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useRef } from "react";
 import { Layers, Home, Search, Terminal, Github, ExternalLink, Star, Code2, Play, Square, ChevronRight, Cpu, Zap, Database, Check, AlertCircle, Loader2, User } from "lucide-react";
@@ -63,29 +63,29 @@ const SectionHeader = ({ label, title, description }: { label: string; title: st
 /* ─── Bento Grid Components ─── */
 const cardContents = [
   {
-    title: "YOLOv8 Detection",
+    title: "Crop Recommendation",
     description:
-      "Real-time snake detection using a custom-trained YOLOv8 model to identify and classify snake species from images and video.",
+      "ML-powered crop suggestions using RandomForest and XGBoost based on temperature, humidity, pH, and rainfall data.",
   },
   {
-    title: "Species Classification",
+    title: "Secure MySQL Data",
     description:
-      "Advanced classification to determine if a detected snake is venomous or non-venomous, providing critical safety information.",
+      "Robust user authentication and session management with MySQL, featuring salted and hashed passwords for maximum security.",
   },
   {
-    title: "Multi-Input Support",
+    title: "Crop Health Monitoring",
     description:
-      "Highly flexible input system supporting uploaded images, video files, and live camera feeds. Whether you're working with static captures or real-time surveillance, the system adapts to handle varying light conditions, motion blur, and background distractions. Optimized for different file formats and stream protocols to ensure consistent performance across all user scenarios.",
+      "State-of-the-art YOLOv8 object detection model that analyzes uploaded crop images to identify diseases, nutrient deficiencies, and overall health status. The system provides immediate visual feedback with bounding boxes and classification labels, helping farmers make informed decisions about pest control and fertilization. Optimized to run efficiently on mobile and desktop interfaces, ensuring accessibility in the field.",
   },  
   {
-    title: "Interactive Web App",
+    title: "Weather Forecasting",
     description:
-      "A user-friendly Streamlit interface for exploring predictions, visualizing detections, and interacting with the model.",
+      "Integration with real-time weather APIs to provide accurate local forecasts, helping farmers plan irrigation and harvest schedules.",
   },
   {
-    title: "Performance Optimized",
+    title: "Streamlit Interface",
     description:
-      "Built for efficiency, ensuring high-speed inference and clear visualization of annotated results.",
+      "A clean, interactive web dashboard built with Streamlit, providing a seamless user experience across all devices.",
   },
 ]
 
@@ -106,7 +106,7 @@ const PlusCard: React.FC<{
         className
       )}
     >
-      <Link href="https://github.com/prathapselvakumar/Snake-detection">
+      <Link href="https://github.com/prathapselvakumar/Agro-Analytics">
         <CornerPlusIcons />
         {/* Content */}
         <div className="relative z-10 space-y-2">
@@ -147,157 +147,205 @@ const PlusIcon = ({ className }: { className?: string }) => (
 const codeSnippets = [
     {
         id: "1",
-        title: "detect.py",
-        description: "Main detection script using YOLOv8 for snake identification",
-        code: `import cv2
-from ultralytics import YOLO
-import argparse
+        title: "AgroAnalytics.py",
+        description: "Main app with auth, MySQL connection, and Streamlit UI",
+        code: `import streamlit as st
+import mysql.connector
+from passlib.hash import pbkdf2_sha256
+from PIL import Image
 
-def load_model(weights_path):
-    """Load the YOLOv8 model with custom weights."""
-    model = YOLO(weights_path)
-    return model
-
-def detect_snake(model, source, conf=0.5):
-    """Run snake detection on the given source."""
-    results = model.predict(
-        source=source,
-        conf=conf,
-        save=True,
-        show=True
+def create_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="crops"
     )
-    return results
 
-def process_results(results):
-    """Process and display detection results."""
-    for result in results:
-        boxes = result.boxes
-        for box in boxes:
-            cls = int(box.cls[0])
-            conf = float(box.conf[0])
-            label = result.names[cls]
-            print(f"Detected: {label} ({conf:.2f})")
-    return results
+def create_users_table(connection):
+    cursor = connection.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(50) NOT NULL,
+            password VARCHAR(100) NOT NULL
+        )
+    ''')
+    connection.commit()
+
+def register_user(connection, username, password):
+    cursor = connection.cursor()
+    hashed_password = pbkdf2_sha256.hash(password)
+    cursor.execute('INSERT INTO users (username, password) VALUES (%s, %s)',
+                   (username, hashed_password))
+    connection.commit()
+
+def authenticate_user(connection, username, password):
+    cursor = connection.cursor()
+    cursor.execute('SELECT password FROM users WHERE username = %s',
+                   (username,))
+    result = cursor.fetchone()
+    if result:
+        return pbkdf2_sha256.verify(password, result[0])
+    return False
+
+def main():
+    st.set_page_config(layout="centered", page_icon="🌾")
+    st.title("Agro Analytics")
+    connection = create_connection()
+    create_users_table(connection)
+
+    page = st.sidebar.radio("", ["Login", "Register"])
+
+    if page == "Register":
+        st.header("Register")
+        new_username = st.text_input("Enter your username:")
+        new_password = st.text_input("Enter your password:", type="password")
+        if st.button("Register"):
+            register_user(connection, new_username, new_password)
+            st.success("Registration successful!")
+
+    elif page == "Login":
+        st.header("Login")
+        username = st.text_input("Enter your username:")
+        password = st.text_input("Enter your password:", type="password")
+        if st.button("Login"):
+            if authenticate_user(connection, username, password):
+                st.success("Login successful!")
+                st.session_state["my_input"] = "success"
+            else:
+                st.error("Authentication failed.")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--weights", default="best.pt")
-    parser.add_argument("--source", required=True)
-    parser.add_argument("--conf", type=float, default=0.5)
-    args = parser.parse_args()
-
-    model = load_model(args.weights)
-    results = detect_snake(model, args.source, args.conf)
-    process_results(results)`,
+    main()`,
     },
     {
         id: "2",
-        title: "train.py",
-        description: "Training script for the YOLOv8 snake detection model",
-        code: `from ultralytics import YOLO
+        title: "1_Crop_Recommendation.py",
+        description: "ML crop recommendation using RandomForest, XGBoost, and Naive Bayes",
+        code: `import streamlit as st
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.pipeline import make_pipeline
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
+from sklearn.naive_bayes import GaussianNB
 
-def train_model():
-    """Train YOLOv8 model on snake dataset."""
-    model = YOLO("yolov8n.pt")  # Load pretrained model
+if st.session_state['my_input'] == 'success':
+    st.title("Crop Recommendation")
 
-    results = model.train(
-        data="data.yaml",
-        epochs=100,
-        imgsz=640,
-        batch=16,
-        name="snake_detection",
-        patience=20,
-        save=True,
-        plots=True
+    # Load dataset
+    df = pd.read_csv("dataset/Crop_recommendation.csv")
+
+    # Prepare features and labels
+    X = df[['temperature', 'humidity', 'ph', 'rainfall']]
+    y = df['label']
+
+    le = LabelEncoder()
+    y_encoded = le.fit_transform(y)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y_encoded, test_size=0.2, random_state=42
     )
-    return results
 
-def validate_model(weights_path):
-    """Validate the trained model."""
-    model = YOLO(weights_path)
-    metrics = model.val()
-    print(f"mAP50: {metrics.box.map50:.4f}")
-    print(f"mAP50-95: {metrics.box.map:.4f}")
-    return metrics
+    # Train models
+    models = {
+        "Random Forest": make_pipeline(StandardScaler(),
+                         RandomForestClassifier()),
+        "XGBoost": make_pipeline(StandardScaler(),
+                    XGBClassifier()),
+        "Naive Bayes": make_pipeline(StandardScaler(),
+                       GaussianNB()),
+    }
 
-if __name__ == "__main__":
-    train_model()
-    validate_model("runs/detect/snake_detection/weights/best.pt")`,
+    # User input
+    temp = st.number_input("Temperature (°C)", 0.0, 50.0)
+    humidity = st.number_input("Humidity (%)", 0.0, 100.0)
+    ph = st.number_input("pH Level", 0.0, 14.0)
+    rainfall = st.number_input("Rainfall (mm)", 0.0, 500.0)
+
+    if st.button("Recommend Crop"):
+        input_data = np.array([[temp, humidity, ph, rainfall]])
+        for name, model in models.items():
+            model.fit(X_train, y_train)
+            pred = model.predict(input_data)
+            crop = le.inverse_transform(pred)
+            st.write(f"{name}: {crop[0]}")`,
     },
     {
         id: "3",
-        title: "app.py",
-        description: "Streamlit web app for interactive snake detection",
+        title: "2_Crop_Health.py",
+        description: "YOLOv8 crop disease detection from uploaded images",
         code: `import streamlit as st
+import cv2
 from ultralytics import YOLO
 from PIL import Image
-import cv2
+import io
 import tempfile
+import os
 
-st.set_page_config(page_title="Snake Detection", page_icon="🐍")
-st.title("🐍 Snake Detection System")
+if st.session_state['my_input'] == 'success':
+    def saveImage(fileUpload, folderPath):
+        file = fileUpload.read()
+        fileName = fileUpload.name
+        if not os.path.exists(folderPath):
+            os.makedirs(folderPath)
+        with open(os.path.join(folderPath, fileName), "wb") as f:
+            f.write(file)
 
-model = YOLO("best.pt")
+    model = YOLO('model/best.pt')
 
-option = st.selectbox("Input Source",
-    ["Upload Image", "Upload Video", "Live Camera"])
+    st.title("Crop Health Monitoring")
 
-if option == "Upload Image":
-    uploaded = st.file_uploader("Upload an image",
-        type=["jpg", "png", "jpeg"])
-    if uploaded:
-        image = Image.open(uploaded)
-        results = model.predict(source=image, conf=0.5)
-        annotated = results[0].plot()
-        st.image(annotated, caption="Detection Results",
-                 use_column_width=True)
+    option = st.selectbox("Choose an option",
+        ["Upload an Image", "Upload a Video", "Live Feed"])
 
-        for box in results[0].boxes:
-            cls = int(box.cls[0])
-            conf = float(box.conf[0])
-            label = results[0].names[cls]
-            st.success(f"Detected: {label} ({conf:.2%})")
-
-elif option == "Upload Video":
-    uploaded = st.file_uploader("Upload a video",
-        type=["mp4", "avi", "mov"])
-    if uploaded:
-        tfile = tempfile.NamedTemporaryFile(delete=False)
-        tfile.write(uploaded.read())
-        st.video(tfile.name)
-        st.info("Processing video for detections...")`,
+    if option == "Upload an Image":
+        fileUpload = st.file_uploader("Upload a crop image",
+            type=["jpg", "png", "jpeg"])
+        if fileUpload is not None:
+            image = Image.open(fileUpload)
+            results = model.predict(source=image)
+            annotated = results[0].plot()
+            st.image(annotated, caption="Detection Results",
+                     use_column_width=True)`,
     },
 ];
 
 const terminalOutput = [
-    { type: "cmd" as const, text: "python detect.py --weights best.pt --source test_images/" },
-    { type: "info" as const, text: "Loading YOLOv8 model (best.pt)..." },
-    { type: "success" as const, text: "Model loaded successfully ✓" },
+    { type: "cmd" as const, text: "streamlit run AgroAnalytics.py" },
+    { type: "success" as const, text: "You can now view your Streamlit app in your browser." },
+    { type: "info" as const, text: "Local URL: http://localhost:8501" },
     { type: "divider" as const, text: "─".repeat(56) },
-    { type: "info" as const, text: "Processing: snake_01.jpg" },
-    { type: "success" as const, text: "Detected: Indian Cobra (0.94)" },
-    { type: "info" as const, text: "Processing: snake_02.jpg" },
-    { type: "success" as const, text: "Detected: King Cobra (0.89)" },
-    { type: "info" as const, text: "Processing: snake_03.jpg" },
-    { type: "success" as const, text: "Detected: Russell's Viper (0.91)" },
+    { type: "success" as const, text: "Login successful! ✓" },
+    { type: "info" as const, text: "Loading Crop Recommendation module..." },
+    { type: "info" as const, text: "Training RandomForest on 2200 samples..." },
+    { type: "success" as const, text: "RandomForest: Rice 🌾" },
+    { type: "success" as const, text: "XGBoost: Rice 🌾" },
+    { type: "success" as const, text: "NaiveBayes: Rice 🌾" },
     { type: "divider" as const, text: "─".repeat(56) },
-    { type: "result" as const, text: "3 images processed, 3 detections found" },
-    { type: "success" as const, text: "Results saved to runs/detect/ ✓" },
+    { type: "info" as const, text: "Loading YOLO model (model/best.pt)..." },
+    { type: "success" as const, text: "Crop Health Detection ready ✓" },
+    { type: "info" as const, text: "Uploaded: tomato_leaf.jpg" },
+    { type: "result" as const, text: " => Detected: Early Blight (confidence: 0.92)" },
+    { type: "success" as const, text: "Analysis complete ✓" },
     { type: "divider" as const, text: "─".repeat(56) },
     { type: "info" as const, text: "📌 This is sample terminal output." },
     { type: "info" as const, text: "For full source code & docs, visit GitHub ↓" },
-    { type: "result" as const, text: "→ github.com/prathapselvakumar/Snake-detection" },
+    { type: "result" as const, text: "→ github.com/prathapselvakumar/Agro-Analytics" },
 ];
 
 const repo = {
-    name: "Snake-detection",
-    description: "A YOLOv8-powered snake detection and classification system that identifies snake species from images, video, and live camera feed, helping users determine if a snake is venomous or non-venomous.",
+    name: "Agro-Analytics",
+    description: "A Streamlit-based agricultural analytics platform with ML crop recommendation (RandomForest, XGBoost), YOLOv8 crop health detection, weather forecasting, and MySQL user authentication.",
     language: "Python",
     languageColor: "hsl(50 70% 50%)",
     stars: 0,
     forks: 0,
-    url: "https://github.com/prathapselvakumar/Snake-detection",
-    topics: ["python", "yolov8", "deep-learning", "object-detection", "snake-detection", "computer-vision"],
+    url: "https://github.com/prathapselvakumar/Agro-Analytics",
+    topics: ["python", "streamlit", "machine-learning", "yolov8", "agriculture", "crop-recommendation"],
 };
 
 /* ─── Page ─── */
@@ -306,19 +354,12 @@ const Index = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [visibleLines, setVisibleLines] = useState(0);
     const terminalRef = useRef<HTMLDivElement>(null);
-
-    const project = projects.find(p => p.id === 'snake-detection');
+    const project = projects.find(p => p.id === 'agro-analytics');
 
     if (!project) return null;
-    const navItems = [
-        { name: 'Home', url: '#hero', icon: Home },
-        { name: 'Features', url: '#features', icon: Layers },
-        { name: 'Source', url: '#code', icon: Code2 },
-        { name: 'Demo', url: '#demo', icon: Terminal },
-        { name: 'GitHub', url: '#github', icon: Github },
-        ...(project?.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
-    ];
+    const [activeSection, setActiveSection] = useState("hero");
 
+    // Scroll-based section detection for active navigation links
     useEffect(() => {
         const observerOptions = {
             root: null,
@@ -327,26 +368,31 @@ const Index = () => {
         };
 
         const observerCallback = (entries: IntersectionObserverEntry[]) => {
-            entries.forEach(entry => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    const id = entry.target.id;
-                    const navItem = navItems.find(item => item.url === `#${id}`);
-                    if (navItem) {
-                        // The NavBar handles its own state
-                    }
+                    setActiveSection(entry.target.id);
                 }
             });
         };
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
-        const sections = ['hero', 'features', 'code', 'demo', 'github'];
+        const sections = ['hero', 'features', 'code', 'demo', 'github', 'team'];
         sections.forEach(id => {
             const el = document.getElementById(id);
             if (el) observer.observe(el);
         });
 
         return () => observer.disconnect();
-    }, [navItems]);
+    }, []);
+
+    const navItems = [
+        { name: 'Home', url: '#hero', icon: Home },
+        { name: 'Features', url: '#features', icon: Layers },
+        { name: 'Source', url: '#code', icon: Code2 },
+        { name: 'Demo', url: '#demo', icon: Terminal },
+        { name: 'GitHub', url: '#github', icon: Github },
+        ...(project?.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
+    ];
 
     const handleRun = () => {
         setIsRunning(true);
@@ -379,11 +425,11 @@ const Index = () => {
 
     return (
         <main className="min-h-screen bg-background w-full overflow-hidden">
-            {/* ═══ Navigation ═══ */}
+            {/* ─── Navigation ─── */}
             {/* Project Title (Top Left) */}
             <div className="hidden lg:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <Terminal className="w-4 h-4 text-primary" />
-                <span className="font-mono font-bold text-sm tracking-tight">Snake Detection</span>
+                <span className="font-mono font-bold text-sm tracking-tight">Agro Analytics</span>
             </div>
 
             {/* Theme Toggle (Top Right) */}
@@ -400,44 +446,47 @@ const Index = () => {
                 }}
             />
 
+            {/* SVG Filter removed */}
+
+            {/* ═══ Hero ═══ */}
             <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center">
-                       
-                                       {/* Background Image */}
-                                       <div className="absolute inset-0 z-0">
-                                           <img
-                                               src={project.image}
-                                               alt=""
-                                               className="w-full h-full object-cover opacity-80 dark:opacity-40"
-                                           />
-                                           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
-                                           <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
-                                       </div>
-                       
+            
+                            {/* Background Image */}
+                            <div className="absolute inset-0 z-0">
+                                <img
+                                    src={project.image}
+                                    alt=""
+                                    className="w-full h-full object-cover opacity-80 dark:opacity-40"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+                            </div>
+            
                             <div className="relative z-10 max-w-4xl pt-20">
-                                           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
-                                               <span className="gradient-text">{project.title}</span>
-                                           </h1>
-                                           <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
-                                               {project.description}
-                                           </p>
-                       
-                                           <div className="mt-8 flex flex-wrap justify-center gap-2">
-                                               {project.categories.map((cat) => (
-                                                   <span
-                                                       key={cat}
-                                                       className="px-4 py-2 rounded-full border text-xs font-mono"
-                                                   >
-                                                       {cat}
-                                                   </span>
-                                               ))}
-                                           </div>
-                                       </div>
-                                   </section>
+                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
+                                    <span className="gradient-text">{project.title}</span>
+                                </h1>
+                                <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
+                                    {project.description}
+                                </p>
+            
+                                <div className="mt-8 flex flex-wrap justify-center gap-2">
+                                    {project.categories.map((cat) => (
+                                        <span
+                                            key={cat}
+                                            className="px-4 py-2 rounded-full border text-xs font-mono"
+                                        >
+                                            {cat}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
 
             {/* ═══ Features ═══ */}
             <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40" >
                 <div className="max-w-6xl mx-auto">
-                    <SectionHeader label="# features" title="What It Does" description="Core capabilities of the snake detection system." />
+                    <SectionHeader label="# features" title="What It Does" description="Core capabilities of the Agro Analytics platform." />
                     
                     {/* Responsive Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-6">
@@ -448,14 +497,22 @@ const Index = () => {
                         <PlusCard {...cardContents[4]} className="lg:col-span-2 lg:row-span-1" />
                     </div>
 
-                   
+                    {/* Section Footer Heading */}
+                    <div className="max-w-2xl ml-auto text-right px-4 mt-12 lg:-mt-20 relative z-20">
+                        <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
+                            Built for growth. Designed for farmers.
+                        </h2>
+                        <p className="text-muted-foreground text-lg leading-relaxed">
+                            Agro Analytics combines advanced machine learning with practical agricultural data to empower rural decision-making. From health monitoring to weather-aware planning, every tool is optimized for sustainable and data-driven farming.
+                        </p>
+                    </div>
                 </div>
             </section >
 
             {/* ═══ Source Code ═══ */}
             <section id="code" className="py-16 md:py-24 px-4 sm:px-6">
                 <div className="max-w-6xl mx-auto">
-                    <SectionHeader label="# source" title="Project Source Code" description="Browse the core Python modules that power the Snake Detection system." />
+                    <SectionHeader label="# source" title="Project Source Code" description="Browse the core Python modules that power the Agro Analytics platform." />
 
                     <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-4 animate-fade-in">
                         {/* File list */}
@@ -507,7 +564,7 @@ const Index = () => {
             {/* ═══ Terminal Demo ═══ */}
             <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
                 <div className="max-w-4xl mx-auto">
-                    <SectionHeader label="# demo" title="Live Terminal Output" description="See the Snake Detection system in action. Click Run to simulate." />
+                    <SectionHeader label="# demo" title="Live Terminal Output" description="See the Agro Analytics platform in action. Click Run to simulate." />
 
                     <div className="rounded-lg border border-border overflow-hidden bg-background animate-fade-in">
                         {/* Terminal title bar */}
@@ -516,7 +573,7 @@ const Index = () => {
                                 <div className="w-3 h-3 rounded-full bg-destructive/60" />
                                 <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
                                 <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                <span className="ml-3 text-xs text-muted-foreground font-mono">terminal — python</span>
+                                <span className="ml-3 text-xs text-muted-foreground font-mono">terminal — streamlit</span>
                             </div>
                             <button
                                 onClick={handleRun}
@@ -566,7 +623,7 @@ const Index = () => {
                                     <h3 className="font-mono text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors truncate">{repo.name}</h3>
                                     <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
                                 </div>
-                                <p className="text-sm text-muted-foreground leading-relaxed mb-5 break-words max-w-lg text-center sm:text-left">{repo.description}</p>
+                                <p className="text-sm text-muted-foreground leading-relaxed mb-5 break-words max-w-lg">{repo.description}</p>
                                 <div className="flex flex-wrap justify-center sm:justify-start gap-2">
                                     {repo.topics.map((topic) => (
                                         <span key={topic} className="px-2.5 py-1 rounded border border-border bg-secondary text-secondary-foreground text-xs font-mono break-all sm:break-normal">{topic}</span>
@@ -590,10 +647,10 @@ const Index = () => {
                     <div className="mt-6 rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in overflow-x-auto" style={{ animationDelay: "0.1s" }}>
                         <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
                         <div className="space-y-2 text-foreground min-w-max">
-                            <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Snake-detection.git</div>
-                            <div><span className="text-primary">$</span> cd Snake-detection</div>
+                            <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Agro-Analytics.git</div>
+                            <div><span className="text-primary">$</span> cd Agro-Analytics</div>
                             <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
-                            <div><span className="text-primary">$</span> python detect.py --source test_images/</div>
+                            <div><span className="text-primary">$</span> streamlit run AgroAnalytics.py</div>
                         </div>
                     </div>
                 </div>
@@ -615,14 +672,14 @@ const Index = () => {
             <footer className="border-t border-border py-10 px-4 sm:px-6">
                 <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <span className="font-mono text-xs text-muted-foreground">
-                        <span className="text-primary">$</span> echo "© {new Date().getFullYear()} Snake-Detection"
+                        <span className="text-primary">$</span> echo "© {new Date().getFullYear()} Agro-Analytics"
                     </span>
                     <a href={repo.url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
                         <Github className="w-5 h-5" />
                     </a>
                 </div>
             </footer>
-        </main >
+        </main>
     );
 };
 

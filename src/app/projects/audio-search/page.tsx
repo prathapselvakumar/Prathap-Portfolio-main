@@ -1,13 +1,24 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Layers, Home, Search, Terminal, Github, ExternalLink, Star, Code2, Play, Square, ChevronRight, Cpu, Zap, Database, Check, AlertCircle, Loader2, User } from "lucide-react";
+import { Layers, Home, Terminal, Github, ExternalLink, Star, Code2, Play, Square, ChevronRight, Cpu, Zap, Database, Search, MessageSquare, Mic, Share2, User, Check, AlertCircle, Loader2 } from "lucide-react";
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
-import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Testimonials } from "@/components/Testimonials";
 import { projects } from "@/lib/projects";
+
+const iconMap: Record<string, any> = {
+    Cpu,
+    Zap,
+    Database,
+    Search,
+    Mic,
+    MessageSquare,
+    Share2,
+    Check,
+    AlertCircle,
+    Loader2,
+};
 
 /* ─── Typing effect hook ─── */
 const useTypingEffect = (text: string, speed = 40, startDelay = 0) => {
@@ -51,21 +62,69 @@ const TerminalLine = ({ prefix = "$", text, delay = 0, className = "" }: { prefi
 
 /* ─── Section Header ─── */
 const SectionHeader = ({ label, title, description }: { label: string; title: string; description?: string }) => (
-    <div className="mb-12 text-center">
+    <div className="mb-12 text-left">
         <span className="text-primary font-mono text-xs tracking-[0.3em] uppercase block mb-2 md:mb-3">{label}</span>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-3 md:mb-4 text-foreground">{title}</h2>
-        {description && <p className="text-muted-foreground max-w-xl mx-auto text-lg leading-relaxed">{description}</p>}
-        <div className="mt-6 h-px w-20 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto" />
+        {description && <p className="text-muted-foreground max-w-xl text-lg leading-relaxed">{description}</p>}
+        <div className="mt-6 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
     </div>
 );
 
-/* ─── Data ─── */
-const features = [
-    { icon: Cpu, title: "Audio Fingerprinting", desc: "Generates unique acoustic fingerprints from audio channels using spectral analysis and hashing." },
-    { icon: Database, title: "SQLite Storage", desc: "Stores fingerprints in SQLite database for fast lookup and matching against recorded audio." },
-    { icon: Zap, title: "Real-Time Listening", desc: "Records audio from microphone in real-time and matches it against the fingerprint database." },
-    { icon: Search, title: "Hash Matching", desc: "Finds matching songs by comparing fingerprint hashes with confidence scoring and offset alignment." },
-];
+const PlusIcon = ({ className }: { className?: string }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        width={24}
+        height={24}
+        strokeWidth="1"
+        stroke="currentColor"
+        className={`dark:text-white text-black size-6 ${className}`}
+    >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+    </svg>
+);
+
+const CornerPlusIcons = () => (
+    <>
+        <PlusIcon className="absolute -top-3 -left-3" />
+        <PlusIcon className="absolute -top-3 -right-3" />
+        <PlusIcon className="absolute -bottom-3 -left-3" />
+        <PlusIcon className="absolute -bottom-3 -right-3" />
+    </>
+);
+
+const PlusCard = ({
+    className = "",
+    title,
+    description,
+    Icon,
+}: {
+    className?: string;
+    title: string;
+    description: string;
+    Icon: any;
+}) => (
+    <div
+        className={`relative border border-dashed border-zinc-400 dark:border-zinc-700 rounded-lg p-6 bg-white dark:bg-zinc-950 min-h-[200px] flex flex-col justify-between ${className}`}
+    >
+        <CornerPlusIcons />
+        <div className="relative z-10 space-y-2">
+            <div className="mb-3">
+                <Icon className="w-7 h-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                {title}
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                {description}
+            </p>
+        </div>
+    </div>
+);
+
+/* ─── Bento Grid Components ─── */
+ 
 
 const codeSnippets = [
     {
@@ -437,20 +496,39 @@ const Index = () => {
                        </section>
 
             {/* ═══ Features ═══ */}
-            <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6" >
+            <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40">
                 <div className="max-w-6xl mx-auto">
-                    <SectionHeader label="# features" title="What It Does" description="Core capabilities of the auto search engine." />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {features.map((f, i) => (
-                            <div key={i} className="group p-6 rounded border border-border bg-card hover:border-primary/40 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
-                                <f.icon className="w-8 h-8 text-primary mb-4 transition-all" />
-                                <h3 className="font-mono font-bold text-foreground mb-2 text-sm">{f.title}</h3>
-                                <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
-                            </div>
-                        ))}
+                    <SectionHeader
+                        label="# features"
+                        title="What It Does"
+                        description="Core capabilities of the Audio Search Engine."
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-6">
+                        {project.features?.map((feature, index) => {
+                            const Icon = iconMap[feature.icon] || Cpu;
+                            const spanClass =
+                                index === 0
+                                    ? "lg:col-span-3 lg:row-span-2"
+                                    : index === 1
+                                    ? "lg:col-span-3 lg:row-span-2"
+                                    : index === 2
+                                    ? "lg:col-span-4 lg:row-span-1"
+                                    : "lg:col-span-2 lg:row-span-1";
+
+                            return (
+                                <PlusCard
+                                    key={index}
+                                    className={spanClass}
+                                    Icon={Icon}
+                                    title={feature.title}
+                                    description={feature.desc}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* ═══ Source Code ═══ */}
             <section id="code" className="py-16 md:py-24 px-4 sm:px-6">

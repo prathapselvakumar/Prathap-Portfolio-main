@@ -257,6 +257,50 @@ if __name__ == '__main__':
             repos: []
         },
         {
+            id: 'a-start-algorithm',
+            title: 'A-Star Algorithm',
+            description: 'Interactive A* path planner for grid navigation with obstacle placement and route replay',
+            image: '/Thumbnails/Project Thumbnails/a-star-path-planning.svg',
+            categories: ['Algorithms'],
+            size: 'small',
+            repoUrl: 'https://github.com/prathapselvakumar/AMR-Coursework-2',
+            features: [
+                { icon: 'Cpu', title: "A* Path Planning", desc: "Computes shortest paths on a dynamic grid using heuristic-based search." },
+                { icon: 'Activity', title: "Interactive Controls", desc: "Set start/end points, paint obstacles, and launch live route calculations." },
+            { icon: 'Activity', title: "Path Validation", desc: "Validates and visualizes each computed step with clear state feedback and messages." },
+            { icon: 'Layers', title: "Grid Resizing", desc: "Adjust grid dimensions at runtime to test algorithm behavior on different planning resolutions." },
+            { icon: 'Wifi', title: "Path Cost Diagnostics", desc: "Tracks algorithm iteration costs and highlights when heuristic costs lead to faster route convergence." },
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "PathPlannerApp.tsx",
+                    description: "Interactive React implementation of A* grid path planning.",
+                    language: "TypeScript",
+                    code: `type Cell = [number, number];
+
+function heuristic(a: Cell, b: Cell): number {
+    const dx = a[0] - b[0];
+    const dy = a[1] - b[1];
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+function doAStar(
+    start: Cell,
+    end: Cell
+) {
+    // Explore open set using g-cost + heuristic
+    const openSet: Cell[] = [start];
+    ...
+}`
+                }
+            ],
+            terminalOutput: [],
+            videos: [],
+            files: [],
+            repos: []
+        },
+        {
             id: 'agro-analytics',
             title: 'Agro Analytics ',
             description: 'AI-driven crop monitoring and predictive analytics system',

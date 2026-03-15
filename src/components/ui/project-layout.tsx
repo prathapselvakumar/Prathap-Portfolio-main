@@ -31,13 +31,15 @@ import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { Button } from "@/components/ui/button";
 import { Project } from "@/lib/projects";
 import LeoRoverExploded from "@/app/projects/leo-rover/LeoRoverExploded";
+import PathPlannerApp from "@/app/projects/a-start-algorithm/PathPlannerApp";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { motion } from "framer-motion";
 
 import { Testimonials } from '@/components/Testimonials';
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import HardwareShowcase from "@/components/ui/spatial-product-showcase";
-import { getYouTubeThumbnail } from "@/lib/utils";
+import { getYouTubeThumbnail, cn } from "@/lib/utils";
+import RuixenBentoCards from "@/components/ui/ruixen-bento-cards";
 
 import {
     Dialog,
@@ -93,6 +95,59 @@ const SectionHeader = ({
 );
 
 /* ─── Typing effect hook ─── */
+const AStarPlusIcon = ({ className }: { className?: string }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        width={24}
+        height={24}
+        strokeWidth="1"
+        stroke="currentColor"
+        className={`dark:text-white text-black size-6 ${className || ""}`}
+    >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+    </svg>
+);
+
+const AStarCornerPlusIcons = () => (
+    <>
+        <AStarPlusIcon className="absolute -top-3 -left-3" />
+        <AStarPlusIcon className="absolute -top-3 -right-3" />
+        <AStarPlusIcon className="absolute -bottom-3 -left-3" />
+        <AStarPlusIcon className="absolute -bottom-3 -right-3" />
+    </>
+);
+
+const AStarFeatureCard = ({
+    className = "",
+    title,
+    description,
+    Icon,
+}: {
+    className?: string;
+    title: string;
+    description: string;
+    Icon: any;
+}) => (
+    <div
+        className={cn(
+            "relative border border-dashed border-zinc-400 dark:border-zinc-700 rounded-lg p-6 bg-white dark:bg-zinc-950 min-h-[200px]",
+            "flex flex-col justify-between",
+            className,
+        )}
+    >
+        <AStarCornerPlusIcons />
+        <div className="relative z-10 space-y-2">
+            <div className="mb-3">
+                <Icon className="w-7 h-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{title}</h3>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{description}</p>
+        </div>
+    </div>
+);
+
 const useTypingEffect = (text: string, speed = 40, startDelay = 0) => {
     const [displayed, setDisplayed] = useState("");
     const [done, setDone] = useState(false);
@@ -188,6 +243,9 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
     }));
 
     const isAIMLProject = ["audio-search", "agro-analytics", "snake-detection"].includes(project.id);
+    const isAStarProject = project.id === "a-start-algorithm";
+    const isAutonomousRobotProject = project.id === "autonomous-robot";
+    const hasDemo = isAStarProject || (!!project.terminalOutput && project.terminalOutput.length > 0);
 
     // Build nav items from project sections
     const navItems = [
@@ -197,7 +255,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
         ...(project.files && project.files.length > 0 ? [{ name: 'Design', url: '#files', icon: Ruler }] : []),
         ...(project.videos && project.videos.length > 0 ? [{ name: 'Videos', url: '#videos', icon: Play }] : []),
         ...(project.codeSnippets && project.codeSnippets.length > 0 ? [{ name: isAIMLProject ? 'Source' : 'Code', url: isAIMLProject ? '#sources' : '#code', icon: Code2 }] : []),
-        ...(project.terminalOutput && project.terminalOutput.length > 0 ? [{ name: isAIMLProject ? 'Demo' : 'Demo', url: '#demo', icon: Terminal }] : []),
+        ...(hasDemo ? [{ name: isAIMLProject ? 'Demo' : 'Demo', url: '#demo', icon: Terminal }] : []),
         ...(project.repoUrl ? [{ name: isAIMLProject ? 'GitHub' : 'GitHub', url: '#github', icon: Github }] : []),
         ...(project.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
     ];
@@ -350,6 +408,35 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                     </div>
                     <LeoRoverExploded />
                 </section>
+            ) : isAStarProject ? (
+                <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40">
+                    <div className="max-w-6xl mx-auto">
+                        <SectionHeader
+                            label="# features"
+                            title="What It Does"
+                            description="Core capabilities of the A-Star path planning system."
+                        />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-6">
+                            {features?.map((f, i) => (
+                                <AStarFeatureCard
+                                    key={i}
+                                    Icon={f.Icon}
+                                    title={f.title}
+                                    description={f.desc}
+                                    className={
+                                        i === 0
+                                            ? "lg:col-span-3 lg:row-span-2"
+                                            : i === 1
+                                            ? "lg:col-span-3 lg:row-span-2"
+                                            : i === 2
+                                            ? "lg:col-span-4 lg:row-span-1"
+                                            : "lg:col-span-2 lg:row-span-1"
+                                    }
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </section>
             ) : features && features.length > 0 && (
                 <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6">
                     <div className="max-w-6xl mx-auto w-full">
@@ -358,19 +445,10 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             title="Key Features"
                             description="Core technologies and system features."
                         />
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {features.map((f, i) => (
-                                <div
-                                    key={i}
-                                    className="p-6 rounded border bg-card hover:border-primary transition"
-                                >
-                                    <f.Icon className="w-8 h-8 text-primary mb-4" />
-                                    <h3 className="font-bold mb-2">{f.title}</h3>
-                                    <p className="text-sm text-muted-foreground">{f.desc}</p>
-                                </div>
-                            ))}
-                        </div>
+                        <RuixenBentoCards
+                            title={project.title}
+                            subtitle={`A quick look at how ${project.title} works, from input signals to practical outcomes.`}
+                        />
                     </div>
                 </section>
             )}
@@ -644,12 +722,21 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
             )}
 
             {/* ─── Demo ─── */}
-            {project.terminalOutput && project.terminalOutput.length > 0 && (
+            {hasDemo && (
                 <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
                     <div className="max-w-4xl mx-auto">
-                        <SectionHeader label="# demo" title={isAIMLProject ? "Demo" : "Live Terminal Output"} description="Simulated console execution." />
+                        <SectionHeader
+                            label="# demo"
+                            title={isAStarProject ? "A* Path Planner Demo" : "Live Terminal Output"}
+                            description={isAStarProject ? "Interactive A-star visualization for obstacle-aware routing." : "Simulated console execution."}
+                        />
 
-                        <div className="rounded-lg border border-border overflow-hidden bg-background shadow-2xl">
+                        {isAStarProject ? (
+                            <div className="rounded-lg border border-border overflow-hidden bg-background">
+                                <PathPlannerApp />
+                            </div>
+                        ) : (
+                            <div className="rounded-lg border border-border overflow-hidden bg-background shadow-2xl">
                             {/* Terminal title bar */}
                             <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
                                 <div className="flex items-center gap-2">
@@ -676,7 +763,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                         <span className="cursor-blink text-primary">▋</span>
                                     </div>
                                 )}
-                                {project.terminalOutput.slice(0, visibleLines).map((line, i) => (
+                                {project.terminalOutput?.slice(0, visibleLines).map((line, i) => (
                                     <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
                                         {line.type === "cmd" ? (
                                             <span><span className="text-primary">$ </span>{line.text}</span>
@@ -688,8 +775,9 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                 {isRunning && (
                                     <span className="cursor-blink text-primary">▋</span>
                                 )}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </section>
             )}
@@ -723,6 +811,30 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                     <ExternalLink className="w-4 h-4" />
                                 </div>
                             </a>
+                            {isAStarProject && (
+                                <div className="rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in overflow-x-auto" style={{ animationDelay: "0.1s" }}>
+                                    <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
+                                    <div className="space-y-2 text-foreground min-w-max">
+                                        <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/AMR-Coursework-2</div>
+                                        <div><span className="text-primary">$</span> cd AMR-Coursework-2</div>
+                                        <div><span className="text-primary">$</span> python -m venv .venv</div>
+                                        <div><span className="text-primary">$</span> . .venv/bin/activate</div>
+                                        <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
+                                        <div><span className="text-primary">$</span> python a_star_algorithm.py</div>
+                                    </div>
+                                </div>
+                            )}
+                            {isAutonomousRobotProject && (
+                                <div className="rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in overflow-x-auto" style={{ animationDelay: "0.1s" }}>
+                                    <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
+                                    <div className="space-y-2 text-foreground min-w-max">
+                                        <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Leo-Rover.git</div>
+                                        <div><span className="text-primary">$</span> cd Leo-Rover</div>
+                                        <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
+                                        <div><span className="text-primary">$</span> python3 src/main.py</div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>

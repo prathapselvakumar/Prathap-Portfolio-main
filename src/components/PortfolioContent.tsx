@@ -92,7 +92,13 @@ export function PortfolioContent() {
 
 
   // Extract unique categories
-  const allCategories = ['All', ...Array.from(new Set(projects.flatMap((p) => p.categories)))];
+  const discoveredCategories = Array.from(new Set(projects.flatMap((p) => p.categories)));
+  const preferredOrder = ['Robotics', 'AI/ML', 'Algorithms', 'Computer Vision'];
+  const orderedCategories = [
+    ...preferredOrder.filter((category) => discoveredCategories.includes(category)),
+    ...discoveredCategories.filter((category) => !preferredOrder.includes(category)),
+  ];
+  const allCategories = ['All', ...orderedCategories];
 
   // Filter projects based on selected category
   const filteredProjects = selectedCategory === 'All' ?

@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Testimonials } from "@/components/Testimonials";
 import { projects } from "@/lib/projects";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 /* ─── Typing effect hook ─── */
 const useTypingEffect = (text: string, speed = 40, startDelay = 0) => {
@@ -50,21 +52,97 @@ const TerminalLine = ({ prefix = "$", text, delay = 0, className = "" }: { prefi
 
 /* ─── Section Header ─── */
 const SectionHeader = ({ label, title, description }: { label: string; title: string; description?: string }) => (
-    <div className="mb-12 text-center">
+    <div className="mb-12 text-left">
         <span className="text-primary font-mono text-xs tracking-[0.3em] uppercase block mb-2 md:mb-3">{label}</span>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-3 md:mb-4 text-foreground">{title}</h2>
-        {description && <p className="text-muted-foreground max-w-xl mx-auto text-lg leading-relaxed">{description}</p>}
-        <div className="mt-6 h-px w-20 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto" />
+        {description && <p className="text-muted-foreground max-w-xl text-lg leading-relaxed">{description}</p>}
+        <div className="mt-6 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
     </div>
 );
 
-/* ─── Data ─── */
-const features = [
-    { icon: Cpu, title: "Crop Recommendation", desc: "ML-powered crop suggestions using RandomForest and XGBoost based on temperature, humidity, pH, and rainfall." },
-    { icon: Database, title: "MySQL Database", desc: "Secure user authentication with hashed passwords stored in MySQL, managing user sessions via Streamlit." },
-    { icon: Zap, title: "Crop Health Detection", desc: "YOLOv8 object detection model analyzes uploaded crop images to identify diseases and health status." },
-    { icon: Search, title: "Weather Forecasting", desc: "Integrates real-time weather data and forecasting to help farmers plan agricultural activities." },
-];
+/* ─── Bento Grid Components ─── */
+const cardContents = [
+  {
+    title: "Crop Recommendation",
+    description:
+      "ML-powered crop suggestions using RandomForest and XGBoost based on temperature, humidity, pH, and rainfall data.",
+  },
+  {
+    title: "Secure MySQL Data",
+    description:
+      "Robust user authentication and session management with MySQL, featuring salted and hashed passwords for maximum security.",
+  },
+  {
+    title: "Crop Health Monitoring",
+    description:
+      "State-of-the-art YOLOv8 object detection model that analyzes uploaded crop images to identify diseases, nutrient deficiencies, and overall health status. The system provides immediate visual feedback with bounding boxes and classification labels, helping farmers make informed decisions about pest control and fertilization. Optimized to run efficiently on mobile and desktop interfaces, ensuring accessibility in the field.",
+  },  
+  {
+    title: "Weather Forecasting",
+    description:
+      "Integration with real-time weather APIs to provide accurate local forecasts, helping farmers plan irrigation and harvest schedules.",
+  },
+  {
+    title: "Streamlit Interface",
+    description:
+      "A clean, interactive web dashboard built with Streamlit, providing a seamless user experience across all devices.",
+  },
+]
+
+const PlusCard: React.FC<{
+  className?: string
+  title: string
+  description: string
+}> = ({
+  className = "",
+  title,
+  description,
+}) => {
+  return (
+    <div
+      className={cn(
+        "relative border border-dashed border-zinc-400 dark:border-zinc-700 rounded-lg p-6 bg-white dark:bg-zinc-950 min-h-[200px]",
+        "flex flex-col justify-between",
+        className
+      )}
+    >
+      <Link href="https://github.com/prathapselvakumar/Agro-Analytics">
+        <CornerPlusIcons />
+        {/* Content */}
+        <div className="relative z-10 space-y-2">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+            {title}
+          </h3>
+          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{description}</p>
+        </div>
+      </Link>
+    </div>
+  )
+}
+
+const CornerPlusIcons = () => (
+  <>
+    <PlusIcon className="absolute -top-3 -left-3" />
+    <PlusIcon className="absolute -top-3 -right-3" />
+    <PlusIcon className="absolute -bottom-3 -left-3" />
+    <PlusIcon className="absolute -bottom-3 -right-3" />
+  </>
+)
+
+const PlusIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    width={24}
+    height={24}
+    strokeWidth="1"
+    stroke="currentColor"
+    className={`dark:text-white text-black size-6 ${className}`}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+  </svg>
+)
 
 const codeSnippets = [
     {
@@ -406,20 +484,22 @@ const Index = () => {
                         </section>
 
             {/* ═══ Features ═══ */}
-            <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6">
+            <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40" >
                 <div className="max-w-6xl mx-auto">
                     <SectionHeader label="# features" title="What It Does" description="Core capabilities of the Agro Analytics platform." />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {features.map((f, i) => (
-                            <div key={i} className="group p-6 rounded border border-border bg-card hover:border-primary/40 hover:box-glow transition-all duration-300 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
-                                <f.icon className="w-8 h-8 text-primary mb-4 group-hover:text-glow transition-all" />
-                                <h3 className="font-mono font-bold text-foreground mb-2 text-sm">{f.title}</h3>
-                                <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
-                            </div>
-                        ))}
+                    
+                    {/* Responsive Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-6">
+                        <PlusCard {...cardContents[0]} className="lg:col-span-3 lg:row-span-2" />
+                        <PlusCard {...cardContents[1]} className="lg:col-span-3 lg:row-span-2" />
+                        <PlusCard {...cardContents[2]} className="lg:col-span-4 lg:row-span-1" />
+                        <PlusCard {...cardContents[3]} className="lg:col-span-2 lg:row-span-1" />
+                        <PlusCard {...cardContents[4]} className="lg:col-span-2 lg:row-span-1" />
                     </div>
+
+                   
                 </div>
-            </section>
+            </section >
 
             {/* ═══ Source Code ═══ */}
             <section id="code" className="py-16 md:py-24 px-4 sm:px-6">
