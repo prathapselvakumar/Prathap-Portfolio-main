@@ -101,7 +101,7 @@ export function PortfolioContent() {
     projects.filter((p) => p.categories.includes(selectedCategory));
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-24 sm:pb-0">
+    <div className="min-h-screen bg-background text-foreground pb-24 sm:pb-0 scroll-smooth">
       {/* Navigation Bar */}
       <NavBar
         items={navItems}
@@ -114,7 +114,7 @@ export function PortfolioContent() {
       </div>
 
       {/* Hero Section - Full Screen Split */}
-      <section id="hero" className="relative h-[100dvh] w-full overflow-hidden">
+      <section id="hero" className="relative h-screen w-full overflow-hidden flex items-center">
         <div className="absolute inset-0 bg-background">
           <Spotlight
             className="-top-40 left-0 md:left-60 md:-top-20"
@@ -129,10 +129,10 @@ export function PortfolioContent() {
             />
           </div>
 
-          <div className="flex h-full flex-col md:flex-row relative z-10 pointer-events-none">
+          <div className="flex h-full flex-col md:flex-row relative z-10 pointer-events-none items-center">
             {/* Left: Text Content */}
             <motion.div
-              className="flex-1 p-4 sm:p-8 md:p-12 lg:p-24 flex flex-col justify-start md:justify-center pt-[12vh] md:pt-0 items-center md:items-start text-center md:text-left pointer-events-auto max-w-2xl lg:max-w-4xl mx-auto md:mx-0 mt-8 md:mt-0 w-full"
+              className="flex-1 p-4 sm:p-8 md:p-12 lg:p-24 flex flex-col justify-center pt-0 md:pt-0 items-center md:items-start text-center md:text-left pointer-events-auto max-w-2xl lg:max-w-4xl mx-auto md:mx-0 mt-0 md:mt-0 w-full"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -153,6 +153,7 @@ export function PortfolioContent() {
                   <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground mt-6 mb-4 md:mb-8 whitespace-nowrap">
                     Prathap Selvakumar
                   </h1>
+                 
 
                   {/* Sparkles Effect - Theme-Aware for Both Light and Dark Mode */}
                   <div className="w-full max-w-[80vw] md:max-w-none md:w-[25rem] lg:w-[40rem] h-24 md:h-40 relative mt-4 md:mt-8 mx-auto md:mx-0">
@@ -186,7 +187,7 @@ export function PortfolioContent() {
       </section>
 
       {/* About Section - Asymmetric Grid */}
-      <section id="about" className="min-h-[100dvh] py-16 md:py-20 px-6 sm:px-8 md:px-16 bg-background flex items-center">
+      <section id="about" className="h-screen py-16 md:py-20 px-6 sm:px-8 md:px-16 bg-background flex items-center overflow-hidden">
         <motion.div
           className="max-w-7xl mx-auto w-full"
           initial={{ opacity: 0, y: 50 }}
@@ -200,6 +201,7 @@ export function PortfolioContent() {
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-foreground text-center md:text-left">
                 About Me
               </h2>
+              
               <p className="text-xl text-muted-foreground leading-relaxed">
                 I'm a dedicated robotics engineering student with a passion for creating
                 intelligent systems that solve real-world problems. My journey combines
@@ -254,9 +256,9 @@ export function PortfolioContent() {
             <div className="md:col-span-5 flex justify-center md:justify-end">
               <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden border-2 border-border">
                 <img
-                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/DSC00380-1762246337337.JPG?width=8000&height=8000&resize=contain"
+                  src="/Team_and_Testimonial/PrathapSelvakumar.jpg"
                   alt="Profile"
-                  className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500" />
+                  className="w-full h-full object-cover transition-all duration-500" />
 
                 <MoireDeterrent variant="ultra" />
               </div>
@@ -266,25 +268,31 @@ export function PortfolioContent() {
       </section>
 
       {/* Education Section */}
-      <div id="education">
-        <Education />
-      </div>
+      <section id="education" className="min-h-screen py-24 md:py-32 px-6 sm:px-8 md:px-16 bg-background flex items-center">
+        <div className="max-w-7xl mx-auto w-full">
+          <Education />
+        </div>
+      </section>
 
       {/* Experience Section */}
-      <div id="experience">
-        <Experience />
-      </div>
+      <section id="experience" className="min-h-screen py-24 md:py-32 px-6 sm:px-8 md:px-16 bg-background flex items-center">
+        <div className="max-w-7xl mx-auto w-full">
+          <Experience />
+        </div>
+      </section>
 
       {/* Skills Section */}
-      <div id="skills">
-        <Skills />
-      </div>
+      <section id="skills" className="min-h-screen py-24 md:py-32 px-6 sm:px-8 md:px-16 bg-background flex items-center">
+        <div className="max-w-7xl mx-auto w-full">
+          <Skills />
+        </div>
+      </section>
 
       {/* Projects Section - Bento Grid */}
-      <section id="projects" className="min-h-[100dvh] py-16 md:py-20 px-4 sm:px-8 md:px-16 bg-background flex items-center">
+      <section id="projects" className="min-h-screen py-24 md:py-32 px-4 sm:px-8 md:px-16 bg-background flex items-center">
         <div className="max-w-7xl mx-auto w-full">
           <motion.h2
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground text-center"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 text-foreground text-center"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -292,6 +300,14 @@ export function PortfolioContent() {
 
             Featured Projects
           </motion.h2>
+          <motion.p
+            className="text-sm md:text-base text-muted-foreground text-center mb-12 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}>
+            A showcase of engineering work across robotics, machine learning, and software development.
+          </motion.p>
 
           {/* Category Filter */}
           <motion.div
@@ -341,7 +357,7 @@ export function PortfolioContent() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent flex flex-col justify-end p-5 md:p-6 lg:p-8">
                     {/* Category Tags */}
                     <div className="flex flex-wrap gap-1.5 md:gap-2 mb-2 md:mb-3">
-                      {project.categories.map((cat) =>
+                      {project.categories?.map((cat) =>
                         <span
                           key={cat}
                           className="px-2 md:px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-[10px] md:text-xs text-white">
@@ -393,17 +409,25 @@ export function PortfolioContent() {
       </section >
 
       {/* Publications Section */}
-      < Publications />
+      <section id="publications" className="min-h-screen py-24 md:py-32 px-4 sm:px-8 md:px-16 bg-background flex items-center">
+        <div className="max-w-7xl mx-auto w-full">
+          <Publications />
+        </div>
+      </section>
 
       {/* Certificates Section */}
-      < div id="certificates" >
-        <Certificates />
-      </div >
+      <section id="certificates" className="min-h-screen py-24 md:py-32 px-4 sm:px-8 md:px-16 bg-background flex items-center">
+        <div className="max-w-7xl mx-auto w-full">
+          <Certificates />
+        </div>
+      </section>
 
       {/* Testimonials Section */}
-      < div id="testimonials" >
-        <Testimonials />
-      </div >
+      <section id="testimonials" className="min-h-screen py-24 md:py-32 px-4 sm:px-8 md:px-16 bg-background flex items-center">
+        <div className="max-w-7xl mx-auto w-full">
+          <Testimonials />
+        </div>
+      </section>
 
       {/* Footer */}
 

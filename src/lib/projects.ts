@@ -202,15 +202,21 @@ if __name__ == '__main__':
                 description: "The dedicated team of engineers and innovators behind the Autonomous Robot project.",
                 members: [
                     {
-                        quote: "Leading the systems integration and software architecture for our autonomous platforms.",
+                        quote: "Responsible for developing and managing the Computer Vision and Navigation systems",
                         name: "Prathap Selvakumar",
-                        designation: "Robotics & ML Engineer",
+                        designation: "Computer Vision and Navigation",
                         src: "/Team_and_Testimonial/PrathapSelvakumar.jpg",
+                    },
+                     {
+                        quote: "Developed and optimized SLAM and navigation for autonomous robot movement",
+                        name: "Sarath Kumaran",
+                        designation: "Navigation and SLAM",
+                        src: "/Team_and_Testimonial/Sarathkumar.jpeg",
                     },
                     {
                         quote: "Specializing in SLAM and spatial awareness for real-time robotic navigation.",
                         name: "Ruiyang",
-                        designation: "Computer Vision Researcher",
+                        designation: "Real time spatial awareness and Navigation",
                         src: "/Team_and_Testimonial/ruyang.jpg",
                     },
                 ]
