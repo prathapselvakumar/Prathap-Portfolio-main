@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Testimonials } from "@/components/Testimonials";
 import { projects } from "@/lib/projects";
+import { MoireDeterrent } from "@/components/MoireDeterrent";
 
 /* ─── Typing effect hook ─── */
 const useTypingEffect = (text: string, speed = 40, startDelay = 0) => {
@@ -229,14 +230,16 @@ const Index = () => {
     const [visibleLines, setVisibleLines] = useState(0);
     const terminalRef = useRef<HTMLDivElement>(null);
 
-    const snakeProject = projects.find(p => p.id === 'snake-detection');
+    const project = projects.find(p => p.id === 'snake-detection');
+
+    if (!project) return null;
     const navItems = [
         { name: 'Home', url: '#hero', icon: Home },
         { name: 'Features', url: '#features', icon: Layers },
         { name: 'Source', url: '#code', icon: Code2 },
         { name: 'Demo', url: '#demo', icon: Terminal },
         { name: 'GitHub', url: '#github', icon: Github },
-        ...(snakeProject?.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
+        ...(project?.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
     ];
 
     useEffect(() => {
@@ -320,56 +323,40 @@ const Index = () => {
                 }}
             />
 
-            {/* ═══ Hero ═══ */}
-            <section id="hero" className="relative min-h-[60vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden pt-16 md:pt-20 px-4 sm:px-6">
-                {/* Background Image */}
-                <div className="absolute inset-0 z-0">
-                    <img
-                        src="/Thumbnails/Project Thumbnails/image.png"
-                        alt=""
-                        className="w-full h-full object-cover opacity-80 dark:opacity-40"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
-                </div>
-
-                {/* Grid background */}
-                <div className="absolute inset-0 opacity-10 z-0" style={{
-                    backgroundImage: `linear-gradient(hsl(140 70% 45% / 0.15) 1px, transparent 1px), linear-gradient(90deg, hsl(140 70% 45% / 0.15) 1px, transparent 1px)`,
-                    backgroundSize: '40px 40px'
-                }} />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background z-0" />
-
-                <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-                    <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded border border-primary/30 bg-primary/5 animate-fade-in">
-                        <Terminal className="w-4 h-4 text-primary" />
-                        <span className="text-primary font-mono text-sm tracking-widest uppercase">YOLOv8 + Python Project</span>
-                    </div>
-
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 tracking-tight animate-fade-in" style={{ animationDelay: "0.1s" }}>
-                        <span className="gradient-text">Snake</span> <span className="text-foreground">Detection</span>
-                    </h1>
-
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-mono animate-fade-in break-words text-center" style={{ animationDelay: "0.2s" }}>
-                        A YOLOv8-powered snake <br className="block sm:hidden" />
-                        detection system that identifies <br className="block md:hidden" />
-                        and classifies
-                        <br className="hidden md:block" />
-                        snake species from images, <br className="block sm:hidden" />
-                        video, and live camera feed.
-                    </p>
-
-
-                    {/* Quick install */}
-                    <div className="mt-10 animate-fade-in hidden sm:block" style={{ animationDelay: "0.4s" }}>
-                        <div className="inline-flex max-w-full items-center gap-3 px-5 py-3 rounded border border-border bg-card font-mono text-sm overflow-x-auto whitespace-nowrap scrollbar-hide">
-                            <span className="text-primary flex-shrink-0">$</span>
-                            <span className="text-muted-foreground">git clone https://github.com/prathapselvakumar/Snake-detection.git</span>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
+            <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center">
+                       
+                                       {/* Background Image */}
+                                       <div className="absolute inset-0 z-0">
+                                           <img
+                                               src={project.image}
+                                               alt=""
+                                               className="w-full h-full object-cover opacity-80 dark:opacity-40"
+                                           />
+                                           <MoireDeterrent />
+                                           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
+                                           <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+                                       </div>
+                       
+                            <div className="relative z-10 max-w-4xl pt-20">
+                                           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
+                                               <span className="gradient-text">{project.title}</span>
+                                           </h1>
+                                           <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
+                                               {project.description}
+                                           </p>
+                       
+                                           <div className="mt-8 flex flex-wrap justify-center gap-2">
+                                               {project.categories.map((cat) => (
+                                                   <span
+                                                       key={cat}
+                                                       className="px-4 py-2 rounded-full border text-xs font-mono"
+                                                   >
+                                                       {cat}
+                                                   </span>
+                                               ))}
+                                           </div>
+                                       </div>
+                                   </section>
 
             {/* ═══ Features ═══ */}
             <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6">
@@ -535,13 +522,13 @@ const Index = () => {
             </section>
 
             {/* ═══ Team ═══ */}
-            {snakeProject?.team && (
+            {project?.team && (
                 <div id="team">
                     <Testimonials 
-                        title={snakeProject.team.title || "Team"} 
-                        description={snakeProject.team.description}
+                        title={project.team.title || "Team"} 
+                        description={project.team.description}
                         variant="animated"
-                        data={snakeProject.team.members}
+                        data={project.team.members}
                     />
                 </div>
             )}

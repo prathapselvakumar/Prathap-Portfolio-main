@@ -258,7 +258,7 @@ if __name__ == '__main__':
         },
         {
             id: 'agro-analytics',
-            title: 'Agro Analytics Platform',
+            title: 'Agro Analytics ',
             description: 'AI-driven crop monitoring and predictive analytics system',
             image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/a5838af0-769b-474e-a5fc-caa1e19c86e5/generated_images/ai-powered-agricultural-analytics-dashbo-925fa72a-20251103021715.jpg',
             categories: ['AI/ML'],

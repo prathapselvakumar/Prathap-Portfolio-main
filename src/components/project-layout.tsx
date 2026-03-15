@@ -30,7 +30,7 @@ import {
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { Button } from "@/components/ui/button";
 import { Project } from "@/lib/projects";
-import LeoRoverExploded from "@/components/LeoRoverExploded";
+import LeoRoverExploded from "@/app/projects/leo-rover/LeoRoverExploded";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { motion } from "framer-motion";
 
@@ -307,8 +307,7 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
             />
 
             {/* ─── Hero ═══ */}
-            <section id="hero" className="relative min-h-[60vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden pt-20 px-4 sm:px-6 text-center">
-
+        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center">
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img

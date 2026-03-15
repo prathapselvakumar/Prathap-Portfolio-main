@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Testimonials } from "@/components/Testimonials";
 import { projects } from "@/lib/projects";
+import { MoireDeterrent } from "@/components/MoireDeterrent";
 
 /* ─── Typing effect hook ─── */
 const useTypingEffect = (text: string, speed = 40, startDelay = 0) => {
@@ -306,14 +307,16 @@ const Index = () => {
     const [visibleLines, setVisibleLines] = useState(0);
     const terminalRef = useRef<HTMLDivElement>(null);
 
-    const audioProject = projects.find(p => p.id === 'audio-search');
+    const project = projects.find(p => p.id === 'audio-search');
+
+    if (!project) return null;
     const navItems = [
         { name: 'Home', url: '#hero', icon: Home },
         { name: 'Features', url: '#features', icon: Layers },
         { name: 'Source', url: '#code', icon: Code2 },
         { name: 'Demo', url: '#demo', icon: Terminal },
         { name: 'GitHub', url: '#github', icon: Github },
-        ...(audioProject?.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
+        ...(project?.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
     ];
 
     useEffect(() => {
@@ -400,47 +403,40 @@ const Index = () => {
                 }}
             />
 
-            {/* ═══ Hero ═══ */}
-            <section id="hero" className="relative min-h-[60vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden pt-16 md:pt-20 px-4 sm:px-6">
-                {/* Background Image */}
-                <div className="absolute inset-0 z-0">
-                    <img
-                        src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/a5838af0-769b-474e-a5fc-caa1e19c86e5/generated_images/modern-audio-search-engine-interface-wit-0e47d749-20251103021714.jpg"
-                        alt=""
-                        className="w-full h-full object-cover opacity-80 dark:opacity-40"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
-                </div>
-
-                <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-                    <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded border border-primary/30 bg-primary/5 animate-fade-in">
-                        <Terminal className="w-4 h-4 text-primary" />
-                        <span className="text-primary font-mono text-sm tracking-widest uppercase">Python CLI Project</span>
-                    </div>
-
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 tracking-tight animate-fade-in" style={{ animationDelay: "0.1s" }}>
-                        <span className="gradient-text">Audio Search</span> <span className="text-foreground">Engine</span>
-                    </h1>
-
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-mono animate-fade-in break-words text-center" style={{ animationDelay: "0.2s" }}>
-                        A Python-based audio fingerprinting <br className="block sm:hidden" />
-                        and recognition system. <br className="block md:hidden" />
-                        <br className="hidden md:block" />
-                        Analyze WAV files, generate fingerprints, <br className="block sm:hidden" />
-                        and match audio in real-time.
-                    </p>
-
-
-                    {/* Quick install */}
-                    <div className="mt-10 animate-fade-in hidden sm:block" style={{ animationDelay: "0.4s" }}>
-                        <div className="inline-flex max-w-full items-center gap-3 px-5 py-3 rounded border border-border bg-card font-mono text-sm overflow-x-auto whitespace-nowrap scrollbar-hide">
-                            <span className="text-primary flex-shrink-0">$</span>
-                            <span className="text-muted-foreground">git clone https://github.com/prathapselvakumar/Audio-Search-Engine.git</span>
-                        </div>
-                    </div>
-                </div>
-            </section >
+            <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center">
+           
+                           {/* Background Image */}
+                           <div className="absolute inset-0 z-0">
+                               <img
+                                   src={project.image}
+                                   alt=""
+                                   className="w-full h-full object-cover opacity-80 dark:opacity-40"
+                               />
+                               <MoireDeterrent />
+                               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
+                               <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+                           </div>
+           
+                            <div className="relative z-10 max-w-4xl pt-20">
+                               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
+                                   <span className="gradient-text">{project.title}</span>
+                               </h1>
+                               <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
+                                   {project.description}
+                               </p>
+           
+                               <div className="mt-8 flex flex-wrap justify-center gap-2">
+                                   {project.categories.map((cat) => (
+                                       <span
+                                           key={cat}
+                                           className="px-4 py-2 rounded-full border text-xs font-mono"
+                                       >
+                                           {cat}
+                                       </span>
+                                   ))}
+                               </div>
+                           </div>
+                       </section>
 
             {/* ═══ Features ═══ */}
             <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6" >
@@ -607,13 +603,13 @@ const Index = () => {
             </section>
 
             {/* ═══ Team ═══ */}
-            {audioProject?.team && (
+            {project?.team && (
                 <div id="team">
                     <Testimonials 
-                        title={audioProject.team.title || "Team"} 
-                        description={audioProject.team.description}
+                        title={project.team.title || "Team"} 
+                        description={project.team.description}
                         variant="animated"
-                        data={audioProject.team.members}
+                        data={project.team.members}
                     />
                 </div>
             )}
