@@ -201,15 +201,22 @@ if __name__ == '__main__':
                 title: "Team",
                 description: "The dedicated team of engineers and innovators behind the Autonomous Robot project.",
                 members: [
+                     
                     {
                         quote: "Responsible for developing and managing the Computer Vision and Navigation systems",
                         name: "Prathap Selvakumar",
                         designation: "Computer Vision and Navigation",
                         src: "/Team_and_Testimonial/PrathapSelvakumar.jpg",
                     },
+                    {
+                        quote: "Oversaw component design, additive manufacturing (3D printing), and hand–eye calibration for accurate robotic perception and manipulation.",
+                        name: "Joao Lopes",
+                        designation: "Designing , 3D printing the components and Hand-Eye Calibration",
+                        src: "/Team_and_Testimonial/JoaoLopes.jpeg",
+                    },
                      {
                         quote: "Developed and optimized SLAM and navigation for autonomous robot movement",
-                        name: "Sarath Kumaran",
+                        name: "Sarath Kumar",
                         designation: "Navigation and SLAM",
                         src: "/Team_and_Testimonial/Sarathkumar.jpeg",
                     },
@@ -219,6 +226,7 @@ if __name__ == '__main__':
                         designation: "Real time spatial awareness and Navigation",
                         src: "/Team_and_Testimonial/ruyang.jpg",
                     },
+
                 ]
             }
         },
