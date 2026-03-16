@@ -221,10 +221,16 @@ if __name__ == '__main__':
                         src: "/Team_and_Testimonial/Sarathkumar.jpeg",
                     },
                     {
-                        quote: "Specializing in SLAM and spatial awareness for real-time robotic navigation.",
+                        quote: "Specializing in Navigation and spatial awareness for real-time robotic navigation.",
                         name: "Ruiyang",
-                        designation: "Real time spatial awareness and Navigation",
+                        designation: "Navigation and spatial awareness",
                         src: "/Team_and_Testimonial/ruyang.jpg",
+                    },
+                    {
+                        quote: "Concentrated on SLAM, spatial mapping, and real-time robotic localization",
+                        name: "Jiaxin Tang",
+                        designation: "SLAM and spatial awareness",
+                        src: "/Team_and_Testimonial/Jiaxin Tang.jpeg",
                     },
 
                 ]
