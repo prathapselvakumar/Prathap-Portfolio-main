@@ -25,6 +25,7 @@ import {
     MessageSquare,
     Ruler,
     User,
+    GitFork,
 } from "lucide-react";
 
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";

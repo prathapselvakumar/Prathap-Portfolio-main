@@ -33,6 +33,7 @@ export interface Project {
         language: string;
         languageColor: string;
         stars: number;
+        forks: number;
         url: string;
         topics: string[];
     }[];
@@ -65,7 +66,7 @@ export const projects: Project[] =
             image: '/Thumbnails/Project Thumbnails/maxresdefault.jpg',
             categories: ['Robotics'],
             size: 'large',
-            repoUrl: 'https://github.com/prathapselvakumar/Leo-Rover.git',
+            repoUrl: 'https://github.com/sarathkumar-sk/Team_6_AERO62520_RSD_Project',
             features: [
                 { icon: 'Cpu', title: "SLAM Navigation", desc: "Simultaneous Localization and Mapping for autonomous movement." },
                 { icon: 'Zap', title: "Real-time Processing", desc: "On-board processing of sensor data for immediate reaction." },
@@ -122,8 +123,8 @@ export const projects: Project[] =
                 { id: "4", name: "NUC mounting plate v4", format: ".step", description: "Mounting plate for the NUC computer.", fileSize: "40 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Cad Files/nuc-plate-thumb.svg", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/NUC mounting plate v4.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/NUC mounting plate v4.glb" },
             ],
             repos: [
-                { id: "1", name: "Leo-Rover", description: "The complete source code for the Autonomous Robot project.", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 0, url: "https://github.com/prathapselvakumar/Leo-Rover.git", topics: ["robotics", "autonomous", "leo-rover"] },
-                { id: "2", name: "Object-Detection-for-Leo-Rover", description: "Computer vision and object detection models deployed on the Leo Rover.", language: "Python", languageColor: "hsl(50 70% 50%)", stars: 0, url: "https://github.com/prathapselvakumar/Object-Detection-for-Leo-Rover.git", topics: ["yolov8", "ros2", "computer-vision"] }
+                { id: "1", name: "Leo-Rover", description: "The complete source code for the Autonomous Robot project, featuring ROS2 integration, SLAM navigation, and hardware control systems.", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 0, forks: 0, url: "https://github.com/prathapselvakumar/Leo-Rover.git", topics: ["robotics", "autonomous", "leo-rover", "ros2", "cpp"] },
+                { id: "2", name: "Object-Detection-for-Leo-Rover", description: "Computer vision and object detection models deployed on the Leo Rover using YOLOv8 and custom datasets.", language: "Python", languageColor: "hsl(50 70% 50%)", stars: 0, forks: 0, url: "https://github.com/prathapselvakumar/Object-Detection-for-Leo-Rover.git", topics: ["yolov8", "ros2", "computer-vision", "python", "ai"] }
             ],
             terminalOutput: [
                 { type: "cmd", text: "ros2 launch leo_rover_object_detection yolo_v8.launch.py" },
