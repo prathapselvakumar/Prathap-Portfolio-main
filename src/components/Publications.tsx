@@ -44,7 +44,15 @@ export function Publications() {
 
 
                                     <h3 className={`font-bold text-white mb-4 sm:mb-6 ${isLarge ? 'text-2xl sm:text-3xl lg:text-4xl' : 'text-xl sm:text-2xl'}`}>
-                                        {pub.title}
+                                        {pub.title.includes('Clustering Algorithm') ? (
+                                            <>
+                                                Comparative Analysis Implementation of Queuing Songs in Players <br />
+                                                Using <br />
+                                                Audio Clustering Algorithm
+                                            </>
+                                        ) : (
+                                            pub.title
+                                        )}
                                     </h3>
 
                                     <Link

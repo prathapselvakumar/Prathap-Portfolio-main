@@ -235,18 +235,20 @@ function highlightCode(line: string): React.ReactNode {
 
 interface ProjectLayoutProps {
     project: Project;
+    customDemo?: React.ReactNode;
 }
 
-const ProjectLayout = ({ project }: ProjectLayoutProps) => {
+const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     const features = project.features?.map((f) => ({
         ...f,
         Icon: iconMap[f.icon] || Cpu,
     }));
 
-    const isAIMLProject = ["audio-search", "agro-analytics", "snake-detection"].includes(project.id);
+    const isAIMLProject = ["audio-search", "agro-analytics", "snake-detection", "drone-controller"].includes(project.id);
     const isAStarProject = project.id === "a-start-algorithm";
+    const isDroneProject = project.id === "drone-controller";
     const isAutonomousRobotProject = project.id === "autonomous-robot";
-    const hasDemo = isAStarProject || (!!project.terminalOutput && project.terminalOutput.length > 0);
+    const hasDemo = isAStarProject || isDroneProject || (!!project.terminalOutput && project.terminalOutput.length > 0);
 
     // Build nav items from project sections
     const navItems = [
@@ -374,7 +376,11 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                 </div>
 
                 <div className="relative z-10 max-w-4xl pt-8 md:pt-0">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
+                    <h1 className={cn("font-bold mb-4 md:mb-6 leading-tight", 
+                        isDroneProject 
+                            ? "text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" 
+                            : "text-4xl sm:text-5xl md:text-6xl lg:text-8xl"
+                    )}>
                         <span className="gradient-text">{project.title}</span>
                     </h1>
                     <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
@@ -447,8 +453,8 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                             description="Core technologies and system features."
                         />
                         <RuixenBentoCards
-                            title={project.title}
-                            subtitle={`A quick look at how ${project.title} works, from input signals to practical outcomes.`}
+                            features={project.features}
+                            iconMap={iconMap}
                         />
                     </div>
                 </section>
@@ -725,57 +731,63 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
             {/* ─── Demo ─── */}
             {hasDemo && (
                 <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
-                    <div className="max-w-4xl mx-auto">
+                    <div className={isDroneProject ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
                         <SectionHeader
                             label="# demo"
-                            title={isAStarProject ? "A* Path Planner Demo" : "Live Terminal Output"}
-                            description={isAStarProject ? "Interactive A-star visualization for obstacle-aware routing." : "Simulated console execution."}
+                            title={isAStarProject ? "A* Path Planner Demo" : isDroneProject ? "Adaptive RL Control Demo" : "Live Terminal Output"}
+                            description={isAStarProject ? "Interactive A-star visualization for obstacle-aware routing." : isDroneProject ? "Real-time Q-learning simulation with PID gain scheduling." : "Simulated console execution."}
                         />
 
                         {isAStarProject ? (
                             <div className="rounded-lg border border-border overflow-hidden bg-background">
                                 <PathPlannerApp />
                             </div>
+                        ) : isDroneProject ? (
+                            customDemo ? (
+                                <div className="rounded-lg border border-border overflow-hidden bg-background shadow-2xl">
+                                    {customDemo}
+                                </div>
+                            ) : null
                         ) : (
                             <div className="rounded-lg border border-border overflow-hidden bg-background shadow-2xl">
-                            {/* Terminal title bar */}
-                            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-destructive/60" />
-                                    <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                    <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                    <span className="ml-3 text-xs text-muted-foreground font-mono">terminal</span>
+                                {/* Terminal title bar */}
+                                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-3 h-3 rounded-full bg-destructive/60" />
+                                        <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                        <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                        <span className="ml-3 text-xs text-muted-foreground font-mono">terminal</span>
+                                    </div>
+                                    <button
+                                        onClick={handleRun}
+                                        disabled={isRunning}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+                                    >
+                                        {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
+                                    </button>
                                 </div>
-                                <button
-                                    onClick={handleRun}
-                                    disabled={isRunning}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
-                                >
-                                    {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
-                                </button>
-                            </div>
 
-                            {/* Terminal body */}
-                            <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto w-full">
-                                {visibleLines === 0 && (
-                                    <div className="flex gap-2">
-                                        <span className="text-primary">$</span>
-                                        <span className="text-muted-foreground">_</span>
+                                {/* Terminal body */}
+                                <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto w-full">
+                                    {visibleLines === 0 && (
+                                        <div className="flex gap-2">
+                                            <span className="text-primary">$</span>
+                                            <span className="text-muted-foreground">_</span>
+                                            <span className="cursor-blink text-primary">▋</span>
+                                        </div>
+                                    )}
+                                    {project.terminalOutput?.slice(0, visibleLines).map((line, i) => (
+                                        <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
+                                            {line.type === "cmd" ? (
+                                                <span><span className="text-primary">$ </span>{line.text}</span>
+                                            ) : (
+                                                <span>{line.text}</span>
+                                            )}
+                                        </div>
+                                    ))}
+                                    {isRunning && (
                                         <span className="cursor-blink text-primary">▋</span>
-                                    </div>
-                                )}
-                                {project.terminalOutput?.slice(0, visibleLines).map((line, i) => (
-                                    <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
-                                        {line.type === "cmd" ? (
-                                            <span><span className="text-primary">$ </span>{line.text}</span>
-                                        ) : (
-                                            <span>{line.text}</span>
-                                        )}
-                                    </div>
-                                ))}
-                                {isRunning && (
-                                    <span className="cursor-blink text-primary">▋</span>
-                                )}
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -833,6 +845,17 @@ const ProjectLayout = ({ project }: ProjectLayoutProps) => {
                                         <div><span className="text-primary">$</span> cd Leo-Rover</div>
                                         <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
                                         <div><span className="text-primary">$</span> python3 src/main.py</div>
+                                    </div>
+                                </div>
+                            )}
+                            {isDroneProject && (
+                                <div className="rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in overflow-x-auto" style={{ animationDelay: "0.1s" }}>
+                                    <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
+                                    <div className="space-y-2 text-foreground min-w-max">
+                                        <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/AMR-Assignment-3</div>
+                                        <div><span className="text-primary">$</span> cd AMR-Assignment-3</div>
+                                        <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
+                                        <div><span className="text-primary">$</span> python run.py</div>
                                     </div>
                                 </div>
                             )}

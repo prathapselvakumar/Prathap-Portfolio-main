@@ -134,9 +134,12 @@ const Index = () => {
                         <span className="text-primary font-mono text-sm tracking-widest uppercase">Published Research</span>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight animate-fade-in leading-tight" style={{ animationDelay: "0.1s" }}>
-
-                        <span className="text-foreground">Publications</span>
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight animate-fade-in leading-tight" style={{ animationDelay: "0.1s" }}>
+                        <span className="text-foreground">
+                            Comparative Analysis Implementation of Queuing Songs in Players <br />
+                            Using <br />
+                            Audio Clustering Algorithm
+                        </span>
                     </h1>
 
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-mono animate-fade-in" style={{ animationDelay: "0.2s" }}>
@@ -176,7 +179,15 @@ const Index = () => {
                         <div className="p-6 md:p-8">
                             {/* Title */}
                             <h3 className="text-xl md:text-2xl font-bold text-foreground leading-snug mb-4">
-                                {publication.title}
+                                {publication.title.includes('Clustering Algorithm') ? (
+                                    <>
+                                        Comparative Analysis Implementation of Queuing Songs in Players <br />
+                                        Using <br />
+                                        Audio Clustering Algorithm
+                                    </>
+                                ) : (
+                                    publication.title
+                                )}
                             </h3>
 
                             {/* Journal */}

@@ -451,7 +451,6 @@ const Index = () => {
             <div className="fixed top-6 right-6 z-50">
                 <AnimatedThemeToggler className="w-11 h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
             </div>
-
             {/* Centered Navigation - matches main page */}
             <NavBar
                 items={navItems}
@@ -475,7 +474,7 @@ const Index = () => {
                            </div>
            
                             <div className="relative z-10 max-w-4xl pt-20">
-                               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
+                               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 md:mb-6">
                                    <span className="gradient-text">{project.title}</span>
                                </h1>
                                <p className="text-base sm:text-lg md:text-xl text-muted-foreground">

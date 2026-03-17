@@ -250,8 +250,7 @@ if __name__ == '__main__':
                 { icon: 'Zap', title: "Semantic Search", desc: "Goes beyond keywords to understand the context and intent behind every voice query." },
                 { icon: 'Database', title: "Scalable Indexing", desc: "Fast and memory-efficient indexing architecture for searching through millions of audio files." },
                 { icon: 'Search', title: "Audio Fingerprinting", desc: "Identify audio clips through unique acoustic signatures with minimal data requirements." },
-                { icon: 'MessageSquare', title: "Natural Language Understanding", desc: "Advanced NLU layer for extracting actionable intent from conversational audio commands." },
-                { icon: 'Share2', title: "API Integration", desc: "Robust REST API and SDKs for seamless integration into mobile and web applications." },
+            
             ],
             codeSnippets: [
                 {
@@ -402,6 +401,44 @@ function doAStar(
                 { type: "success", text: "[DETECTION] Cobra detected (Confidence: 0.94) - WARNING: VENOMOUS" },
                 { type: "info", text: "[INFO] Logging event to wildlife database." }
             ],
+            videos: [],
+            files: [],
+            repos: []
+        },
+        {
+            id: 'drone-controller',
+            title: 'Drone Feedback Controller',
+            description: 'Adaptive Q-learning reinforcement learning agent with a nested PID actuation layer for UAV position stabilisation and waypoint navigation.',
+            image: '/Thumbnails/Project Thumbnails/drone-controller.png',
+            categories: ['Robotics', 'AI/ML', 'Control Systems'],
+            size: 'small',
+            repoUrl: 'https://github.com/prathapselvakumar/Drone-Feadback-Controller.git',
+            features: [
+                { icon: 'Cpu', title: "Q-Learning Adaptation", desc: "Online tabular RL agent that selects optimal PID gains based on real-time flight states." },
+                { icon: 'Zap', title: "Nested PID Control", desc: "High-frequency PID actuation layer (1000Hz) for precise velocity and attitude tracking." },
+                { icon: 'Activity', title: "Wind Disturbance Handling", desc: "Adaptive integral clamping and gain scheduling specifically tuned for robust performance in windy environments." },
+                { icon: 'Database', title: "Experience Replay", desc: "Stabilizes learning using a 400-sample circular buffer for off-policy TD(0) updates." },
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "controller.py",
+                    description: "Main logic for the Q-learning feedback controller.",
+                    language: "Python",
+                    code: `def controller(state, target_pos, dt, wind_enabled=False):
+    # State: (dist, yaw_err, wind) -> 96 discrete states
+    # Actions: Selected from 16 pre-tuned PID action profiles
+    
+    # Q-learning TD(0) Update
+    reward = (prev_cost - current_cost) - 0.015 * effort
+    Q[s][a] += alpha * (reward + gamma + max(Q[s_next]) - Q[s][a])
+    
+    # PID Law
+    vx = kp * ex + ki * integral_x + kd * derivative_x
+    return (vx, vy, vz, yaw_rate)`
+                }
+            ],
+            terminalOutput: [],
             videos: [],
             files: [],
             repos: []

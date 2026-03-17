@@ -2,45 +2,17 @@
 
 import React from "react"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
-
-const cardContents = [
-  {
-    title: "Beautiful Components",
-    description:
-      "Ruixen UI provides stunning, ready-made components built with consistent design and performance in mind.",
-  },
-  {
-    title: "Developer Friendly",
-    description:
-      "Simple APIs and excellent documentation make it easy to integrate and customize Ruixen UI in your apps.",
-  },
-  {
-    title: "Flexible Layouts",
-    description:
-      "Design dynamic, responsive layouts using our grid utilities and flex-based helpers. Whether you're building dashboards, landing pages, or nested components, Ruixen UI provides composable layout primitives that scale beautifully across screen sizes. With mobile-first defaults, built-in breakpoints, and utilities like col-span, row-span, gap control, and responsive spacing, your UI adapts effortlessly to every device.",
-  },  
-  {
-    title: "Dark Mode Support",
-    description:
-      "Every component is thoughtfully designed to work seamlessly in both light and dark themes.",
-  },
-  {
-    title: "Fast & Lightweight",
-    description:
-      "Built for speed and performance, Ruixen UI ensures quick load times without sacrificing quality.",
-  },
-]
-
 
 const PlusCard: React.FC<{
   className?: string
   title: string
   description: string
+  Icon?: any
 }> = ({
   className = "",
   title,
   description,
+  Icon,
 }) => {
   return (
     <div
@@ -49,15 +21,19 @@ const PlusCard: React.FC<{
         "flex flex-col justify-between",
         className
       )}
-    ><Link href="https://ruixen.com/?utm_source=21stdev&utm_medium=button&utm_campaign=ruixen_bento_cards">
+    >
       <CornerPlusIcons />
-      {/* Content */}
       <div className="relative z-10 space-y-2">
+        {Icon && (
+          <div className="mb-3">
+             <Icon className="w-7 h-7 text-primary" />
+          </div>
+        )}
         <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
           {title}
         </h3>
-        <p className="text-gray-700 dark:text-gray-300">{description}</p>
-      </div></Link>
+        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{description}</p>
+      </div>
     </div>
   )
 }
@@ -89,34 +65,58 @@ const PlusIcon = ({ className }: { className?: string }) => (
 interface RuixenBentoCardsProps {
   title?: string;
   subtitle?: string;
+  features?: any[];
+  iconMap?: Record<string, any>;
 }
 
 export default function RuixenBentoCards({
-  title = "Built for performance. Designed for flexibility.",
-  subtitle = "Ruixen UI gives you the tools to build beautiful, high-performing websites with lightning speed. Each component is thoughtfully designed to be flexible, reusable, and accessible.",
+  title,
+  subtitle,
+  features = [],
+  iconMap = {},
 }: RuixenBentoCardsProps) {
   return (
-    <section className="bg-white dark:bg-black dark:bg-transparent border border-gray-200 dark:border-gray-800">
-      <div className="mx-auto container border border-gray-200 dark:border-gray-800 py-12 border-t-0 px-4">
-        {/* Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-4">
-          <PlusCard {...cardContents[0]} className="lg:col-span-3 lg:row-span-2" />
-          <PlusCard {...cardContents[1]} className="lg:col-span-2 lg:row-span-2" />
-          <PlusCard {...cardContents[2]} className="lg:col-span-4 lg:row-span-1" />
-          <PlusCard {...cardContents[3]} className="lg:col-span-2 lg:row-span-1" />
-          <PlusCard {...cardContents[4]} className="lg:col-span-2 lg:row-span-1" />
-        </div>
+    <div className="w-full">
+      {/* Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-6">
+        {features.map((feature, index) => {
+          const Icon = iconMap[feature.icon];
+          const spanClass =
+            index === 0
+              ? "lg:col-span-3 lg:row-span-2"
+              : index === 1
+              ? "lg:col-span-3 lg:row-span-2"
+              : index === 2
+              ? "lg:col-span-4 lg:row-span-1"
+              : "lg:col-span-2 lg:row-span-1";
 
-        {/* Section Footer Heading */}
-        <div className="max-w-2xl ml-auto text-right px-4 mt-6 lg:-mt-20">
-          <h2 className="text-4xl md:text-6xl font-bold text-black dark:text-white mb-4">
-            {title}
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            {subtitle}
-          </p>
-        </div>
+          return (
+            <PlusCard
+              key={index}
+              className={spanClass}
+              Icon={Icon}
+              title={feature.title}
+              description={feature.desc}
+            />
+          );
+        })}
       </div>
-    </section>
+
+      {/* Section Footer Heading - Only show if title/subtitle provided */}
+      {(title || subtitle) && (
+        <div className="max-w-2xl ml-auto text-right px-4 mt-6 lg:-mt-20">
+          {title && (
+            <h2 className="text-4xl md:text-6xl font-bold text-black dark:text-white mb-4">
+              {title}
+            </h2>
+          )}
+          {subtitle && (
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
