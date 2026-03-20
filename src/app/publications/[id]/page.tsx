@@ -415,12 +415,12 @@ const Index = () => {
                                 quote: "The integration of adaptive clustering allows for more dynamic and user-centric music player experiences.",
                                 src: "/Team_and_Testimonial/Swetha.jpg",
                             },
-                            // {
-                            //     name: "Subiksha S",
-                            //     designation: "Associate Researcher",
-                            //     quote: "Clustering spectral features allowed us to achieve unprecedented accuracy in categorical audio sorting.",
-                            //     src: "/Team_and_Testimonial/subiksha-s.jpg",
-                            // },
+                            {
+                                name: "Subiksha S",
+                                designation: "Associate Researcher",
+                                quote: "Clustering spectral features allowed us to achieve unprecedented accuracy in categorical audio sorting.",
+                                src: "/Team_and_Testimonial/subiksha.png",
+                            },
                             {
                                 name: "Chhavi",
                                 designation: "Research Analyst",
