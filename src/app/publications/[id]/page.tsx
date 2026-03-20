@@ -257,7 +257,7 @@ const Index = () => {
 
                             {/* View Publication Button */}
                             <div className="flex items-center">
-                                <a href="https://www.igi-global.com/gateway/chapter/330399" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded border border-primary bg-primary text-primary-foreground font-mono text-sm font-semibold hover:bg-primary/90 transition-colors shadow-lg">
+                                <a href="https://www.igi-global.com/gateway/chapter/330399" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded border border-primary bg-primary text-primary-foreground font-mono text-sm font-semibold hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg">
                                     <FileText className="w-4 h-4" />View Publication
                                 </a>
                             </div>
@@ -406,7 +406,7 @@ const Index = () => {
                                 name: "Prathap Selvakumar",
                                 designation: "Robotics & ML Engineer",
                                 quote: "Implementing and optimizing these algorithms for real-time audio analysis was a challenging yet rewarding experience.",
-                                src: "/Team_and_Testimonial/PrathapSelvakumar.jpg",
+                                src: "/Team_and_Testimonial/prathapselvakumar.png",
                                
                             },
                              {

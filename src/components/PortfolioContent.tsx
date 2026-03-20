@@ -19,6 +19,8 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { projects } from '@/lib/projects';
+import { MinimalistHero } from '@/components/ui/minimalist-hero';
+import { Github, Linkedin } from 'lucide-react';
 
 export function PortfolioContent() {
   const { resolvedTheme: theme } = useTheme();
@@ -219,83 +221,23 @@ export function PortfolioContent() {
         </div>
       </section>
 
-      {/* About Section - Asymmetric Grid */}
-      <section id="about" className="h-screen py-16 md:py-20 px-6 sm:px-8 md:px-16 bg-background flex items-center overflow-hidden">
-        <motion.div
-          className="max-w-7xl mx-auto w-full"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}>
-
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-12 items-center">
-            {/* Text takes 7 columns */}
-            <div className="md:col-span-7 space-y-4 lg:space-y-6">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-foreground text-center md:text-left">
-                About Me
-              </h2>
-              
-              <p className="text-xl text-muted-foreground leading-relaxed">
-                I'm a dedicated robotics engineering student with a passion for creating
-                intelligent systems that solve real-world problems. My journey combines
-                Python, ROS2, and machine learning.
-              </p>
-              <p className="text-xl text-muted-foreground leading-relaxed">
-                Currently focusing on autonomous navigation, computer vision, and
-                human-robot interaction. I am seeking a role where I can apply my expertise to deliver tangible results. My focus is on execution and bringing value to the team immediately.
-              </p>
-
-              {/* Skills Grid */}
-              <div className="grid grid-cols-2 gap-3 lg:gap-4 pt-4 lg:pt-8">
-                {['Robotics', 'AI/ML', 'Computer Vision', 'Embedded Systems'].map((skill) =>
-                  <div key={skill} className="p-3 lg:p-4 border border-border rounded-lg bg-card">
-                    <p className="text-foreground text-sm lg:text-base font-semibold">{skill}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Download CV and LinkedIn Buttons */}
-              <motion.div
-                className="pt-6 flex gap-3 sm:gap-4 flex-wrap justify-center md:justify-start"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                viewport={{ once: true }}>
-
-                <LiquidButton
-                  onClick={() => {
-                    const link = document.createElement('a');
-                    link.href = '/Prathap Selvakumar-CV.pdf';
-                    link.download = 'Prathap Selvakumar-CV.pdf';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  }}>
-
-                  Download CV
-                </LiquidButton>
-                <LiquidButton
-                  onClick={() => {
-                    // Open LinkedIn profile - replace with actual LinkedIn URL
-                    window.open('https://www.linkedin.com/in/prathapsk', '_blank', 'noopener,noreferrer');
-                  }}>
-
-                  LinkedIn
-                </LiquidButton>
-              </motion.div>
-            </div>
-
-            {/* Image takes 5 columns */}
-            <div className="md:col-span-5 flex justify-center md:justify-end">
-              <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden border-2 border-border">
-                <img
-                  src="/Team_and_Testimonial/PrathapSelvakumar.jpg"
-                  alt="Profile"
-                  className="w-full h-full object-cover transition-all duration-500" />
-              </div>
-            </div>
-          </div>
-        </motion.div>
+      {/* About Section - Redesigned Minimalist Hero */}
+      <section id="about" className="min-h-screen bg-background overflow-hidden">
+        <MinimalistHero
+          mainText="I'm a dedicated robotics engineering student with a passion for creating intelligent systems that solve real-world problems. My journey combines Python, ROS2, and machine learning. Currently focusing on autonomous navigation, computer vision, and human-robot interaction."
+          cvUrl="/Prathap Selvakumar-CV.pdf"
+          imageSrc="/Team_and_Testimonial/prathapselvakumar.png"
+          imageAlt="Prathap Selvakumar"
+          overlayText={{
+            part1: "ABOUT",
+            part2: "ME"
+          }}
+          socialLinks={[
+            { icon: Linkedin, href: "https://www.linkedin.com/in/prathapsk" },
+            { icon: Github, href: "https://github.com/prathapselvakumar" }
+          ]}
+          locationText=""
+        />
       </section>
 
       {/* Education Section */}
@@ -412,7 +354,7 @@ export function PortfolioContent() {
                     >
                       <Button
                         size="default"
-                        className="w-fit bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,255,255,0.1)]"
+                        className="w-fit bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white/10 hover:border-white/20 hover:scale-105 transition-all duration-300 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,255,255,0.1)]"
                       >
                         View Project
                       </Button>
