@@ -135,7 +135,7 @@ export function Experience() {
       <Timeline
         data={timelineData}
         title="Experience"
-        description="A timeline of my professional journey, internships, and key responsibilities."
+        // description="A timeline of my professional journey, internships, and key responsibilities."
       />
     </section>
   );

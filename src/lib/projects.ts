@@ -442,6 +442,112 @@ function doAStar(
             videos: [],
             files: [],
             repos: []
+        },
+        {
+            id: 'computer-vision-experiments',
+            title: 'Computer Vision Experiments: CIFAR-10 Classification',
+            description: 'A comparative study of Traditional Computer Vision (HOG+SVM) vs Deep Learning (CNN) for image classification on the CIFAR-10 dataset.',
+            image: '/Thumbnails/Project Thumbnails/cv-experiments.png',
+            categories: ['AI/ML', 'Computer Vision'],
+            size: 'large',
+            repoUrl: 'https://github.com/prathapselvakumar/Computer-Vision-Experment.git',
+            features: [
+                { icon: 'Zap', title: "Traditional Computer Vision", desc: "Implementation using HOG for feature extraction and Linear SVM for classification." },
+                { icon: 'Cpu', title: "Deep Learning Approach", desc: "Custom 3-layer CNN architecture with TensorFlow/Keras achieving ~71.3% accuracy." },
+                { icon: 'BarChart3', title: "Performance Analysis", desc: "Detailed comparison across Accuracy, Precision, Recall, and F1-Score." },
+                { icon: 'Code2', title: "Reproducible Notebook", desc: "End-to-end implementation from data preprocessing to visualization in Jupyter." },
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "cnn_model.py",
+                    description: "3-layer CNN architecture built with Keras.",
+                    language: "Python",
+                    code: `from tensorflow.keras import layers, models
+
+def create_cnn_model():
+    model = models.Sequential([
+        layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D((2, 2)),
+        layers.Dropout(0.25),
+        
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D((2, 2)),
+        layers.Dropout(0.25),
+        
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.5),
+        layers.Dense(10, activation='softmax')
+    ])
+    return model`
+                }
+            ],
+            terminalOutput: [
+                { type: "cmd", text: "python train.py --model cnn" },
+                { type: "info", text: "Epoch 1/10 - loss: 1.842 - accuracy: 0.354" },
+                { type: "info", text: "Epoch 5/10 - loss: 1.125 - accuracy: 0.612" },
+                { type: "info", text: "Epoch 10/10 - loss: 0.842 - accuracy: 0.713" },
+                { type: "success", text: "[SUCCESS] Model trained. Accuracy: 71.32%" },
+                { type: "divider", text: "─".repeat(56) },
+                { type: "result", text: "CNN Accuracy: 71.32% vs SVM Accuracy: 53.05%" }
+            ],
+            videos: [],
+            files: [],
+            repos: []
+        },
+        {
+            id: 'hybridnet-cifar10',
+            title: 'HybridNet: Adaptive CNN-LSTM Fusion',
+            description: 'A hybrid deep learning architecture combining CNNs and Bidirectional LSTMs with an adaptive gating mechanism for state-of-the-art CIFAR-10 classification.',
+            image: '/Thumbnails/Project Thumbnails/hybridnet.png',
+            categories: ['AI/ML', 'Computer Vision', 'Deep Learning'],
+            size: 'small',
+            repoUrl: 'https://github.com/prathapselvakumar/HybridNet_CIFAR10_TF.git',
+            features: [
+                { icon: 'Cpu', title: "Hybrid Architecture", desc: "Dual-stream CNN and Bi-LSTM network capturing both local spatial features and global dependencies." },
+                { icon: 'Zap', title: "Adaptive Fusion", desc: "Learned gating mechanism that dynamically weights CNN and LSTM feature maps based on input context." },
+                { icon: 'Activity', title: "Optimized Training", desc: "Advanced data augmentation and callback strategies (EarlyStopping, Checkpointing) for robust convergence." },
+                { icon: 'BarChart3', title: "Performance Tracking", desc: "Real-time accuracy/loss visualization and comprehensive confusion matrix analysis reaching 72%+." },
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "hybrid_fusion.py",
+                    description: "Adaptive gating mechanism for fusing CNN and LSTM features.",
+                    language: "Python",
+                    code: `import tensorflow as tf
+from tensorflow.keras import layers
+
+class AdaptiveFusion(layers.Layer):
+    def __init__(self):
+        super(AdaptiveFusion, self).__init__()
+        self.gate = layers.Dense(1, activation='sigmoid')
+
+    def call(self, cnn_features, lstm_features):
+        # Flatten CNN features for gating
+        combined = tf.concat([cnn_features, lstm_features], axis=-1)
+        gate_weight = self.gate(combined)
+        
+        # Weighted fusion: gate * CNN + (1-gate) * LSTM
+        fused = gate_weight * cnn_features + (1 - gate_weight) * lstm_features
+        return fused, gate_weight`
+                }
+            ],
+            terminalOutput: [
+                { type: "cmd", text: "python train_hybrid.py --epochs 20" },
+                { type: "info", text: "[INFO] Building HybridNet with Adaptive Gating..." },
+                { type: "info", text: "Epoch 1/20 - acc: 0.42 - val_acc: 0.48" },
+                { type: "info", text: "Epoch 8/20 - acc: 0.70 - val_acc: 0.72" },
+                { type: "success", text: "[SUCCESS] Best model saved with val_accuracy: 0.724" },
+                { type: "divider", text: "─".repeat(56) },
+                { type: "result", text: "Mean Fusion Weights: CNN=0.62, LSTM=0.38" }
+            ],
+            videos: [],
+            files: [],
+            repos: []
         }
     ];
 

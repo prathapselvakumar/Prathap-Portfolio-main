@@ -114,7 +114,7 @@ export function Education() {
       <Timeline
         data={timelineData}
         title="Education History"
-        description="My academic journey highlighting degrees, institutions, and core focuses across my educational career."
+        // description="My academic journey highlighting degrees, institutions, and core focuses across my educational career."
       />
     </section>
   );
