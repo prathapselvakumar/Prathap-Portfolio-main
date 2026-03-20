@@ -226,7 +226,7 @@ export function PortfolioContent() {
         <MinimalistHero
           mainText="I'm a dedicated robotics engineering student with a passion for creating intelligent systems that solve real-world problems. My journey combines Python, ROS2, and machine learning. Currently focusing on autonomous navigation, computer vision, and human-robot interaction."
           cvUrl="/Prathap Selvakumar-CV.pdf"
-          imageSrc="/Team_and_Testimonial/Prathap_selvakumar.png"
+          imageSrc="/Team_and_Testimonial/prathapselvakumar.png"
           imageAlt="Prathap Selvakumar"
           overlayText={{
             part1: "ABOUT",
