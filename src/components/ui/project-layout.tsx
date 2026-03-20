@@ -41,6 +41,15 @@ import { NavBar } from "@/components/ui/tubelight-navbar";
 import HardwareShowcase from "@/components/ui/spatial-product-showcase";
 import { getYouTubeThumbnail, cn } from "@/lib/utils";
 import RuixenBentoCards from "@/components/ui/ruixen-bento-cards";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
 
 import {
     Dialog,
@@ -337,10 +346,27 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     return (
         <main className="min-h-screen bg-background text-foreground">
             {/* ─── Navigation ─── */}
-            {/* Project Title (Top Left) */}
+            {/* Breadcrumb (Top Left) */}
             <div className="hidden lg:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
-                <Terminal className="w-4 h-4 text-primary" />
-                <span className="font-mono font-bold text-sm tracking-tight">{project.title}</span>
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink asChild>
+                                <Link href="/">Home</Link>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbLink asChild>
+                                <Link href="/#projects">Projects</Link>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>{project.title}</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
             </div>
 
             {/* Theme Toggle (Top Right) */}
@@ -355,9 +381,12 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                 onItemClick={(url) => {
                     if (url.startsWith('http')) {
                         window.open(url, '_blank', 'noopener,noreferrer');
-                    } else {
+                    } else if (url.startsWith('#')) {
                         const el = document.getElementById(url.replace('#', ''));
                         if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        // Use window.location or router for non-anchor internal links
+                        window.location.href = url;
                     }
                 }}
             />

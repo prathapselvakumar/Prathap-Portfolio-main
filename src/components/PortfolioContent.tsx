@@ -33,7 +33,35 @@ export function PortfolioContent() {
     update();
     const observer = new MutationObserver(update);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
+
+    // Scroll Spy: Update URL hash as user scrolls
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        // We use a small threshold and a specific rootMargin to trigger
+        // when the section enters the top-middle part of the screen.
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          if (id) {
+            window.history.replaceState(null, '', `#${id}`);
+          }
+        }
+      });
+    }, { 
+      // This margin triggers when the section is in the top 30% of the viewport
+      rootMargin: "-20% 0px -70% 0px",
+      threshold: 0.01 
+    });
+
+    const sectionIds = ['hero', 'about', 'education', 'experience', 'skills', 'projects', 'publications', 'certificates', 'testimonials'];
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
+      sectionObserver.disconnect();
+    };
   }, []);
 
   const scrollToSection = (url: string) => {

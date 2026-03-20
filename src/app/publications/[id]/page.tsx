@@ -6,6 +6,15 @@ import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Testimonials } from "@/components/Testimonials";
+import Link from 'next/link';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 /* ─── Section Header ─── */
 const SectionHeader = ({ label, title, description }: { label: string; title: string; description?: string }) => (
@@ -95,10 +104,26 @@ const Index = () => {
     return (
         <main className="min-h-screen bg-background text-foreground">
             {/* ═══ Navigation ═══ */}
-            {/* Project Title (Top Left) */}
             <div className="hidden lg:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
-                <BookOpen className="w-4 h-4 text-primary" />
-                <span className="font-mono font-bold text-sm tracking-tight">Audio Clustering</span>
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink asChild>
+                                <Link href="/">Home</Link>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbLink asChild>
+                                <Link href="/#publications">Publications</Link>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>Publication</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
             </div>
 
             {/* Theme Toggle (Top Right) */}
@@ -110,8 +135,14 @@ const Index = () => {
             <NavBar
                 items={navItems}
                 onItemClick={(url) => {
-                    const el = document.getElementById(url.replace('#', ''));
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    if (url.startsWith('http')) {
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                    } else if (url.startsWith('#')) {
+                        const el = document.getElementById(url.replace('#', ''));
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        window.location.href = url;
+                    }
                 }}
             />
 
