@@ -43,6 +43,7 @@ export interface Project {
         desc: string;
     }[];
     terminalOutput?: { type: "cmd" | "info" | "success" | "result" | "divider"; text: string }[];
+    terminalVideo?: string; // New field to replace terminal with a video
     codeSnippets?: { id: string; title: string; description: string; language: string; code: string }[];
     team?: {
         title?: string;
@@ -207,7 +208,7 @@ if __name__ == '__main__':
                         quote: "Responsible for developing and managing the Computer Vision and Navigation systems",
                         name: "Prathap Selvakumar",
                         designation: "Computer Vision and Navigation",
-                        src: "/Team_and_Testimonial/prathapselvakumar.png",
+                        src: "/Team_and_Testimonial/Prathap_selvakumar.png",
                     },
                     {
                         quote: "Oversaw component design, additive manufacturing (3D printing), and hand–eye calibration for accurate robotic perception and manipulation.",
@@ -354,7 +355,7 @@ function doAStar(
                         quote: "Architecting the data pipeline and machine learning models for predictive agricultural insights.",
                         name: "Prathap Selvakumar",
                         designation: "Robotics & ML Engineer",
-                        src: "/Team_and_Testimonial/prathapselvakumar.png",
+                        src: "/Team_and_Testimonial/Prathap_selvakumar.png",
                     },
                     {
                         quote: "Optimizing hyperspectral imagery processing and satellite data integration.",
@@ -551,10 +552,10 @@ class AdaptiveFusion(layers.Layer):
         },
         {
             id: 'ros2-coursework1',
-            title: 'ROS 2 Coursework 1: Beta Pilot',
+            title: 'ROS 2 - Basic Programming & Practice',
             description: 'Autonomous drone flight control system using ROS 2, featuring PID controllers and waypoint navigation.',
-            image: '/Thumbnails/Project Thumbnails/drone-controller.png',
-            categories: ['Robotics', 'Control Systems'],
+            image: '/Thumbnails/Project Thumbnails/ros2_programming_thumbnail.png',
+            categories: ['Robotics', 'ROS2'],
             size: 'small',
             repoUrl: 'https://github.com/prathapselvakumar/ROS-2/tree/main/coursework1',
             features: [
@@ -562,11 +563,8 @@ class AdaptiveFusion(layers.Layer):
                 { icon: 'Zap', title: "Waypoint Navigation", desc: "Automated flight paths through predefined coordinate markers." },
                 { icon: 'Activity', title: "ROS 2 Integration", desc: "Built using ROS 2 for modular robotics software." },
             ],
-            terminalOutput: [
-                { type: "cmd", text: "ros2 launch beta_pilot_launch_pkg manual_flight.launch.py" },
-                { type: "info", text: "[INFO] [launch]: Monitoring telemetry data..." },
-                { type: "success", text: "[SUCCESS] Drone takeoff achieved. Holding altitude at 1.5m." }
-            ],
+            terminalVideo: "/ROS-2/Software for Robotics Coursework-2.webm",
+            demoUrl: "/projects/coursework1/demo",
             videos: [],
             files: [],
             repos: [

@@ -406,7 +406,7 @@ const Index = () => {
                                 name: "Prathap Selvakumar",
                                 designation: "Robotics & ML Engineer",
                                 quote: "Implementing and optimizing these algorithms for real-time audio analysis was a challenging yet rewarding experience.",
-                                src: "/Team_and_Testimonial/prathapselvakumar.png",
+                                src: "/Team_and_Testimonial/Prathap_selvakumar.png",
                                
                             },
                              {

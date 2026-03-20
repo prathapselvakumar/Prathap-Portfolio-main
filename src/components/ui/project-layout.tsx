@@ -41,6 +41,8 @@ import { NavBar } from "@/components/ui/tubelight-navbar";
 import HardwareShowcase from "@/components/ui/spatial-product-showcase";
 import { getYouTubeThumbnail, cn } from "@/lib/utils";
 import RuixenBentoCards from "@/components/ui/ruixen-bento-cards";
+import VideoPlayerPro from "@/components/ui/video-player-pro";
+import YouTubePlayerPro from "@/components/ui/youtube-player-pro";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -257,7 +259,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     const isAStarProject = project.id === "a-start-algorithm";
     const isDroneProject = project.id === "drone-controller";
     const isAutonomousRobotProject = project.id === "autonomous-robot";
-    const hasDemo = isAStarProject || isDroneProject || (!!project.terminalOutput && project.terminalOutput.length > 0);
+    const hasDemo = isAStarProject || isDroneProject || (!!project.terminalOutput && project.terminalOutput.length > 0) || !!project.terminalVideo;
 
     // Build nav items from project sections
     const navItems = [
@@ -763,8 +765,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className={isDroneProject ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
                         <SectionHeader
                             label="# demo"
-                            title={isAStarProject ? "A* Path Planner Demo" : isDroneProject ? "Adaptive RL Control Demo" : "Live Terminal Output"}
-                            description={isAStarProject ? "Interactive A-star visualization for obstacle-aware routing." : isDroneProject ? "Real-time Q-learning simulation with PID gain scheduling." : "Simulated console execution."}
+                            title={isAStarProject ? "A* Path Planner Demo" : project.terminalVideo ? "Demo Video" : isDroneProject ? "Adaptive RL Control Demo" : "Live Terminal Output"}
+                            description={isAStarProject ? "Interactive A-star visualization for obstacle-aware routing." : project.terminalVideo ? "Integrated video walkthrough of the autonomous flight system." : isDroneProject ? "Real-time Q-learning simulation with PID gain scheduling." : "Simulated console execution."}
                         />
 
                         {isAStarProject ? (
@@ -787,37 +789,57 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                         <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
                                         <span className="ml-3 text-xs text-muted-foreground font-mono">terminal</span>
                                     </div>
-                                    <button
-                                        onClick={handleRun}
-                                        disabled={isRunning}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
-                                    >
-                                        {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
-                                    </button>
+                                    <div className="flex items-center gap-3">
+                                        {project.demoUrl && (
+                                            <Link
+                                                href={project.demoUrl}
+                                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors"
+                                            >
+                                                <ExternalLink className="w-3 h-3" />
+                                                Full Page Demo
+                                            </Link>
+                                        )}
+                                        {!project.terminalVideo && (
+                                            <button
+                                                onClick={handleRun}
+                                                disabled={isRunning}
+                                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+                                            >
+                                                {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
 
-                                {/* Terminal body */}
-                                <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto w-full">
-                                    {visibleLines === 0 && (
-                                        <div className="flex gap-2">
-                                            <span className="text-primary">$</span>
-                                            <span className="text-muted-foreground">_</span>
+                                {project.terminalVideo ? (
+                                    <VideoPlayerPro 
+                                        src={project.terminalVideo} 
+                                        className="aspect-video"
+                                    />
+                                ) : (
+                                    /* Terminal body */
+                                    <div ref={terminalRef} className="p-5 font-mono text-sm leading-7 min-h-[350px] max-h-[500px] overflow-y-auto w-full">
+                                        {visibleLines === 0 && (
+                                            <div className="flex gap-2">
+                                                <span className="text-primary">$</span>
+                                                <span className="text-muted-foreground">_</span>
+                                                <span className="cursor-blink text-primary">▋</span>
+                                            </div>
+                                        )}
+                                        {project.terminalOutput?.slice(0, visibleLines).map((line, i) => (
+                                            <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
+                                                {line.type === "cmd" ? (
+                                                    <span><span className="text-primary">$ </span>{line.text}</span>
+                                                ) : (
+                                                    <span>{line.text}</span>
+                                                )}
+                                            </div>
+                                        ))}
+                                        {isRunning && (
                                             <span className="cursor-blink text-primary">▋</span>
-                                        </div>
-                                    )}
-                                    {project.terminalOutput?.slice(0, visibleLines).map((line, i) => (
-                                        <div key={i} className={`${getLineColor(line.type)} ${line.type === "cmd" ? "mb-1" : ""}`}>
-                                            {line.type === "cmd" ? (
-                                                <span><span className="text-primary">$ </span>{line.text}</span>
-                                            ) : (
-                                                <span>{line.text}</span>
-                                            )}
-                                        </div>
-                                    ))}
-                                    {isRunning && (
-                                        <span className="cursor-blink text-primary">▋</span>
-                                    )}
-                                </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
@@ -924,13 +946,11 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     onCloseAutoFocus={(e) => e.preventDefault()}
                 >
                     <DialogTitle className="sr-only">Video Player</DialogTitle>
-                    <div className="aspect-video w-full">
+                    <div className="aspect-video w-full bg-black">
                         {selectedVideo && (
-                            <iframe
-                                src={`${selectedVideo}${selectedVideo.includes('?') ? '&' : '?'}autoplay=1&mute=1`}
+                            <YouTubePlayerPro 
+                                url={selectedVideo} 
                                 className="w-full h-full"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
                             />
                         )}
                     </div>
