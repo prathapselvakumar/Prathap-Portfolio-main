@@ -138,7 +138,7 @@ export const MinimalistHero = ({
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={isInView ? { scale: 1, opacity: 1 } : {}}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                className="absolute z-0 h-[400px] w-[400px] rounded-full bg-yellow-400/90 md:h-[550px] md:w-[550px] lg:h-[700px] lg:w-[700px] mb-48 -translate-x-10"
+                className="absolute z-0 h-[400px] w-[400px] rounded-full bg-yellow-400/90 md:h-[550px] md:w-[550px] lg:h-[700px] lg:w-[700px] mb-0 -translate-x-5"
             ></motion.div>
             
             <motion.img
@@ -149,8 +149,8 @@ export const MinimalistHero = ({
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
                 style={{ 
-                  scaleX: 7, 
-                  scaleY: 8,
+                  scaleX: 2, 
+                  scaleY: 2,
                   transformPerspective: 500,
                   opacity: 1,
                   fontVariant: 'jis78'
