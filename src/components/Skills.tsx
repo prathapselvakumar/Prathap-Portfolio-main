@@ -2,7 +2,9 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Bot, Brain, Cpu, Terminal, Layers, Globe } from 'lucide-react';
+import { Bot, Brain, Cpu, Terminal, Map, Route, Box, Layers, Activity, Eye, Target, Timer, Radio, Hammer, Wrench } from 'lucide-react';
+import { SiRos, SiOpencv, SiTensorflow, SiPytorch, SiCplusplus, SiPython, SiArduino, SiRaspberrypi, SiLinux } from 'react-icons/si';
+import { FaDocker, FaAws, FaGithub } from 'react-icons/fa';
 
 const skillsData = [
   {
@@ -10,12 +12,12 @@ const skillsData = [
     icon: Bot,
     description: "Building autonomous systems",
     items: [
-      { name: "ROS/ROS2" },
-      { name: "SLAM" },
-      { name: "OpenCV" },
-      { name: "Path Planning" },
-      { name: "Gazebo/Isaac Sim" },
-      { name: "Sensor Fusion" },
+      { name: "ROS/ROS2", logo: SiRos },
+      { name: "SLAM", logo: Map },
+      { name: "OpenCV", logo: SiOpencv },
+      { name: "Path Planning", logo: Route },
+      { name: "Gazebo/Isaac Sim", logo: Box },
+      { name: "Sensor Fusion", logo: Layers },
     ],
   },
   {
@@ -23,12 +25,12 @@ const skillsData = [
     icon: Brain,
     description: "Intelligent decision making",
     items: [
-      { name: "Deep Learning" },
-      { name: "PyTorch" },
-      { name: "TensorFlow" },
-      { name: "Computer Vision" },
-      { name: "Reinforcement Learning" },
-      { name: "YOLO/Object Detection" },
+      { name: "Deep Learning", logo: Activity },
+      { name: "PyTorch", logo: SiPytorch },
+      { name: "TensorFlow", logo: SiTensorflow },
+      { name: "Computer Vision", logo: Eye },
+      { name: "Reinforcement Learning", logo: Brain },
+      { name: "YOLO/Object Detection", logo: Target },
     ],
   },
   {
@@ -36,12 +38,12 @@ const skillsData = [
     icon: Cpu,
     description: "Hardware-software integration",
     items: [
-      { name: "C/C++" },
-      { name: "Python" },
-      { name: "STM32/Arduino" },
-      { name: "Raspberry Pi" },
-      { name: "RTOS" },
-      { name: "IoT Protocols" },
+      { name: "C/C++", logo: SiCplusplus },
+      { name: "Python", logo: SiPython },
+      { name: "STM32/Arduino", logo: SiArduino },
+      { name: "Raspberry Pi", logo: SiRaspberrypi },
+      { name: "RTOS", logo: Timer },
+      { name: "IoT Protocols", logo: Radio },
     ],
   },
   {
@@ -49,12 +51,12 @@ const skillsData = [
     icon: Terminal,
     description: "Development ecosystem",
     items: [
-      { name: "Linux/Bash" },
-      { name: "Git/GitHub" },
-      { name: "Docker" },
-      { name: "Fusion 360" },
-      { name: "SolidWorks" },
-      { name: "AWS/Cloud" },
+      { name: "Linux/Bash", logo: SiLinux },
+      { name: "Git/GitHub", logo: FaGithub },
+      { name: "Docker", logo: FaDocker },
+      { name: "Fusion 360", logo: Hammer },
+      { name: "SolidWorks", logo: Wrench },
+      { name: "AWS/Cloud", logo: FaAws },
     ],
   },
 ];
@@ -79,7 +81,6 @@ export function Skills() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4">
             Technical Arsenal
           </h2>
-
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
@@ -112,7 +113,7 @@ export function Skills() {
                 {skillCategory.items.map((skill, skillIndex) => (
                   <motion.span
                     key={skill.name}
-                    className="px-3 py-1.5 text-sm font-medium rounded-md bg-background border border-border text-foreground/80 hover:text-foreground hover:border-foreground/30 hover:bg-accent transition-all duration-200 cursor-default"
+                    className="px-3 py-1.5 flex items-center gap-2 text-sm font-medium rounded-md bg-background border border-border text-foreground/80 hover:text-foreground hover:border-foreground/30 hover:bg-accent transition-all duration-200 cursor-default"
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{
@@ -121,6 +122,7 @@ export function Skills() {
                     }}
                     viewport={{ once: true }}
                   >
+                    {skill.logo && <skill.logo className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" />}
                     {skill.name}
                   </motion.span>
                 ))}
