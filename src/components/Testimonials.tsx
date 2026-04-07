@@ -44,8 +44,21 @@ const defaultTestimonials: TestimonialData[] = [
   },
 ];
 
-export function Testimonials() {
+export type TestimonialsProps = {
+  title?: string;
+  description?: string;
+  data?: TestimonialData[];
+  variant?: string; // Kept for compatibility with existing calls
+};
+
+export function Testimonials({ 
+  title = "Valued Feedback", 
+  description = "Insights and recommendations from professors and mentors who have guided my journey.",
+  data = defaultTestimonials
+}: TestimonialsProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const testimonialsList = data || defaultTestimonials;
 
   return (
     <section className="min-h-screen py-24 md:py-32 bg-background relative overflow-hidden flex flex-col items-center justify-center">
@@ -58,16 +71,18 @@ export function Testimonials() {
           viewport={{ once: true }}
         >
           <h2 className="text-5xl md:text-7xl font-bold text-foreground mb-6 tracking-tight">
-            Valued Feedback
+            {title}
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Insights and recommendations from professors and mentors who have guided my journey.
-          </p>
+          {description && (
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              {description}
+            </p>
+          )}
         </motion.div>
 
         {/* Accordion Logic */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-1.5 w-full h-auto md:h-[550px]">
-          {defaultTestimonials.map((testimonial, index) => {
+          {testimonialsList.map((testimonial, index) => {
             const isHovered = hoveredIndex === index;
             const isAnyHovered = hoveredIndex !== null;
             const isExpanded = isHovered;

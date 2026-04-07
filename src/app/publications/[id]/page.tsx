@@ -5,7 +5,7 @@ import { Home, BookOpen, ExternalLink, Quote, Award, User, Calendar, FileText, L
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
-import { Testimonials } from "@/components/Testimonials";
+import { TeamShowcase } from "@/components/TeamShowcase";
 import Link from 'next/link';
 import {
     Breadcrumb,
@@ -15,6 +15,8 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { publications } from "@/lib/publications";
+import { notFound } from "next/navigation";
 
 /* ─── Section Header ─── */
 const SectionHeader = ({ label, title, description }: { label: string; title: string; description?: string }) => (
@@ -26,70 +28,53 @@ const SectionHeader = ({ label, title, description }: { label: string; title: st
     </div>
 );
 
-/* ─── Publication Data ─── */
-const publication = {
-    title: "Comparative Analysis Implementation of Queuing Songs in Players Using Audio Clustering Algorithm",
-    journal: "IGI Global Publication",
-    year: "2024",
-    authors: ["Dr.B.Aarthi", "Prathap Selvakumar", "Subiksha S", "Chhavi", "Swetha Parathasarathy"],
-    doi: "#",
-    abstract: `This research presents a comparative performance analysis of K-Means, DBSCAN, and Adaptive Clustering algorithms for grouping audio data in intelligent music player queuing systems. The study evaluates clustering robustness, parameter sensitivity, time complexity, growth rate, and asymptotic behavior. Results indicate that DBSCAN and Adaptive Clustering achieve higher recall and F-measure, while K-Means demonstrates high precision but lower recall. The findings highlight the importance of density-based and adaptive clustering approaches for dynamic multimedia applications.`,
-    keywords: ["K-Means", "DBSCAN", "Adaptive Clustering", "Audio Signal Processing", "Precision", "Recall", "F-Measure", "Time Complexity", "Density-Based Clustering"],
-    objectives: [
-        "Compare centroid-based, density-based, and adaptive clustering methods",
-        "Analyze algorithm performance using evaluation metrics",
-        "Study time complexity and asymptotic behavior",
-        "Identify the most suitable clustering method for intelligent music queuing systems"
-    ],
-    highlights: [
-        "Comparative benchmarking of three clustering algorithms",
-        "Time complexity analysis (O(n log n) vs O(n²))",
-        "Evaluation using Precision, Recall, and F-Measure",
-        "Practical application in intelligent music queuing systems",
-        "Demonstrated superiority of density-based and adaptive methods"
-    ],
-    methodology: [
-        { step: "Feature Representation", desc: "Audio signals were converted into numerical feature representations suitable for clustering algorithms." },
-        { step: "K-Means Implementation", desc: "Centroid-based clustering minimizing within-cluster variance using Euclidean distance. Time Complexity: O(n²) (as discussed in growth analysis)." },
-        { step: "DBSCAN Implementation", desc: "Density-based clustering using ε (epsilon): distance threshold and MinPts: minimum points for dense region. Time Complexity: O(n log n)." },
-        { step: "Adaptive Clustering", desc: "Dynamic adjustment of cluster count during algorithm execution to determine optimal grouping. Time Complexity: O(n) to O(n²) depending on implementation." },
-        { step: "Performance Evaluation", desc: "Algorithms evaluated using: Precision, Recall, F-Measure." },
-    ],
-    performance: [
-        { algorithm: "K-Means", precision: "High", recall: "Low", fMeasure: "Low" },
-        { algorithm: "DBSCAN", precision: "High", recall: "High", fMeasure: "High" },
-        { algorithm: "Adaptive Clustering", precision: "High", recall: "High", fMeasure: "High" }
-    ],
-    strengths: [
-        {
-            algorithm: "K-Means",
-            pros: ["Simple and efficient", "Works well when clusters are well-defined"],
-            cons: ["Sensitive to centroid initialization", "Requires predefined number of clusters"]
-        },
-        {
-            algorithm: "DBSCAN",
-            pros: ["Identifies arbitrary-shaped clusters", "Does not require predefined cluster count", "Handles noise effectively"],
-            cons: ["Sensitive to parameter selection"]
-        },
-        {
-            algorithm: "Adaptive Clustering",
-            pros: ["Automatically adjusts number of clusters", "High-quality cluster detection"],
-            cons: ["Computationally expensive"]
-        }
-    ]
-};
-
-/* ─── Stats ─── */
-const stats = [
-    { label: "Publication", value: "IGI Global", icon: BookOpen },
+/* ─── Stats Helper ─── */
+const getStats = (pub: any) => [
+    { label: "Publication", value: pub.publisher.split(' ').slice(0, 2).join(' '), icon: BookOpen },
     { label: "Research Area", value: "Audio ML", icon: Music },
-    { label: "Year", value: "2024", icon: Calendar },
+    { label: "Year", value: pub.date, icon: Calendar },
     { label: "Focus", value: "Clustering", icon: Layers },
 ];
 
 /* ─── Page ─── */
-const Index = () => {
+const Index = ({ params }: { params: { id: string } }) => {
+    const pub = publications.find(p => p.id === params.id) || publications[0];
+    
     const [expandedStep, setExpandedStep] = useState<number | null>(null);
+
+    // Using the name 'publication' to match rest of the component references
+    const publication = {
+        title: pub.title,
+        journal: pub.publisher,
+        year: pub.date,
+        authors: pub.authors,
+        doi: pub.url,
+        abstract: pub.description,
+        keywords: ["K-Means", "DBSCAN", "Adaptive Clustering", "Audio Signal Processing", "Precision", "Recall", "F-Measure", "Time Complexity", "Density-Based Clustering"],
+        objectives: [
+            "Compare centroid-based, density-based, and adaptive clustering methods",
+            "Analyze algorithm performance using evaluation metrics",
+            "Study time complexity and asymptotic behavior",
+            "Identify the most suitable clustering method for intelligent music queuing systems"
+        ],
+        highlights: [
+            "Comparative benchmarking of three clustering algorithms",
+            "Time complexity analysis (O(n log n) vs O(n²))",
+            "Evaluation using Precision, Recall, and F-Measure",
+            "Practical application in intelligent music queuing systems",
+            "Demonstrated superiority of density-based and adaptive methods"
+        ],
+        methodology: [
+            { step: "Feature Representation", desc: "Audio signals were converted into numerical feature representations suitable for clustering algorithms." },
+            { step: "K-Means Implementation", desc: "Centroid-based clustering minimizing within-cluster variance using Euclidean distance. Time Complexity: O(n²) (as discussed in growth analysis)." },
+            { step: "DBSCAN Implementation", desc: "Density-based clustering using ε (epsilon): distance threshold and MinPts: minimum points for dense region. Time Complexity: O(n log n)." },
+            { step: "Adaptive Clustering", desc: "Dynamic adjustment of cluster count during algorithm execution to determine optimal grouping. Time Complexity: O(n) to O(n²) depending on implementation." },
+            { step: "Performance Evaluation", desc: "Algorithms evaluated using: Precision, Recall, F-Measure." },
+        ],
+        team: pub.team?.members || []
+    };
+
+    const stats = getStats(pub);
 
     const navItems = [
         { name: 'Home', url: '#hero', icon: Home },
@@ -391,44 +376,10 @@ const Index = () => {
             {/* ═══ Team ═══ */}
             <section id="team" className="py-24 px-6">
                 <div className="max-w-5xl mx-auto">
-                    <Testimonials 
+                    <TeamShowcase 
                         title="Author Team" 
                         description="The researchers and engineers who contributed to this publication."
-                        variant="animated"
-                        data={[
-                            {
-                                name: "Dr.B.Aarthi",
-                                designation: "Lead Researcher & Faculty Advisor",
-                                quote: "This research addresses critical gaps in audio data clustering, providing a benchmark for intelligent multimedia systems.",
-                                src: "/Team_and_Testimonial/dr-aarthi-b.jpg",
-                            },
-                            {
-                                name: "Prathap Selvakumar",
-                                designation: "Robotics & ML Engineer",
-                                quote: "Implementing and optimizing these algorithms for real-time audio analysis was a challenging yet rewarding experience.",
-                                src: "/Team_and_Testimonial/Prathap_selvakumar.png",
-                               
-                            },
-                             {
-                                name: "Swetha Parathasarathy",
-                                designation: "Associate Researcher",
-                                quote: "The integration of adaptive clustering allows for more dynamic and user-centric music player experiences.",
-                                src: "/Team_and_Testimonial/Swetha.jpg",
-                            },
-                            {
-                                name: "Subiksha S",
-                                designation: "Associate Researcher",
-                                quote: "Clustering spectral features allowed us to achieve unprecedented accuracy in categorical audio sorting.",
-                                src: "/Team_and_Testimonial/subiksha.png",
-                            },
-                            {
-                                name: "Chhavi",
-                                designation: "Research Analyst",
-                                quote: "Analyzing the asymptotic behavior across different clustering models provided deep insights into system scalability.",
-                                src: "/Team_and_Testimonial/chhavi.jpg",
-                            },
-                           
-                        ]}
+                        members={publication.team}
                     />
                 </div>
             </section>

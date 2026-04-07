@@ -36,7 +36,7 @@ import PathPlannerApp from "@/app/projects/a-start-algorithm/PathPlannerApp";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { motion } from "framer-motion";
 
-import { Testimonials } from '@/components/Testimonials';
+import { TeamShowcase } from '@/components/TeamShowcase';
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import HardwareShowcase from "@/components/ui/spatial-product-showcase";
 import { getYouTubeThumbnail, cn } from "@/lib/utils";
@@ -918,11 +918,10 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             {/* ─── Team ─── */}
             {project.team && (
                 <div id="team">
-                    <Testimonials 
+                    <TeamShowcase 
                         title={project.team.title || "Team"} 
                         description={project.team.description}
-                        variant="animated"
-                        data={project.team.members}
+                        members={project.team.members}
                     />
                 </div>
             )}

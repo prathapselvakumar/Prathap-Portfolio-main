@@ -5,7 +5,7 @@ import { Layers, Home, Search, Terminal, Github, ExternalLink, Star, Code2, Play
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
-import { Testimonials } from "@/components/Testimonials";
+import { TeamShowcase } from "@/components/TeamShowcase";
 import { projects } from "@/lib/projects";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -682,11 +682,10 @@ const Index = () => {
             {/* ═══ Team ═══ */}
             {project?.team && (
                 <div id="team">
-                    <Testimonials 
+                    <TeamShowcase 
                         title={project.team.title || "Team"} 
                         description={project.team.description}
-                        variant="animated"
-                        data={project.team.members}
+                        members={project.team.members}
                     />
                 </div>
             )}

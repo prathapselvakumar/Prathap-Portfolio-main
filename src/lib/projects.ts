@@ -49,10 +49,11 @@ export interface Project {
         title?: string;
         description?: string;
         members: {
-            quote: string;
+            id: string;
             name: string;
-            designation: string;
-            src: string;
+            role: string;
+            image: string;
+            quote?: string; // Kept quote for historical context/use elsewhere
         }[];
     };
 }
@@ -203,38 +204,41 @@ if __name__ == '__main__':
                 title: "Team",
                 description: "The dedicated team of engineers and innovators behind the Autonomous Robot project.",
                 members: [
-                     
                     {
+                        id: "prathap",
                         quote: "Responsible for developing and managing the Computer Vision and Navigation systems",
                         name: "Prathap Selvakumar",
-                        designation: "Computer Vision and Navigation",
-                        src: "/Team_and_Testimonial/prathapselvakumar.png",
+                        role: "Computer Vision and Navigation",
+                        image: "/Team_and_Testimonial/prathapselvakumar.png",
                     },
                     {
+                        id: "joao",
                         quote: "Oversaw component design, additive manufacturing (3D printing), and hand–eye calibration for accurate robotic perception and manipulation.",
                         name: "Joao Lopes",
-                        designation: "Designing , 3D printing the components and Hand-Eye Calibration",
-                        src: "/Team_and_Testimonial/JoaoLopes.jpeg",
+                        role: "Designing , 3D printing the components and Hand-Eye Calibration",
+                        image: "/Team_and_Testimonial/JoaoLopes.jpeg",
                     },
-                     {
+                    {
+                        id: "sarath",
                         quote: "Developed and optimized SLAM and navigation for autonomous robot movement",
                         name: "Sarath Kumar",
-                        designation: "Navigation and SLAM",
-                        src: "/Team_and_Testimonial/Sarathkumar.jpeg",
+                        role: "Navigation and SLAM",
+                        image: "/Team_and_Testimonial/Sarathkumar.jpeg",
                     },
                     {
+                        id: "ruyang",
                         quote: "Specializing in Navigation and spatial awareness for real-time robotic navigation.",
                         name: "Ruiyang",
-                        designation: "Navigation and spatial awareness",
-                        src: "/Team_and_Testimonial/ruyang.jpg",
+                        role: "Navigation and spatial awareness",
+                        image: "/Team_and_Testimonial/ruyang.jpg",
                     },
                     {
+                        id: "jiaxin",
                         quote: "Concentrated on SLAM, spatial mapping, and real-time robotic localization",
                         name: "Jiaxin Tang",
-                        designation: "SLAM and spatial awareness",
-                        src: "/Team_and_Testimonial/Jiaxin Tang.jpeg",
+                        role: "SLAM and spatial awareness",
+                        image: "/Team_and_Testimonial/Jiaxin Tang.jpeg",
                     },
-
                 ]
             }
         },
@@ -352,22 +356,25 @@ function doAStar(
                 description: "The team behind the Agro Analytics platform, bridging AI and agriculture.",
                 members: [
                     {
+                        id: "prathap",
                         quote: "Architecting the data pipeline and machine learning models for predictive agricultural insights.",
                         name: "Prathap Selvakumar",
-                        designation: "Robotics & ML Engineer",
-                        src: "/Team_and_Testimonial/Prathap_selvakumar.png",
+                        role: "Robotics & ML Engineer",
+                        image: "/Team_and_Testimonial/prathapselvakumar.png",
                     },
                     {
+                        id: "mrthunjai",
                         quote: "Optimizing hyperspectral imagery processing and satellite data integration.",
                         name: "Mrthunjai Dhanasekhar",
-                        designation: "Computer Vision Specialist",
-                        src: "/Team_and_Testimonial/mrthunjai-dhanasekhar.jpeg",
+                        role: "Computer Vision Specialist",
+                        image: "/Team_and_Testimonial/mrthunjai-dhanasekhar.jpeg",
                     },
                     {
+                        id: "adithya",
                         quote: "Ensuring robust system scalability and cloud infrastructure for real-time farm monitoring.",
                         name: "Adithya",
-                        designation: "Full Stack Developer",
-                        src: "/Team_and_Testimonial/adithya.jpeg",
+                        role: "Full Stack Developer",
+                        image: "/Team_and_Testimonial/adithya.jpeg",
                     },
                 ]
             }
