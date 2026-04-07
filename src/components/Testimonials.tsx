@@ -1,8 +1,7 @@
 'use client';
 
-import * as React from "react";
-import { motion } from "framer-motion";
-import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export type TestimonialData = {
   quote: string;
@@ -45,78 +44,113 @@ const defaultTestimonials: TestimonialData[] = [
   },
 ];
 
-interface TestimonialsProps {
-  title?: string;
-  description?: string;
-  data?: TestimonialData[];
-  variant?: 'grid' | 'animated';
-}
+export function Testimonials() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-export function Testimonials({
-  title = "What People Say",
-  description = "Testimonials from professors, mentors, and colleagues I've worked with",
-  data = defaultTestimonials,
-  variant = 'grid'
-}: TestimonialsProps) {
   return (
-    <section className="min-h-[100dvh] py-16 md:py-20 bg-background flex flex-col items-center">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-16">
-        <div className="text-center mb-12">
-          <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            {title}
-          </motion.h1>
-          <motion.p
-            className="text-sm md:text-base text-muted-foreground mt-4"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            viewport={{ once: true }}
-          >
-            {description}
-          </motion.p>
-        </div>
-        
-        {variant === 'animated' ? (
-          <AnimatedTestimonials testimonials={data} autoplay={false} />
-        ) : (
-          <div className="flex flex-wrap justify-center gap-5 mt-4 text-left">
-            {data.map((testimonial, index) => (
+    <section className="min-h-screen py-24 md:py-32 bg-background relative overflow-hidden flex flex-col items-center justify-center">
+      <div className="container max-w-7xl mx-auto px-4 relative z-10 flex flex-col items-center">
+        <motion.div
+          className="text-center mb-16 md:mb-24"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-5xl md:text-7xl font-bold text-foreground mb-6 tracking-tight">
+            Valued Feedback
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Insights and recommendations from professors and mentors who have guided my journey.
+          </p>
+        </motion.div>
+
+        {/* Accordion Logic */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-1.5 w-full h-auto md:h-[550px]">
+          {defaultTestimonials.map((testimonial, index) => {
+            const isHovered = hoveredIndex === index;
+            const isAnyHovered = hoveredIndex !== null;
+            const isExpanded = isHovered;
+
+            return (
               <motion.div
                 key={index}
-                className="w-80 flex flex-col items-start border border-border p-5 rounded-lg bg-card"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
+                className={`relative transition-all duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] w-full md:h-full cursor-pointer group ${
+                  isExpanded 
+                    ? "md:w-[550px] z-30 h-[450px]" 
+                    : isAnyHovered 
+                      ? "md:w-16 opacity-40 h-[100px] md:h-full" 
+                      : "md:w-24 h-[120px] md:h-full"
+                }`}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                layout
               >
-                <svg width="44" height="40" viewBox="0 0 44 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M33.172 5.469q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 26.539 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.923-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203m-20.625 0q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 5.914 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.922-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203" fill="currentColor" className="text-primary" />
-                </svg>
-                <p className="text-sm mt-3 text-muted-foreground leading-relaxed italic">"{testimonial.quote}"</p>
-                
-                <div className="flex items-center gap-4 mt-auto pt-6 w-full border-t border-border/50">
-                  <div className="relative h-12 w-12 rounded-full overflow-hidden border border-border shrink-0">
-                    <img 
-                      src={testimonial.src} 
-                      alt={testimonial.name} 
-                      className="h-full w-full object-cover"
+                <div
+                  className={`relative w-full h-full rounded-[32px] backdrop-blur-2xl border transition-all duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] overflow-hidden flex flex-col md:flex-row items-center ${
+                    isExpanded
+                      ? "bg-card shadow-[0_32px_64px_rgba(0,0,0,0.15)] border-border/50 scale-[1.02]"
+                      : "bg-card/40 shadow-[0_8px_32px_rgba(0,0,0,0.05)] border-border/20 hover:border-border/40"
+                  }`}
+                >
+                  {/* Photo Section */}
+                  <div className={`relative h-full transition-all duration-700 shrink-0 ${
+                    isExpanded ? "w-full md:w-1/3" : "w-full"
+                  }`}>
+                    <img
+                      src={testimonial.src}
+                      alt={testimonial.name}
+                      className={`w-full h-full object-cover transition-all duration-[800ms] ${
+                        isExpanded ? "scale-100 opacity-90" : "scale-110 blur-[1px] opacity-30 group-hover:opacity-60"
+                      }`}
                     />
+                    {!isExpanded && (
+                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <p className="hidden md:block text-foreground/20 font-bold text-2xl lg:text-3xl transform -rotate-90 whitespace-nowrap uppercase tracking-[0.3em]">
+                             {testimonial.name}
+                          </p>
+                       </div>
+                    )}
                   </div>
-                  <div className="flex flex-col min-w-0">
-                    <h2 className="text-sm text-foreground font-semibold truncate">{testimonial.name}</h2>
-                    <p className="text-[11px] text-muted-foreground mt-0.5 truncate uppercase tracking-wider">{testimonial.designation}</p>
-                  </div>
+
+                  {/* Content Section (Only visible when expanded) */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div 
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ delay: 0.2, duration: 0.5 }}
+                        className="flex-1 p-8 md:p-10 flex flex-col justify-between h-full text-left bg-gradient-to-br from-white/5 to-transparent"
+                      >
+                        <div className="space-y-6">
+                           <svg width="40" height="36" viewBox="0 0 44 40" fill="none" className="text-foreground/20">
+                              <path d="M33.172 5.469q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 26.539 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.923-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203m-20.625 0q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 5.914 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.922-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203" fill="currentColor" />
+                           </svg>
+                           <p className="text-xl md:text-2xl leading-relaxed text-foreground/90 font-light italic">
+                             "{testimonial.quote}"
+                           </p>
+                        </div>
+
+                        <div className="pt-8 border-t border-border/50">
+                           <h4 className="text-xl font-semibold text-foreground">{testimonial.name}</h4>
+                           <p className="text-sm text-muted-foreground uppercase tracking-widest mt-1">
+                             {testimonial.designation}
+                           </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </motion.div>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
+
+        {/* Mobile Swipe Hint */}
+        <div className="mt-12 md:hidden text-white/30 text-xs uppercase tracking-[0.2em]">
+           Tap for details
+        </div>
       </div>
     </section>
   );
