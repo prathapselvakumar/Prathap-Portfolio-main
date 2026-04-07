@@ -208,7 +208,7 @@ if __name__ == '__main__':
                         quote: "Responsible for developing and managing the Computer Vision and Navigation systems",
                         name: "Prathap Selvakumar",
                         designation: "Computer Vision and Navigation",
-                        src: "/Team_and_Testimonial/Prathap_selvakumar.png",
+                        src: "/Team_and_Testimonial/prathapselvakumar.png",
                     },
                     {
                         quote: "Oversaw component design, additive manufacturing (3D printing), and hand–eye calibration for accurate robotic perception and manipulation.",
