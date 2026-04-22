@@ -267,9 +267,9 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
         ...(features && features.length > 0 ? [{ name: 'Features', url: '#features', icon: Cpu }] : []),
         ...(project.id === "autonomous-robot" ? [{ name: 'Products', url: '#products', icon: Box }] : []),
         ...(project.files && project.files.length > 0 ? [{ name: 'Design', url: '#files', icon: Ruler }] : []),
-        ...(project.videos && project.videos.length > 0 ? [{ name: 'Videos', url: '#videos', icon: Play }] : []),
         ...(project.codeSnippets && project.codeSnippets.length > 0 ? [{ name: isAIMLProject ? 'Source' : 'Code', url: isAIMLProject ? '#sources' : '#code', icon: Code2 }] : []),
-        ...(hasDemo ? [{ name: isAIMLProject ? 'Demo' : 'Demo', url: '#demo', icon: Terminal }] : []),
+        ...(hasDemo ? [{ name: isAIMLProject ? 'Simulation' : 'Simulation', url: '#demo', icon: Terminal }] : []),
+        ...(project.videos && project.videos.length > 0 ? [{ name: 'Videos', url: '#videos', icon: Play }] : []),
         ...(project.repoUrl ? [{ name: isAIMLProject ? 'GitHub' : 'GitHub', url: '#github', icon: Github }] : []),
         ...(project.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
     ];
@@ -656,53 +656,6 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                 </section>
             )}
 
-            {/* ─── Videos ─── */}
-            {project.videos && project.videos.length > 0 && (
-                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
-                    <div className="max-w-6xl mx-auto">
-                        <SectionHeader
-                            label="# videos"
-                            title="Project Walkthroughs"
-                            description="Click any video to play."
-                        />
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {project.videos.map((video) => (
-                                <div
-                                    key={video.id}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setSelectedVideo(video.url);
-                                    }}
-                                    className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition"
-                                >
-                                    <div className="relative aspect-video">
-                                        <img
-                                            src={getYouTubeThumbnail(video.url)}
-                                            alt={video.title}
-                                            className="w-full h-full object-cover"
-                                        />
-                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                            <Play className="w-12 h-12 text-white" />
-                                        </div>
-                                        <span className="absolute bottom-2 right-2 bg-black/70 text-xs px-2 py-1 rounded">
-                                            {video.duration}
-                                        </span>
-                                    </div>
-
-                                    <div className="p-4">
-                                        <h3 className="font-semibold mb-1">{video.title}</h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {video.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-
             {/* ─── Source ─── */}
             {project.codeSnippets && project.codeSnippets.length > 0 && (
                 <section id={isAIMLProject ? "sources" : "code"} className="py-16 md:py-24 px-4 sm:px-6">
@@ -764,8 +717,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                 <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
                     <div className={isDroneProject ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
                         <SectionHeader
-                            label="# demo"
-                            title={isAStarProject ? "A* Path Planner Demo" : project.terminalVideo ? "Demo Video" : isDroneProject ? "Adaptive RL Control Demo" : "Live Terminal Output"}
+                            label="# simulation"
+                            title={isAStarProject ? "A* Path Planner Simulation" : project.terminalVideo ? "Simulation Video" : isDroneProject ? "Adaptive RL Control Simulation" : "Live Simulation Output"}
                             description={isAStarProject ? "Interactive A-star visualization for obstacle-aware routing." : project.terminalVideo ? "Integrated video walkthrough of the autonomous flight system." : isDroneProject ? "Real-time Q-learning simulation with PID gain scheduling." : "Simulated console execution."}
                         />
 
@@ -787,7 +740,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                         <div className="w-3 h-3 rounded-full bg-destructive/60" />
                                         <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
                                         <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
-                                        <span className="ml-3 text-xs text-muted-foreground font-mono">terminal</span>
+                                        <span className="ml-3 text-xs text-muted-foreground font-mono">simulation</span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         {project.demoUrl && (
@@ -796,7 +749,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                 className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors"
                                             >
                                                 <ExternalLink className="w-3 h-3" />
-                                                Full Page Demo
+                                                Full Page Simulation
                                             </Link>
                                         )}
                                         {!project.terminalVideo && (
@@ -842,6 +795,53 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                 )}
                             </div>
                         )}
+                    </div>
+                </section>
+            )}
+
+            {/* ─── Videos ─── */}
+            {project.videos && project.videos.length > 0 && (
+                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
+                    <div className="max-w-6xl mx-auto">
+                        <SectionHeader
+                            label="# videos"
+                            title="Project Walkthroughs"
+                            description="Click any video to play."
+                        />
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {project.videos.map((video) => (
+                                <div
+                                    key={video.id}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedVideo(video.url);
+                                    }}
+                                    className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition"
+                                >
+                                    <div className="relative aspect-video">
+                                        <img
+                                            src={getYouTubeThumbnail(video.url)}
+                                            alt={video.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <Play className="w-12 h-12 text-white" />
+                                        </div>
+                                        <span className="absolute bottom-2 right-2 bg-black/70 text-xs px-2 py-1 rounded">
+                                            {video.duration}
+                                        </span>
+                                    </div>
+
+                                    <div className="p-4">
+                                        <h3 className="font-semibold mb-1">{video.title}</h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            {video.description}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
             )}

@@ -111,9 +111,22 @@ export const projects: Project[] =
                     id: "5",
                     title: "Trail Run",
                     description: "First run of the robot in a trail environment.",
-                   
                     duration: "7:15",
                     url: "https://www.youtube.com/embed/FMmaug6hqB4?si=TfzrjiVYwOa-qobM"
+                },
+                {
+                    id: "6",
+                    title: "Navigation Simulation",
+                    description: "Autonomous Mobile Robot navigation simulation in a controlled environment.",
+                    duration: "1:45",
+                    url: "https://www.youtube.com/embed/x4h67LoeZBI?si=8KE50BYbr0_2nMhd"
+                },
+                {
+                    id: "7",
+                    title: "Autonomous Navigation",
+                    description: "Autonomous Mobile Robot navigation simulation - Alternative scenario.",
+                    duration: "2:15",
+                    url: "https://www.youtube.com/embed/JKKeyHDO91U?si=27LqnjHdYJ1Jo4Sp"
                 }
             ],
 
@@ -447,7 +460,15 @@ function doAStar(
                 }
             ],
             terminalOutput: [],
-            videos: [],
+            videos: [
+                {
+                    id: "1",
+                    title: "Drone Week-1 trail",
+                    description: "Initial drone feedback control session and flight testing.",
+                    duration: "3:15",
+                    url: "https://www.youtube.com/embed/APb6memCiac?si=ITwi2TK544AzIHiY&start=7"
+                }
+            ],
             files: [],
             repos: []
         },
