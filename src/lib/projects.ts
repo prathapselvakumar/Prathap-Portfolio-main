@@ -127,7 +127,15 @@ export const projects: Project[] =
                     description: "Autonomous Mobile Robot navigation simulation - Alternative scenario.",
                     duration: "2:15",
                     url: "https://www.youtube.com/embed/JKKeyHDO91U?si=27LqnjHdYJ1Jo4Sp"
+                },
+                {
+                    id: "8",
+                    title: "Navigation toward to block",
+                    description: "Autonomous Mobile Robot navigation toward a specific block.",
+                    duration: "1:20",
+                    url: "https://www.youtube.com/embed/XdL26rWp_r4?si=e_KfrP3zyFPaZeQ3"
                 }
+
             ],
 
             files: [
