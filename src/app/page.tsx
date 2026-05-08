@@ -6,10 +6,6 @@ import { LandingPage } from '@/components/Landingpage/LandingPage';
 import { SimpleLoading } from '@/components/SimpleLoading';
 import { PortfolioContent } from '@/components/PortfolioContent';
 
-// Module-level variable to track if the application has been initialized in this tab session.
-// This resets on browser reload, but persists across Next.js client-side navigations.
-let appInitialized = false;
-
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [loadingType, setLoadingType] = useState<'welcome' | 'simple' | 'none'>('none');
@@ -17,10 +13,10 @@ export default function Home() {
   useEffect(() => {
     setIsClient(true);
     
-    if (!appInitialized) {
+    if (typeof window !== 'undefined' && !(window as any).appInitialized) {
       // This is a fresh browser load or a manual refresh
       setLoadingType('welcome');
-      appInitialized = true;
+      (window as any).appInitialized = true;
     } else {
       // This is an internal navigation back to Home (e.g., via breadcrumbs)
       setLoadingType('simple');

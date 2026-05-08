@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { SpiralAnimation } from '@/components/ui/spiral-animation';
+import { AppleHelloEnglishEffect } from '@/components/ui/apple-hello';
 import { LiquidButton } from '@/components/ui/liquid-glass-button';
 
 interface LoadingScreenProps {
@@ -13,6 +13,9 @@ export function LoadingScreen({ onEnter }: LoadingScreenProps) {
 
   // Fade in the enter button after animation loads
   useEffect(() => {
+    const audio = new Audio('/Audio/Website%20booting.m4a');
+    audio.play().catch(e => console.warn('Audio autoplay blocked by browser:', e));
+
     const timer = setTimeout(() => {
       setStartVisible(true);
     }, 2000);
@@ -28,15 +31,15 @@ export function LoadingScreen({ onEnter }: LoadingScreenProps) {
 
   return (
     <div className="fixed inset-0 w-full h-full overflow-hidden bg-black">
-      {/* Spiral Animation */}
-      <div className="absolute inset-0">
-        <SpiralAnimation />
+      {/* Apple Hello Animation */}
+      <div className="absolute inset-0 flex items-center justify-center -mt-16 pointer-events-none">
+        <AppleHelloEnglishEffect className="text-white h-16 sm:h-24 md:h-32" speed={1.2} />
       </div>
 
       {/* Liquid Glass Button */}
       <div
         className={`
-          absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10
+          absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 z-10
           transition-all duration-1500 ease-out
           ${startVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         `}

@@ -307,6 +307,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
     const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
     const [selected3DModel, setSelected3DModel] = useState<string>('Autonomous Mobile Robot');
+    const [activeVideoFilter, setActiveVideoFilter] = useState<string>("All");
     const isModalOpenRef = useRef(false);
 
     // Terminal and code state
@@ -809,39 +810,76 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                             description="Click any video to play."
                         />
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {project.videos.map((video) => (
-                                <div
-                                    key={video.id}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setSelectedVideo(video.url);
-                                    }}
-                                    className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition"
-                                >
-                                    <div className="relative aspect-video">
-                                        <img
-                                            src={getYouTubeThumbnail(video.url)}
-                                            alt={video.title}
-                                            className="w-full h-full object-cover"
-                                        />
-                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                            <Play className="w-12 h-12 text-white" />
-                                        </div>
-                                        <span className="absolute bottom-2 right-2 bg-black/70 text-xs px-2 py-1 rounded">
-                                            {video.duration}
-                                        </span>
-                                    </div>
+                        {(() => {
+                            const filters = project.videos?.map(v => v.filter).filter(Boolean) as string[];
+                            const uniqueFilters = ["All", ...Array.from(new Set(filters))];
+                            
+                            const filteredVideos = activeVideoFilter === "All" 
+                                ? project.videos 
+                                : project.videos?.filter(v => v.filter === activeVideoFilter);
 
-                                    <div className="p-4">
-                                        <h3 className="font-semibold mb-1">{video.title}</h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {video.description}
-                                        </p>
+                            return (
+                                <>
+                                    {uniqueFilters.length > 1 && (
+                                        <motion.div
+                                            className="flex flex-wrap gap-3 mb-8 justify-center"
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.5 }}
+                                            viewport={{ once: true }}
+                                        >
+                                            {uniqueFilters.map((filter) => (
+                                                <LiquidButton
+                                                    key={filter}
+                                                    onClick={() => setActiveVideoFilter(filter)}
+                                                    size="default"
+                                                    className={`pointer-events-auto cursor-pointer ${activeVideoFilter === filter
+                                                        ? 'bg-foreground text-background'
+                                                        : 'bg-background text-muted-foreground hover:text-foreground'
+                                                        }`}
+                                                >
+                                                    {filter}
+                                                </LiquidButton>
+                                            ))}
+                                        </motion.div>
+                                    )}
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {filteredVideos?.map((video) => (
+                                            <div
+                                                key={video.id}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedVideo(video.url);
+                                                }}
+                                                className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition"
+                                            >
+                                                <div className="relative aspect-video">
+                                                    <img
+                                                        src={getYouTubeThumbnail(video.url)}
+                                                        alt={video.title}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                                        <Play className="w-12 h-12 text-white" />
+                                                    </div>
+                                                    <span className="absolute bottom-2 right-2 bg-black/70 text-xs px-2 py-1 rounded">
+                                                        {video.duration}
+                                                    </span>
+                                                </div>
+
+                                                <div className="p-4">
+                                                    <h3 className="font-semibold mb-1">{video.title}</h3>
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {video.description}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                </>
+                            );
+                        })()}
                     </div>
                 </section>
             )}

@@ -11,9 +11,10 @@ export interface Project {
         id: string;
         title: string;
         description: string;
-       
+
         duration: string;
         url: string;
+        filter?: string;
     }[];
     files?: {
         id: string;
@@ -77,63 +78,86 @@ export const projects: Project[] =
             videos: [
                 {
                     id: "1",
-                    title: "Computer Vision",
-                    description: "The output of the object detection using YOLOv8.",
-                  
-                    duration: "4:32",
-                    url: "https://www.youtube.com/embed/qvzDwsoLuuM?si=Yi3NlumaOGGyOG8A"
-                },
-                {
-                    id: "2",
-                    title: "Lidars",
-                    description: "Initial testing of the lidars.",
-                   
-                    duration: "2:10",
-                    url: "https://www.youtube.com/embed/VSYWAxqKxZ8?si=jUMfohMpg7cIfBh"
+                    title: "Perception System (Rover's PoV)",
+                    description: "Object detection and LIDAR perception capabilities from the Rover's point of view.",
+
+                    duration: "Live",
+                    url: "https://www.youtube.com/embed/Jkbf77HW8Nw?si=0PGOqbZgni4xtVDR",
+                    filter: "Perception"
                 },
                 {
                     id: "3",
                     title: "Arm Movement Testing",
                     description: "Testing the movement of the arm.",
-                   
+
                     duration: "3:48",
-                    url: "https://www.youtube.com/embed/XS9NESWWpK8?si=EJpZDgY3A2b5d7aR"
+                    url: "https://www.youtube.com/embed/XS9NESWWpK8?si=EJpZDgY3A2b5d7aR",
+                    filter: "Manipulation"
                 },
                 {
                     id: "4",
                     title: "Structural Construction",
                     description: "The construction of the robot.",
-                  
+
                     duration: "5:20",
-                    url: "https://www.youtube.com/embed/vs7O9ohwxwc?si=1lukm8WUqp22UDjS"
+                    url: "https://www.youtube.com/embed/vs7O9ohwxwc?si=1lukm8WUqp22UDjS",
+                    filter: "System Level"
                 },
                 {
                     id: "5",
                     title: "Trail Run",
                     description: "First run of the robot in a trail environment.",
                     duration: "7:15",
-                    url: "https://www.youtube.com/embed/FMmaug6hqB4?si=TfzrjiVYwOa-qobM"
+                    url: "https://www.youtube.com/embed/FMmaug6hqB4?si=TfzrjiVYwOa-qobM",
+                    filter: "System Level"
                 },
                 {
                     id: "6",
                     title: "Navigation Simulation",
                     description: "Autonomous Mobile Robot navigation simulation in a controlled environment.",
                     duration: "1:45",
-                    url: "https://www.youtube.com/embed/x4h67LoeZBI?si=8KE50BYbr0_2nMhd"
+                    url: "https://www.youtube.com/embed/x4h67LoeZBI?si=8KE50BYbr0_2nMhd",
+                    filter: "Navigation"
                 },
                 {
                     id: "7",
                     title: "Autonomous Navigation",
                     description: "Autonomous Mobile Robot navigation simulation - Alternative scenario.",
                     duration: "2:15",
-                    url: "https://www.youtube.com/embed/JKKeyHDO91U?si=27LqnjHdYJ1Jo4Sp"
+                    url: "https://www.youtube.com/embed/JKKeyHDO91U?si=27LqnjHdYJ1Jo4Sp",
+                    filter: "Navigation"
                 },
                 {
                     id: "8",
                     title: "Navigation toward to block",
                     description: "Autonomous Mobile Robot navigation toward a specific block.",
                     duration: "1:20",
-                    url: "https://www.youtube.com/embed/XdL26rWp_r4?si=e_KfrP3zyFPaZeQ3"
+                    url: "https://www.youtube.com/embed/XdL26rWp_r4?si=e_KfrP3zyFPaZeQ3",
+                    filter: "Navigation"
+                },
+                {
+                    id: "9",
+                    title: "Return to intial position after mission (Simulation Demo) ",
+                    description: "Simulation of the robot's navigation path.",
+                    duration: "Live",
+                    url: "https://www.youtube.com/embed/4J8ch9rUiek?si=cN7iUfXhKyTlOndf",
+                    filter: "Navigation"
+                },
+                {
+                    id: "10",
+                    title: "Arm Manipulation (Simulation)",
+                    description: "Simulation of the robot's arm manipulation.",
+                    duration: "Live",
+                    url: "https://www.youtube.com/embed/PHqzU4Cxsj4?si=AA06VIJK6sAWlKeE",
+                    filter: "Manipulation"
+                },
+                {
+                    id: "11",
+                    title: "Safety Demonstration",
+                    description: "Demonstration of the robot's safety features and protocols.",
+                    duration: "Live",
+                    url: "https://www.youtube.com/embed/n0pm3tVpszg?si=VqiDjv09iCeroLaZ",
+                    filter: "Safety"
                 }
 
             ],
@@ -227,37 +251,37 @@ if __name__ == '__main__':
                 members: [
                     {
                         id: "prathap",
-                        quote: "Responsible for developing and managing the Computer Vision and Navigation systems",
+                        quote: "Worked in Computer Vision and SLAM.",
                         name: "Prathap Selvakumar",
-                        role: "Computer Vision and Navigation",
+                        role: "Computer Vision and SLAM",
                         image: "/Team_and_Testimonial/prathapselvakumar.png",
                     },
                     {
                         id: "joao",
-                        quote: "Oversaw component design, additive manufacturing (3D printing), and hand–eye calibration for accurate robotic perception and manipulation.",
+                        quote: "Worked on mechanical design and manipulation.",
                         name: "Joao Lopes",
-                        role: "Designing , 3D printing the components and Hand-Eye Calibration",
+                        role: "Mechanical Design and Manipulation",
                         image: "/Team_and_Testimonial/JoaoLopes.jpeg",
                     },
                     {
                         id: "sarath",
-                        quote: "Developed and optimized SLAM and navigation for autonomous robot movement",
+                        quote: "Did exploration, SLAM, state machine and system integration.",
                         name: "Sarath Kumar",
-                        role: "Navigation and SLAM",
+                        role: "Exploration, SLAM, State Machine and System Integration",
                         image: "/Team_and_Testimonial/Sarathkumar.jpeg",
                     },
                     {
                         id: "ruyang",
-                        quote: "Specializing in Navigation and spatial awareness for real-time robotic navigation.",
+                        quote: "Worked in state machine and manipulation.",
                         name: "Ruiyang",
-                        role: "Navigation and spatial awareness",
+                        role: "State Machine and Manipulation",
                         image: "/Team_and_Testimonial/ruyang.jpg",
                     },
                     {
                         id: "jiaxin",
-                        quote: "Concentrated on SLAM, spatial mapping, and real-time robotic localization",
+                        quote: "Worked in simulation and electrical.",
                         name: "Jiaxin Tang",
-                        role: "SLAM and spatial awareness",
+                        role: "Simulation and Electrical",
                         image: "/Team_and_Testimonial/Jiaxin Tang.jpeg",
                     },
                 ]
@@ -276,7 +300,7 @@ if __name__ == '__main__':
                 { icon: 'Zap', title: "Semantic Search", desc: "Goes beyond keywords to understand the context and intent behind every voice query." },
                 { icon: 'Database', title: "Scalable Indexing", desc: "Fast and memory-efficient indexing architecture for searching through millions of audio files." },
                 { icon: 'Search', title: "Audio Fingerprinting", desc: "Identify audio clips through unique acoustic signatures with minimal data requirements." },
-            
+
             ],
             codeSnippets: [
                 {
@@ -307,9 +331,9 @@ if __name__ == '__main__':
             features: [
                 { icon: 'Cpu', title: "A* Path Planning", desc: "Computes shortest paths on a dynamic grid using heuristic-based search." },
                 { icon: 'Activity', title: "Interactive Controls", desc: "Set start/end points, paint obstacles, and launch live route calculations." },
-            { icon: 'Activity', title: "Path Validation", desc: "Validates and visualizes each computed step with clear state feedback and messages." },
-            { icon: 'Layers', title: "Grid Resizing", desc: "Adjust grid dimensions at runtime to test algorithm behavior on different planning resolutions." },
-            { icon: 'Wifi', title: "Path Cost Diagnostics", desc: "Tracks algorithm iteration costs and highlights when heuristic costs lead to faster route convergence." },
+                { icon: 'Activity', title: "Path Validation", desc: "Validates and visualizes each computed step with clear state feedback and messages." },
+                { icon: 'Layers', title: "Grid Resizing", desc: "Adjust grid dimensions at runtime to test algorithm behavior on different planning resolutions." },
+                { icon: 'Wifi', title: "Path Cost Diagnostics", desc: "Tracks algorithm iteration costs and highlights when heuristic costs lead to faster route convergence." },
             ],
             codeSnippets: [
                 {
