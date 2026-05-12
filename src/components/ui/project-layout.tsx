@@ -245,10 +245,23 @@ function highlightCode(line: string): React.ReactNode {
     return parts.length > 0 ? <>{parts}</> : line;
 }
 
+/**
+ * Props for the ProjectLayout component.
+ * @property {Project} project - The project metadata and configuration.
+ * @property {React.ReactNode} [customDemo] - Optional custom React component to render as the simulation/demo instead of the default terminal.
+ */
 interface ProjectLayoutProps {
     project: Project;
     customDemo?: React.ReactNode;
 }
+
+/**
+ * ProjectLayout Component
+ * 
+ * A highly dynamic, multi-section layout template for showcasing individual portfolio projects.
+ * It conditionally renders sections (e.g., features, products, code snippets, simulation demos, and videos)
+ * based on the available data in the `project` prop.
+ */
 
 const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     const features = project.features?.map((f) => ({

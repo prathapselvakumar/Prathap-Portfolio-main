@@ -1,3 +1,9 @@
+/**
+ * Defines the structure for a portfolio project.
+ * Ensure all required fields are populated when adding a new project.
+ * 
+ * @interface Project
+ */
 export interface Project {
     id: string;
     title: string;
@@ -59,6 +65,10 @@ export interface Project {
     };
 }
 
+/**
+ * Array of all portfolio projects.
+ * These are mapped over in the PortfolioContent component to create the project grid.
+ */
 export const projects: Project[] =
     // modified for thumbnail 
     [

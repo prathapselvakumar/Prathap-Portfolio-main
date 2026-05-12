@@ -15,22 +15,27 @@ import { Testimonials } from '@/components/Testimonials';
 import { NavBar } from '@/components/ui/tubelight-navbar';
 import { Home, User, GraduationCap, Briefcase, Code, FolderOpen, BookOpen, Award, MessageSquare } from 'lucide-react';
 import { Publications } from '@/components/Publications';
-import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { projects } from '@/lib/projects';
 import { MinimalistHero } from '@/components/ui/minimalist-hero';
 import { Github, Linkedin } from 'lucide-react';
 
+/**
+ * PortfolioContent Component
+ * Main container for the portfolio, rendering the hero section, about, 
+ * education, experience, and the filtered projects gallery.
+ */
 export function PortfolioContent() {
-  const { resolvedTheme: theme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
   const [isDark, setIsDark] = React.useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   React.useEffect(() => {
     setMounted(true);
-    // Directly observe the html class so particle color updates instantly on theme change
+    
+    // Theme observer: directly monitors the <html> class to instantly
+    // update particle colors (SparklesCore) when switching light/dark modes.
     const update = () => setIsDark(document.documentElement.classList.contains('dark'));
     update();
     const observer = new MutationObserver(update);
@@ -80,6 +85,10 @@ export function PortfolioContent() {
     console.log("Spline loaded", spline);
   };
 
+  /**
+   * Triggers the "Bye" animation for the 3D robot scene.
+   * This provides an interactive send-off when the user navigates away from the Hero section.
+   */
   const triggerRobotBye = () => {
     if (splineRef.current) {
       // Attempt to trigger "Bye" animation
@@ -117,11 +126,7 @@ export function PortfolioContent() {
     { name: 'Certificates', url: '#certificates', icon: Award },
     { name: 'Testimonials', url: '#testimonials', icon: MessageSquare }];
 
-  // Projects data with categories
-
-
-
-  // Extract unique categories
+  // Extract unique categories from all projects to dynamically build the filter menu
   const discoveredCategories = Array.from(new Set(projects.flatMap((p) => p.categories)));
   const preferredOrder = ['Robotics', 'AI/ML', 'Algorithms', 'Computer Vision'];
   const orderedCategories = [
