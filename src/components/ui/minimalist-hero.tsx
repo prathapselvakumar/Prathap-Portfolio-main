@@ -4,7 +4,7 @@ import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
+import { ShatterButton } from './ShatterButton';
 // Define the props interface for type safety and reusability
 interface MinimalistHeroProps {
   mainText: string;
@@ -113,13 +113,20 @@ export const MinimalistHero = ({
             
             <div className="flex flex-wrap items-center gap-6 pt-2">
               {cvUrl && (
-                <a
-                  href={cvUrl}
-                  download
-                  className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-foreground text-background text-sm font-bold hover:scale-105 transition-all duration-300 shadow-lg"
+                <ShatterButton
+                  shatterColor="#ffffff" // white
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = cvUrl;
+                    link.download = '';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                  className="bg-foreground text-background text-sm hover:scale-105 transition-all duration-300 shadow-lg"
                 >
                   Download CV
-                </a>
+                </ShatterButton>
               )}
 
               <div className="flex items-center space-x-4">

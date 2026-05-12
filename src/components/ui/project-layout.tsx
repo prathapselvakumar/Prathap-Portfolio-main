@@ -43,6 +43,7 @@ import { getYouTubeThumbnail, cn } from "@/lib/utils";
 import RuixenBentoCards from "@/components/ui/ruixen-bento-cards";
 import VideoPlayerPro from "@/components/ui/video-player-pro";
 import YouTubePlayerPro from "@/components/ui/youtube-player-pro";
+import { ShatterButton } from "@/components/ui/ShatterButton";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -640,12 +641,23 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                             <div className="flex justify-between items-center mt-auto">
                                                 <span className="text-xs font-mono px-2 py-1 rounded bg-muted/50 text-muted-foreground">{file.fileSize}</span>
                                                 <div className="flex gap-2">
-                                                    <a href={file.downloadUrl}>
-                                                        <Button size="sm">
+                                                    <ShatterButton
+                                                        shatterColor="#ffffff"
+                                                        onClick={() => {
+                                                            const link = document.createElement('a');
+                                                            link.href = file.downloadUrl;
+                                                            link.download = '';
+                                                            document.body.appendChild(link);
+                                                            link.click();
+                                                            document.body.removeChild(link);
+                                                        }}
+                                                        className="bg-primary text-primary-foreground hover:scale-105 transition-all !px-4 !py-2 !rounded-md !text-sm flex items-center justify-center"
+                                                    >
+                                                        <span className="flex items-center">
                                                             <Download className="w-4 h-4 mr-1" />
                                                             Download
-                                                        </Button>
-                                                    </a>
+                                                        </span>
+                                                    </ShatterButton>
                                                 </div>
                                             </div>
                                         </div>
