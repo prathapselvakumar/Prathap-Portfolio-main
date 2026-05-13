@@ -1,12 +1,17 @@
 "use client";
-
+ 
 import { useScroll, useTransform, motion, useMotionValueEvent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/lib/translations';
+import { cn } from "@/lib/utils";
 
 const FRAME_COUNT = 240;
 const preloadedImages: HTMLImageElement[] = [];
 
 export default function LeoRoverExploded() {
+    const { language } = useLanguage();
+    const t = translations[language].leoRover;
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [imagesLoaded, setImagesLoaded] = useState(0);
@@ -94,12 +99,13 @@ export default function LeoRoverExploded() {
     }, []);
 
     // Text Animations based on scroll progress
-    // Let's divide 0-1 into sections based on what parts of the rover are visible
     const textOpacity1 = useTransform(scrollYProgress, [0.0, 0.05, 0.15, 0.2], [0, 1, 1, 0]);
     const textOpacity2 = useTransform(scrollYProgress, [0.2, 0.25, 0.35, 0.4], [0, 1, 1, 0]);
     const textOpacity3 = useTransform(scrollYProgress, [0.4, 0.45, 0.55, 0.6], [0, 1, 1, 0]);
     const textOpacity4 = useTransform(scrollYProgress, [0.6, 0.65, 0.75, 0.8], [0, 1, 1, 0]);
     const textOpacity5 = useTransform(scrollYProgress, [0.8, 0.85, 0.95, 1.0], [0, 1, 1, 0]);
+
+    const opacities = [textOpacity1, textOpacity2, textOpacity3, textOpacity4, textOpacity5];
 
     return (
         <div ref={containerRef} className="relative h-[600vh] bg-black">
@@ -108,7 +114,7 @@ export default function LeoRoverExploded() {
                 {/* Loading overlay if not all images loaded */}
                 {imagesLoaded < FRAME_COUNT && (
                     <div className="absolute inset-0 z-50 flex items-center justify-center bg-neutral-950/90 text-white flex-col">
-                        <div className="text-2xl font-light mb-4 tracking-widest text-[#cfcfcf]">LOADING ASSETS</div>
+                        <div className="text-2xl font-light mb-4 tracking-widest text-[#cfcfcf]">{t.loading}</div>
                         <div className="w-64 h-1 bg-neutral-800 rounded-full overflow-hidden">
                             <div className="h-full bg-white transition-all duration-300" style={{ width: `${(imagesLoaded / FRAME_COUNT) * 100}%` }} />
                         </div>
@@ -121,47 +127,24 @@ export default function LeoRoverExploded() {
 
                 {/* Text Overlays overlay */}
                 <div className="absolute inset-0 z-10 pointer-events-none">
-                    {/* Step 1 */}
-                    <motion.div style={{ opacity: textOpacity1 }} className="absolute bottom-[10%] lg:bottom-auto lg:top-[20%] left-[5%] lg:left-[10%] max-w-sm px-4">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">SLAM</h2>
-                        <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
-                            <p className="text-neutral-200 text-base md:text-lg leading-relaxed">Simultaneous Localization and Mapping utilizing 2D/3D LiDAR fusion to construct high-fidelity spatial maps of unknown environments in real-time.</p>
-                        </div>
-                    </motion.div>
-
-                    {/* Step 2 */}
-                    <motion.div style={{ opacity: textOpacity2 }} className="absolute bottom-[10%] lg:bottom-auto lg:top-[30%] left-[5%] lg:left-auto lg:right-[10%] max-w-sm px-4 text-left lg:text-right">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">Autonomous Navigation</h2>
-                        <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
-                            <p className="text-neutral-200 text-base md:text-lg leading-relaxed">Dynamic path planning and robust obstacle avoidance algorithms ensuring seamless point-to-point traversal across complex terrain.</p>
-                        </div>
-                    </motion.div>
-
-                    {/* Step 3 */}
-                    <motion.div style={{ opacity: textOpacity3 }} className="absolute bottom-[10%] lg:bottom-[20%] left-[5%] lg:left-[10%] max-w-sm px-4">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">Computer Vision</h2>
-                        <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
-                            <p className="text-neutral-200 text-base md:text-lg leading-relaxed">Edge-deployed YOLOv8 inference enabling rapid object detection, semantic segmentation, and advanced environmental perception.</p>
-                        </div>
-                    </motion.div>
-
-                    {/* Step 4 */}
-                    <motion.div style={{ opacity: textOpacity4 }} className="absolute bottom-[10%] lg:bottom-auto lg:top-[20%] left-[5%] lg:left-auto lg:right-[10%] max-w-sm px-4 text-left lg:text-right">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">ROS2 Architecture</h2>
-                        <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
-                            <p className="text-neutral-200 text-base md:text-lg leading-relaxed">A decentralized, highly modular communication framework managing sensor data streams and autonomous state machines continuously.</p>
-                        </div>
-                    </motion.div>
-
-                    {/* Step 5 */}
-                    <motion.div style={{ opacity: textOpacity5 }} className="absolute bottom-[10%] lg:bottom-[25%] left-[5%] lg:left-[15%] max-w-sm px-4">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">Path Logging</h2>
-                        <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
-                            <p className="text-neutral-200 text-base md:text-lg leading-relaxed">Comprehensive telemetry recording system tracking odometry, executed paths, and obstacle metadata for post-mission kinematic analysis.</p>
-                        </div>
-                    </motion.div>
+                    {t.steps.map((step, index) => (
+                        <motion.div 
+                            key={index}
+                            style={{ opacity: opacities[index] }} 
+                            className={cn(
+                                "absolute bottom-[10%] lg:bottom-auto max-w-sm px-4",
+                                index % 2 === 0 
+                                    ? "lg:top-[20%] left-[5%] lg:left-[10%]" 
+                                    : "lg:top-[30%] left-[5%] lg:left-auto lg:right-[10%] text-left lg:text-right"
+                            )}
+                        >
+                            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">{step.title}</h2>
+                            <div className="bg-black/60 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-white/10">
+                                <p className="text-neutral-200 text-base md:text-lg leading-relaxed">{step.description}</p>
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
-
             </div>
         </div>
     );

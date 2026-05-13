@@ -29,6 +29,9 @@ import {
 } from "lucide-react";
 
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import { Project } from "@/lib/projects";
 import LeoRoverExploded from "@/app/projects/leo-rover/LeoRoverExploded";
@@ -264,8 +267,14 @@ interface ProjectLayoutProps {
  */
 
 const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
+    const { language } = useLanguage();
+    const t = translations[language].projects.ui;
+    const commonT = translations[language].nav;
+
     const features = project.features?.map((f) => ({
         ...f,
+        title: (language === 'ja' && f.title_ja) ? f.title_ja : f.title,
+        description: (language === 'ja' && f.desc_ja) ? f.desc_ja : f.desc,
         Icon: iconMap[f.icon] || Cpu,
     }));
 
@@ -277,15 +286,15 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
     // Build nav items from project sections
     const navItems = [
-        { name: 'Home', url: '#hero', icon: Home },
-        ...(features && features.length > 0 ? [{ name: 'Features', url: '#features', icon: Cpu }] : []),
-        ...(project.id === "autonomous-robot" ? [{ name: 'Products', url: '#products', icon: Box }] : []),
-        ...(project.files && project.files.length > 0 ? [{ name: 'Design', url: '#files', icon: Ruler }] : []),
-        ...(project.codeSnippets && project.codeSnippets.length > 0 ? [{ name: isAIMLProject ? 'Source' : 'Code', url: isAIMLProject ? '#sources' : '#code', icon: Code2 }] : []),
-        ...(hasDemo ? [{ name: isAIMLProject ? 'Simulation' : 'Simulation', url: '#demo', icon: Terminal }] : []),
-        ...(project.videos && project.videos.length > 0 ? [{ name: 'Videos', url: '#videos', icon: Play }] : []),
-        ...(project.repoUrl ? [{ name: isAIMLProject ? 'GitHub' : 'GitHub', url: '#github', icon: Github }] : []),
-        ...(project.team ? [{ name: 'Team', url: '#team', icon: User }] : []),
+        { name: t.home, url: '#hero', icon: Home },
+        ...(features && features.length > 0 ? [{ name: t.features, url: '#features', icon: Cpu }] : []),
+        ...(project.id === "autonomous-robot" ? [{ name: t.products, url: '#products', icon: Box }] : []),
+        ...(project.files && project.files.length > 0 ? [{ name: t.design, url: '#files', icon: Ruler }] : []),
+        ...(project.codeSnippets && project.codeSnippets.length > 0 ? [{ name: isAIMLProject ? t.source : t.code, url: isAIMLProject ? '#sources' : '#code', icon: Code2 }] : []),
+        ...(hasDemo ? [{ name: t.simulation, url: '#demo', icon: Terminal }] : []),
+        ...(project.videos && project.videos.length > 0 ? [{ name: t.videos, url: '#videos', icon: Play }] : []),
+        ...(project.repoUrl ? [{ name: t.github, url: '#github', icon: Github }] : []),
+        ...(project.team ? [{ name: t.team, url: '#team', icon: User }] : []),
     ];
 
     const [activeSection, setActiveSection] = useState("hero");
@@ -369,13 +378,13 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <BreadcrumbList>
                         <BreadcrumbItem>
                             <BreadcrumbLink asChild>
-                                <Link href="/">Home</Link>
+                                <Link href="/">{t.home}</Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
                             <BreadcrumbLink asChild>
-                                <Link href="/#projects">Projects</Link>
+                                <Link href="/#projects">{commonT.projects}</Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
@@ -386,8 +395,9 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                 </Breadcrumb>
             </div>
 
-            {/* Theme Toggle (Top Right) */}
-            <div className="fixed top-6 right-6 z-50">
+            {/* Theme & Language Toggle (Top Right) */}
+            <div className="fixed top-6 right-6 z-50 flex items-center gap-2">
+                <LanguageSwitcher className="h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
                 <AnimatedThemeToggler className="w-11 h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
             </div>
 
@@ -430,7 +440,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                         <span className="gradient-text">{project.title}</span>
                     </h1>
                     <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
-                        {project.description}
+                        {language === 'ja' && project.description_ja ? project.description_ja : project.description}
                     </p>
 
                     <div className="mt-8 flex flex-wrap justify-center gap-2">
@@ -439,7 +449,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                 key={cat}
                                 className="px-4 py-2 rounded-full border text-xs font-mono"
                             >
-                                {cat}
+                                {((translations[language].projects.categories as any)?.[cat.toLowerCase().replace(/[\s/]/g, '_')]) || cat}
                             </span>
                         ))}
                     </div>
@@ -452,8 +462,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className="pt-12 px-6 max-w-6xl mx-auto absolute z-20 left-0 right-0 top-0 pointer-events-none">
                         <SectionHeader
                             label="# features"
-                            title="Key Features"
-                            description="Interactive 3D structural breakdown of the LEO Rover."
+                            title={t.keyFeatures}
+                            description={language === 'ja' ? "LEO Roverの構造を3Dで分解して確認できます。" : "Interactive 3D structural breakdown of the LEO Rover."}
                             titleClassName="text-white drop-shadow-md"
                             descClassName="text-white/80 drop-shadow-sm"
                             underlineClassName="bg-gradient-to-r from-white to-transparent"
@@ -466,11 +476,11 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# features"
-                            title="What It Does"
-                            description="Core capabilities of the A-Star path planning system."
+                            title={t.whatItDoes}
+                            description={language === 'ja' ? "A-Starパスプランニングシステムの主な機能。" : "Core capabilities of the A-Star path planning system."}
                         />
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-6">
-                            {features?.map((f, i) => (
+                            {features?.map((f: any, i: number) => (
                                 <AStarFeatureCard
                                     key={i}
                                     Icon={f.Icon}
@@ -495,8 +505,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className="max-w-6xl mx-auto w-full">
                         <SectionHeader
                             label="# features"
-                            title="Key Features"
-                            description="Core technologies and system features."
+                            title={t.keyFeatures}
+                            description={language === 'ja' ? "主要な技術とシステムの機能。" : "Core technologies and system features."}
                         />
                         <RuixenBentoCards
                             features={project.features}
@@ -512,8 +522,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# products"
-                            title="Product Showcase"
-                            description="Deep dive into the specialized hardware components used in our mobile autonomous systems."
+                            title={t.productShowcase}
+                            description={language === 'ja' ? "自律走行システムで使用されている専門的なハードウェアコンポーネントの詳細。" : "Deep dive into the specialized hardware components used in our mobile autonomous systems."}
                         />
                         <div className="mt-8">
                             <HardwareShowcase />
@@ -529,8 +539,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# files"
-                            title="Design Files & CAD"
-                            description="Models, schematics, and assets."
+                            title={t.designFiles}
+                            description={language === 'ja' ? "モデル、回路図、アセット。" : "Models, schematics, and assets."}
                         />
 
                         {project.id === 'autonomous-robot' && (
@@ -647,9 +657,9 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                             />
                                         </div>
                                         <div className="p-5 flex-1 flex flex-col justify-center">
-                                            <h3 className="font-semibold text-lg mb-1">{file.name}</h3>
+                                            <h3 className="font-semibold text-lg mb-1">{language === 'ja' && file.name_ja ? file.name_ja : file.name}</h3>
                                             <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                                                {file.description}
+                                                {language === 'ja' && file.description_ja ? file.description_ja : file.description}
                                             </p>
                                             <div className="flex justify-between items-center mt-auto">
                                                 <span className="text-xs font-mono px-2 py-1 rounded bg-muted/50 text-muted-foreground">{file.fileSize}</span>
@@ -668,7 +678,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                     >
                                                         <span className="flex items-center">
                                                             <Download className="w-4 h-4 mr-1" />
-                                                            Download
+                                                            {t.download}
                                                         </span>
                                                     </ShatterButton>
                                                 </div>
@@ -686,7 +696,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             {project.codeSnippets && project.codeSnippets.length > 0 && (
                 <section id={isAIMLProject ? "sources" : "code"} className="py-16 md:py-24 px-4 sm:px-6">
                     <div className="max-w-6xl mx-auto">
-                        <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? "Source" : "Project Source Code"} description="Explore the primary logical modules." />
+                        <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? t.source : t.sourceCode} description={language === 'ja' ? "主要なロジックモジュールの確認。" : "Explore the primary logical modules."} />
 
                         <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-4">
                             {/* File list */}
@@ -705,9 +715,9 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                     >
                                         <div className="flex items-center gap-2">
                                             <ChevronRight className={`w-3 h-3 transition-transform ${activeSnippet === s.id ? "rotate-90 text-primary" : ""}`} />
-                                            <span>{s.title}</span>
+                                            <span>{language === 'ja' && s.title_ja ? s.title_ja : s.title}</span>
                                         </div>
-                                        <p className="text-xs text-muted-foreground mt-1 ml-5">{s.description}</p>
+                                        <p className="text-xs text-muted-foreground mt-1 ml-5">{language === 'ja' && s.description_ja ? s.description_ja : s.description}</p>
                                     </button>
                                 ))}
                             </div>
@@ -716,7 +726,10 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                             <div className="rounded-lg border border-border bg-card overflow-hidden">
                                 <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30">
                                     <span className="font-mono text-sm text-foreground">
-                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.title}
+                                        {(() => {
+                                            const s = project.codeSnippets.find(s => s.id === activeSnippet);
+                                            return language === 'ja' && s?.title_ja ? s.title_ja : s?.title;
+                                        })()}
                                     </span>
                                     <span className="text-xs text-muted-foreground font-mono">
                                         {project.codeSnippets.find(s => s.id === activeSnippet)?.language}
@@ -744,8 +757,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className={isDroneProject ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
                         <SectionHeader
                             label="# simulation"
-                            title={isAStarProject ? "A* Path Planner Simulation" : project.terminalVideo ? "Simulation Video" : isDroneProject ? "Adaptive RL Control Simulation" : "Live Simulation Output"}
-                            description={isAStarProject ? "Interactive A-star visualization for obstacle-aware routing." : project.terminalVideo ? "Integrated video walkthrough of the autonomous flight system." : isDroneProject ? "Real-time Q-learning simulation with PID gain scheduling." : "Simulated console execution."}
+                            title={isAStarProject ? "A* Path Planner Simulation" : project.terminalVideo ? t.simulationVideo : isDroneProject ? "Adaptive RL Control Simulation" : t.liveSimulation}
+                            description={isAStarProject ? (language === 'ja' ? "障害物を考慮したルーティングのための対話型A-Star可視化。" : "Interactive A-star visualization for obstacle-aware routing.") : project.terminalVideo ? (language === 'ja' ? "自律飛行システムの統合ビデオウォークスルー。" : "Integrated video walkthrough of the autonomous flight system.") : isDroneProject ? (language === 'ja' ? "PIDゲインスケジューリングを備えたリアルタイムQ学習シミュレーション。" : "Real-time Q-learning simulation with PID gain scheduling.") : (language === 'ja' ? "コンソール実行のシミュレーション。" : "Simulated console execution.")}
                         />
 
                         {isAStarProject ? (
@@ -775,7 +788,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                 className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors"
                                             >
                                                 <ExternalLink className="w-3 h-3" />
-                                                Full Page Simulation
+                                                {t.fullSimulation}
                                             </Link>
                                         )}
                                         {!project.terminalVideo && (
@@ -784,7 +797,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                 disabled={isRunning}
                                                 className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
                                             >
-                                                {isRunning ? <><Square className="w-3 h-3" />Running...</> : <><Play className="w-3 h-3" />Run</>}
+                                                {isRunning ? t.running : <><Play className="w-3 h-3" />{t.run}</>}
                                             </button>
                                         )}
                                     </div>
@@ -894,7 +907,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                 </div>
 
                                                 <div className="p-4">
-                                                    <h3 className="font-semibold mb-1">{video.title}</h3>
+                                                    <h3 className="font-semibold mb-1">{language === 'ja' && video.title_ja ? video.title_ja : video.title}</h3>
                                                     <p className="text-sm text-muted-foreground">
                                                         {video.description}
                                                     </p>
@@ -915,8 +928,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className="max-w-4xl mx-auto">
                         <SectionHeader
                             label={isAIMLProject ? "# github" : "# repositories"}
-                            title={isAIMLProject ? "GitHub" : "Source Code"}
-                            description="GitHub repositories for this project."
+                            title={isAIMLProject ? t.github : (language === 'ja' ? "ソースコード" : "Source Code")}
+                            description={t.github_desc}
                         />
 
                         <div className="space-y-4">
@@ -929,10 +942,10 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                 <div className="flex justify-between">
                                     <div>
                                         <h3 className="font-mono font-bold text-lg">
-                                            {project.title} Repository
+                                            {project.title} {t.repo_suffix}
                                         </h3>
                                         <p className="text-sm text-muted-foreground">
-                                            Access the complete source code on GitHub.
+                                            {t.access_github}
                                         </p>
                                     </div>
                                     <ExternalLink className="w-4 h-4" />
@@ -982,8 +995,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             {project.team && (
                 <div id="team">
                     <TeamShowcase 
-                        title={project.team.title || "Team"} 
-                        description={project.team.description}
+                        title={language === 'ja' && project.team.title_ja ? project.team.title_ja : project.team.title} 
+                        description={language === 'ja' && project.team.description_ja ? project.team.description_ja : project.team.description}
                         members={project.team.members}
                     />
                 </div>

@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { ChartTooltipContent } from '@/components/charts/charts-base';
 import { Bot, Brain, Cpu, Terminal, Palette, Layout, Target, Zap } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/lib/translations';
 
 const CATEGORIES = {
   ALL: 'All',
@@ -73,11 +75,33 @@ const SKILLS_DATA = {
 };
 
 export function Skills() {
+  const { language } = useLanguage();
+  const t = translations[language].skills;
   const [activeCategory, setActiveCategory] = useState(CATEGORIES.ALL);
 
   const currentColor = activeCategory === CATEGORIES.ALL
     ? '#a855f7'
     : (CATEGORY_COLORS as any)[activeCategory];
+
+  const getCategoryLabel = (cat: string) => {
+    switch (cat) {
+      case CATEGORIES.ALL: return t.categories.all;
+      case CATEGORIES.ROBOTICS: return t.categories.robotics;
+      case CATEGORIES.AI: return t.categories.ai;
+      case CATEGORIES.EMBEDDED: return t.categories.embedded;
+      case CATEGORIES.TOOLS: return t.categories.tools;
+      default: return cat;
+    }
+  };
+
+  const getTranslatedSkillItem = (item: string) => {
+    return (t.items as any)?.[item] || item;
+  };
+
+  const translatedData = (SKILLS_DATA as any)[activeCategory].map((d: any) => ({
+    ...d,
+    item: getTranslatedSkillItem(d.item)
+  }));
 
   return (
     <section className="py-16 md:py-24 px-4 sm:px-8 md:px-16 bg-background relative overflow-hidden">
@@ -90,10 +114,10 @@ export function Skills() {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4 tracking-tight">
-            Technical Arsenal
+            {t.title}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            A comprehensive overview of my technical expertise across robotics, AI, and embedded systems.
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -120,7 +144,7 @@ export function Skills() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Icon size={18} className={isActive ? "animate-pulse" : "group-hover:rotate-12 transition-transform"} />
-                <span className="font-semibold text-sm tracking-wide">{category}</span>
+                <span className="font-semibold text-sm tracking-wide">{getCategoryLabel(category)}</span>
                 {isActive && (
                   <motion.div
                     layoutId="activeFilter"
@@ -150,7 +174,7 @@ export function Skills() {
                   cx="50%"
                   cy="50%"
                   outerRadius="80%"
-                  data={(SKILLS_DATA as any)[activeCategory]}
+                  data={translatedData}
                 >
                   <PolarGrid stroke="var(--foreground)" strokeOpacity={0.3} strokeDasharray="3 3" />
                   <PolarAngleAxis
@@ -186,7 +210,7 @@ export function Skills() {
                   />
 
                   <Radar
-                    name={activeCategory}
+                    name={getCategoryLabel(activeCategory)}
                     dataKey="value"
                     stroke={currentColor}
                     fill={currentColor}
@@ -214,16 +238,16 @@ export function Skills() {
           <div className="inline-flex items-center gap-6 px-6 py-3 rounded-2xl bg-card/30 border border-border backdrop-blur-sm">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: currentColor }} />
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{activeCategory} Core Competenices</span>
+              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{getCategoryLabel(activeCategory)} {t.coreCompetencies}</span>
             </div>
             <div className="h-4 w-[1px] bg-border" />
             <div className="flex items-center gap-1 text-sm font-bold text-foreground">
               <Zap size={14} className="text-yellow-500" />
-              <span>Advanced Proficiency</span>
+              <span>{t.advancedProficiency}</span>
             </div>
           </div>
         </motion.div>
       </div>
     </section>
   );
-}
+}

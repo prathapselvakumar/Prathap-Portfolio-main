@@ -663,7 +663,12 @@ const Index = () => {
                         title={project.team.title || "Team"} 
                         description={project.team.description}
                         variant="animated"
-                        data={project.team.members}
+                        data={project.team.members.map(m => ({
+                            quote: m.quote || "",
+                            name: m.name,
+                            designation: m.role,
+                            src: m.image
+                        }))}
                     />
                 </div>
             )}

@@ -209,7 +209,7 @@ function doAStar(
   return [];
 }
 
-export default function PathPlannerApp(): JSX.Element {
+export default function PathPlannerApp(): React.JSX.Element {
   const { resolvedTheme } = useTheme();
   const [gridWidth, setGridWidth] = useState<number>(20);
   const [gridHeight, setGridHeight] = useState<number>(10);

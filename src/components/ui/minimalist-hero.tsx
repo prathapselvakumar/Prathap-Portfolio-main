@@ -9,6 +9,7 @@ import { ShatterButton } from './ShatterButton';
 interface MinimalistHeroProps {
   mainText: string;
   cvUrl?: string;
+  downloadCvText?: string;
   imageSrc: string;
   imageAlt: string;
   overlayText: {
@@ -31,6 +32,7 @@ const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) =>
 export const MinimalistHero = ({
   mainText,
   cvUrl,
+  downloadCvText = "Download CV",
   imageSrc,
   imageAlt,
   overlayText,
@@ -125,7 +127,7 @@ export const MinimalistHero = ({
                   }}
                   className="bg-foreground text-background text-sm hover:scale-105 transition-all duration-300 shadow-lg"
                 >
-                  Download CV
+                  {downloadCvText}
                 </ShatterButton>
               )}
 

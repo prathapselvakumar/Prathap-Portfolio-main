@@ -1,35 +1,48 @@
 "use client";
 
 import React, { useRef, useEffect, useState, createElement, useMemo, useCallback, memo } from "react";
-
 import { useTheme } from "next-themes";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/lib/translations";
 
 export const Component = () => {
   const { resolvedTheme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language].loading;
   const [mounted, setMounted] = useState(false);
   const [fontSize, setFontSize] = useState("70px");
-  const [currentTexts, setCurrentTexts] = useState(["Welcome to Prathap's portfolio"]);
+  const [currentTexts, setCurrentTexts] = useState([t.welcome]);
 
   useEffect(() => {
     setMounted(true);
     const handleResize = () => {
       const width = window.innerWidth;
+      const welcomeText = t.welcome;
+      
       if (width < 768) {
         setFontSize("32px");
-        setCurrentTexts(["Welcome\nto\nPrathap's portfolio"]);
+        // For English, we split by spaces. For Japanese, we might need a different strategy.
+        // But for now, let's just use the translated text.
+        // If it's English and long, we split it.
+        if (language === 'en') {
+          setCurrentTexts(["Welcome\nto\nPrathap's portfolio"]);
+        } else {
+          // For Japanese, maybe split at "へようこそ"
+          setCurrentTexts([welcomeText.replace("へようこそ", "\nへようこそ")]);
+        }
       } else if (width <= 1100) {
         setFontSize("40px");
-        setCurrentTexts(["Welcome to Prathap's portfolio"]);
+        setCurrentTexts([welcomeText]);
       } else {
         setFontSize("70px");
-        setCurrentTexts(["Welcome to Prathap's portfolio"]);
+        setCurrentTexts([welcomeText]);
       }
     };
     // Set initial size
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [language, t.welcome]);
 
   if (!mounted) return null;
 

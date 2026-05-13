@@ -4,12 +4,17 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/lib/translations';
+
 export interface TeamMember {
   id: string;
   name: string;
   role: string;
+  role_ja?: string;
   image: string;
   quote?: string;
+  quote_ja?: string;
 }
 
 const DEFAULT_MEMBERS: TeamMember[] = [
@@ -17,36 +22,42 @@ const DEFAULT_MEMBERS: TeamMember[] = [
     id: '1',
     name: 'Chadrack',
     role: 'director of photography',
+    role_ja: '撮影監督',
     image: 'https://media.licdn.com/dms/image/v2/D4D03AQFnmLdpZW78yA/profile-displayphoto-scale_200_200/B4DZvM8NB2JMAY-/0/1768669895649?e=2147483647&v=beta&t=5VGAB-2gYupLNaHvJHECollR25THd-3oR5wngGlQiY4',
   },
   {
     id: '2',
     name: 'Mak VieSAinte',
     role: 'FOUNDER',
+    role_ja: '創設者',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2vnSxNNVGZV2MXRjlGELl-NgLl5kXdpDR6A&s',
   },
   {
     id: '3',
     name: 'Osiris Balonga',
     role: 'LEAD FRONT-END',
+    role_ja: 'リードフロントエンド',
     image: 'https://media.licdn.com/dms/image/v2/D4D03AQGVqrPPAGHtoQ/profile-displayphoto-scale_200_200/B4DZwhAkjaHwAY-/0/1770080338529?e=2147483647&v=beta&t=q-_6p1VCJ8NN8eHj9zUFwJZds_XpKez9Hy14SAIDp4M',
   },
   {
     id: '4',
     name: 'Jacques',
     role: 'PRODUCT OWNER',
+    role_ja: 'プロダクトオーナー',
     image: 'https://media.licdn.com/dms/image/v2/D4D03AQE-Z7-S1LSYNQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1724143166545?e=2147483647&v=beta&t=6IPCwgOzblGt4p2fEdnY74gMbLyRHii5Ite3A39qQsY',
   },
   {
     id: '5',
     name: 'Riche Makso',
     role: 'CTO - PRODUCT DESIGNER',
+    role_ja: 'CTO・プロダクトデザイナー',
     image: 'https://media.licdn.com/dms/image/v2/D4D03AQEkTAbZLlSrLg/profile-displayphoto-scale_200_200/B4DZoHdu8BGgAY-/0/1761061833315?e=2147483647&v=beta&t=Rg1dBTvq9X2heyhuhBwG2DsEkG65v0vQ35hF2FSeYns',
   },
   {
     id: '6',
     name: 'Jemima',
     role: 'MAKE-UP ARTISTE',
+    role_ja: 'メイクアップアーティスト',
     image: 'https://i.pravatar.cc/400?img=16',
   },
 ];
@@ -59,10 +70,15 @@ interface TeamShowcaseProps {
 
 export function TeamShowcase({ 
   members = DEFAULT_MEMBERS,
-  title = "Our Team",
-  description = "The talented people behind the work."
+  title,
+  description
 }: TeamShowcaseProps) {
+  const { language } = useLanguage();
+  const t = translations[language].team;
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  const displayTitle = title || t.title;
+  const displayDescription = description || t.subtitle;
 
   const col1 = members.filter((_, i) => i % 3 === 0);
   const col2 = members.filter((_, i) => i % 3 === 1);
@@ -78,8 +94,8 @@ export function TeamShowcase({
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">{title}</h2>
-          {description && <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{description}</p>}
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">{displayTitle}</h2>
+          {displayDescription && <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{displayDescription}</p>}
         </motion.div>
 
         <div className="flex flex-col md:flex-row items-start gap-8 md:gap-10 lg:gap-14 select-none w-full max-w-5xl mx-auto font-sans">
@@ -195,8 +211,11 @@ function MemberRow({
   hoveredId: string | null;
   onHover: (id: string | null) => void;
 }) {
+  const { language } = useLanguage();
   const isActive = hoveredId === member.id;
   const isDimmed = hoveredId !== null && !isActive;
+
+  const displayRole = language === 'ja' && member.role_ja ? member.role_ja : member.role;
 
   return (
     <div
@@ -227,7 +246,7 @@ function MemberRow({
 
       {/* Role */}
       <p className="mt-1.5 pl-[27px] text-[7px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-        {member.role}
+        {displayRole}
       </p>
     </div>
   );

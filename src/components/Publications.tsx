@@ -1,12 +1,14 @@
-'use client';
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import { publications } from '@/lib/publications';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/lib/translations';
 
 export function Publications() {
+    const { language } = useLanguage();
+    const t = translations[language].publications;
 
     return (
         <section id="publications" className="min-h-[100dvh] py-16 md:py-20 px-4 sm:px-8 md:px-16 bg-background flex items-center">
@@ -17,7 +19,7 @@ export function Publications() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true }}>
-                    Publications
+                    {t.title}
                 </motion.h2>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -65,7 +67,7 @@ export function Publications() {
                                             size="default"
                                             className="w-fit bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white/10 hover:border-white/20 hover:scale-105 transition-all duration-300 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,255,255,0.1)]"
                                         >
-                                            Read Publication
+                                            {t.read_more}
                                         </Button>
                                     </Link>
                                 </div>
@@ -80,7 +82,7 @@ export function Publications() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}>
                         <p className="text-muted-foreground text-lg">
-                            No publications available.
+                            {t.no_items}
                         </p>
                     </motion.div>
                 }

@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/lib/translations';
 
 export type TestimonialData = {
   quote: string;
@@ -51,12 +53,18 @@ export type TestimonialsProps = {
   variant?: string; // Kept for compatibility with existing calls
 };
 
+
 export function Testimonials({ 
-  title = "Valued Feedback", 
-  description = "Insights and recommendations from professors and mentors who have guided my journey.",
+  title, 
+  description,
   data = defaultTestimonials
 }: TestimonialsProps) {
+  const { language } = useLanguage();
+  const t = translations[language].testimonials;
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const displayTitle = title || t.title;
+  const displayDescription = description || t.description;
 
   const testimonialsList = data || defaultTestimonials;
 
@@ -71,11 +79,11 @@ export function Testimonials({
           viewport={{ once: true }}
         >
           <h2 className="text-5xl md:text-7xl font-bold text-foreground mb-6 tracking-tight">
-            {title}
+            {displayTitle}
           </h2>
-          {description && (
+          {displayDescription && (
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {description}
+              {displayDescription}
             </p>
           )}
         </motion.div>
@@ -164,9 +172,9 @@ export function Testimonials({
 
         {/* Mobile Swipe Hint */}
         <div className="mt-12 md:hidden text-white/30 text-xs uppercase tracking-[0.2em]">
-           Tap for details
+           {t.mobile_hint}
         </div>
       </div>
     </section>
   );
-}
+}

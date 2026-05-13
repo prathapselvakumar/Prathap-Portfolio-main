@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Layers, Home, Search, Terminal, Github, ExternalLink, Star, Code2, Play, Square, ChevronRight, Cpu, Zap, Database, Check, AlertCircle, Loader2, User } from "lucide-react";
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { TeamShowcase } from "@/components/TeamShowcase";
@@ -457,8 +458,9 @@ const Index = () => {
                 </Breadcrumb>
             </div>
 
-            {/* Theme Toggle (Top Right) */}
-            <div className="fixed top-6 right-6 z-50">
+            {/* Theme & Language Toggle (Top Right) */}
+            <div className="fixed top-6 right-6 z-50 flex items-center gap-2">
+                <LanguageSwitcher className="h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
                 <AnimatedThemeToggler className="w-11 h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
             </div>
 

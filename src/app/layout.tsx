@@ -5,6 +5,7 @@ import ErrorReporter from "@/components/ui/ErrorReporter";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import { ParallaxComponent } from "@/components/ui/parallax-scrolling";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 export const metadata: Metadata = {
   title: "prathapsk",
@@ -19,23 +20,25 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ErrorReporter />
-          <Script
-            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
-            strategy="afterInteractive"
-            data-target-origin="*"
-            data-message-type="ROUTE_CHANGE"
-            data-include-search-params="true"
-            data-only-in-iframe="true"
-            data-debug="true"
-            data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
-          />
-          <ParallaxComponent />
-          {children}
-          <VisualEditsMessenger />
-        </ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ErrorReporter />
+            <Script
+              src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
+              strategy="afterInteractive"
+              data-target-origin="*"
+              data-message-type="ROUTE_CHANGE"
+              data-include-search-params="true"
+              data-only-in-iframe="true"
+              data-debug="true"
+              data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
+            />
+            <ParallaxComponent />
+            {children}
+            <VisualEditsMessenger />
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
-}
+}

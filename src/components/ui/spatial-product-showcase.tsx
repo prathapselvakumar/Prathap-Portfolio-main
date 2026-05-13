@@ -10,6 +10,9 @@ import {
 } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/lib/translations';
+
 export type ProductId = 'sensor' | 'camera' | 'NUC' | 'ARM' | 'gripper';
 
 export interface FeatureMetric {
@@ -37,99 +40,100 @@ export interface ProductData {
   features: FeatureMetric[];
 }
 
-// Default Data (Easy to Modify Here)
-const PRODUCT_DATA: Record<ProductId, ProductData> = {
-  sensor: {
-    id: 'sensor',
-    label: 'Sensor',
-    title: 'RPLidar Sensor',
-    description: 'A high-performance 360-degree laser range scanner. Provides the robot with precise spatial awareness and real-time mapping capabilities.',
-    image: '/Autonomous-Mobile-Robot/Products/Lidars.png',
-    colors: {
-      gradient: 'from-blue-600 to-indigo-900',
-      glow: 'bg-blue-500',
-      ring: 'border-blue-500/50',
-      radial: 'rgba(59, 130, 246, 0.15)',
+// MAIN COMPONENT
+// PRODUCT DATA DEFINITION
+const getProductData = (t: any, language: string): Record<ProductId, ProductData> => ({
+    sensor: {
+      id: 'sensor',
+      label: 'Sensor',
+      title: t.sensor.title,
+      description: t.sensor.description,
+      image: '/Autonomous-Mobile-Robot/Products/Lidars.png',
+      colors: {
+        gradient: 'from-blue-600 to-indigo-900',
+        glow: 'bg-blue-500',
+        ring: 'border-blue-500/50',
+        radial: 'rgba(59, 130, 246, 0.15)',
+      },
+      stats: { connectionStatus: language === 'ja' ? 'アクティブ' : 'Active', batteryLevel: 100 },
+      features: [
+        { label: t.sensor.precision, value: 92, icon: Zap },
+        { label: t.sensor.range, value: 85, icon: Radar },
+      ],
     },
-    stats: { connectionStatus: 'Active', batteryLevel: 100 },
-    features: [
-      { label: 'Precision', value: 92, icon: Zap },
-      { label: 'Range', value: 85, icon: Radar },
-    ],
-  },
-  camera: {
-    id: 'camera',
-    label: 'Camera',
-    title: 'Intel RealSense Depth Camera',
-    description: 'High-speed stereo depth sensing for reliable obstacle avoidance and spatial mapping in dynamic environments.',
-    image: '/Autonomous-Mobile-Robot/Products/Camera.png',
-    colors: {
-      gradient: 'from-emerald-600 to-teal-900',
-      glow: 'bg-emerald-500',
-      ring: 'border-emerald-500/50',
-      radial: 'rgba(16, 185, 129, 0.15)',
+    camera: {
+      id: 'camera',
+      label: 'Camera',
+      title: t.camera.title,
+      description: t.camera.description,
+      image: '/Autonomous-Mobile-Robot/Products/Camera.png',
+      colors: {
+        gradient: 'from-emerald-600 to-teal-900',
+        glow: 'bg-emerald-500',
+        ring: 'border-emerald-500/50',
+        radial: 'rgba(16, 185, 129, 0.15)',
+      },
+      stats: { connectionStatus: language === 'ja' ? '処理中' : 'Processing', batteryLevel: 100 },
+      features: [
+        { label: t.camera.compute, value: 98, icon: Sliders },
+        { label: t.camera.efficiency, value: 88, icon: Zap },
+      ],
     },
-    stats: { connectionStatus: 'Processing', batteryLevel: 100 },
-    features: [
-      { label: 'Compute', value: 98, icon: Sliders },
-      { label: 'Efficiency', value: 88, icon: Zap },
-    ],
-  },
-  NUC: {
-    id: 'NUC',
-    label: 'NUC',
-    title: 'Intel NUC',
-    description: 'Core compute unit for robot control, SLAM, and high-level mission planning logic.',
-    image: '/Autonomous-Mobile-Robot/Products/Intel NUC.png',
-    colors: {
-      gradient: 'from-orange-600 to-red-900',
-      glow: 'bg-orange-500',
-      ring: 'border-orange-500/50',
-      radial: 'rgba(249, 115, 22, 0.15)',
+    NUC: {
+      id: 'NUC',
+      label: 'NUC',
+      title: t.nuc.title,
+      description: t.nuc.description,
+      image: '/Autonomous-Mobile-Robot/Products/Intel NUC.png',
+      colors: {
+        gradient: 'from-orange-600 to-red-900',
+        glow: 'bg-orange-500',
+        ring: 'border-orange-500/50',
+        radial: 'rgba(249, 115, 22, 0.15)',
+      },
+      stats: { connectionStatus: language === 'ja' ? '稼働中' : 'Operational', batteryLevel: 100 },
+      features: [
+        { label: t.nuc.torque, value: 94, icon: Sliders },
+        { label: t.nuc.response, value: 96, icon: Zap },
+      ],
     },
-    stats: { connectionStatus: 'Operational', batteryLevel: 100 },
-    features: [
-      { label: 'Torque', value: 94, icon: Sliders },
-      { label: 'Response', value: 96, icon: Zap },
-    ],
-  },
-  ARM: {
-    id: 'ARM',
-    label: 'ARM',
-    title: 'Elephant Robotics ARM',
-    description: 'Precision 6-DOF robotic arm for advanced manipulation, sorting, and interaction with the environment.',
-    image: '/Autonomous-Mobile-Robot/Products/Robotic ARM.png',
-    colors: {
-      gradient: 'from-purple-600 to-fuchsia-900',
-      glow: 'bg-purple-500',
-      ring: 'border-purple-500/50',
-      radial: 'rgba(168, 85, 247, 0.15)',
+    ARM: {
+      id: 'ARM',
+      label: 'ARM',
+      title: t.arm.title,
+      description: t.arm.description,
+      image: '/Autonomous-Mobile-Robot/Products/Robotic ARM.png',
+      colors: {
+        gradient: 'from-purple-600 to-fuchsia-900',
+        glow: 'bg-purple-500',
+        ring: 'border-purple-500/50',
+        radial: 'rgba(168, 85, 247, 0.15)',
+      },
+      stats: { connectionStatus: language === 'ja' ? '稼働中' : 'Operational', batteryLevel: 100 },
+      features: [
+        { label: t.arm.precision, value: 94, icon: Zap },
+        { label: t.arm.dexterity, value: 92, icon: Sliders },
+      ],
     },
-    stats: { connectionStatus: 'Operational', batteryLevel: 100 },
-    features: [
-      { label: 'Precision', value: 94, icon: Zap },
-      { label: 'Dexterity', value: 92, icon: Sliders },
-    ],
-  },
-  gripper: {
-    id: 'gripper',
-    label: 'Gripper',
-    title: 'Adaptive Robotic Gripper',
-    description: 'A versatile end-effector designed for robust grasping of various objects, integrated with force sensors for delicate handling.',
-    image: '/Autonomous-Mobile-Robot/Products/Gripper.png',
-    colors: {
-      gradient: 'from-pink-600 to-rose-900',
-      glow: 'bg-pink-500',
-      ring: 'border-pink-500/50',
-      radial: 'rgba(236, 72, 153, 0.15)',
+    gripper: {
+      id: 'gripper',
+      label: 'Gripper',
+      title: t.gripper.title,
+      description: t.gripper.description,
+      image: '/Autonomous-Mobile-Robot/Products/Gripper.png',
+      colors: {
+        gradient: 'from-pink-600 to-rose-900',
+        glow: 'bg-pink-500',
+        ring: 'border-pink-500/50',
+        radial: 'rgba(236, 72, 153, 0.15)',
+      },
+      stats: { connectionStatus: language === 'ja' ? '稼働中' : 'Operational', batteryLevel: 100 },
+      features: [
+        { label: t.gripper.gripForce, value: 88, icon: Zap },
+        { label: t.gripper.sensitivity, value: 90, icon: Sliders },
+      ],
     },
-    stats: { connectionStatus: 'Operational', batteryLevel: 100 },
-    features: [
-      { label: 'Grip Force', value: 88, icon: Zap },
-      { label: 'Sensitivity', value: 90, icon: Sliders },
-    ],
-  },
-};
+});
 
 // =========================================
 // 2. ANIMATION VARIANTS
@@ -292,12 +296,13 @@ const ProductDetails = ({ data, isLeft }: { data: ProductData; isLeft: boolean }
 
 const Switcher = ({ 
   activeId, 
-  onToggle 
+  onToggle,
+  options
 }: { 
   activeId: ProductId; 
-  onToggle: (id: ProductId) => void 
+  onToggle: (id: ProductId) => void;
+  options: { id: string; label: string }[];
 }) => {
-  const options = Object.values(PRODUCT_DATA).map(p => ({ id: p.id, label: p.label }));
 
   return (
     <div className="relative mt-16 flex justify-center z-50 pointer-events-none group/switcher">
@@ -383,9 +388,14 @@ const GlassFilter = () => (
 // =========================================
 
 export default function HardwareShowcase() {
+  const { language } = useLanguage();
+  const t = translations[language].hardwareShowcase;
   const [activeId, setActiveId] = useState<ProductId>('sensor');
   
-  const currentData = PRODUCT_DATA[activeId];
+  const productData = useMemo(() => getProductData(t, language), [t, language]);
+  const currentData = productData[activeId];
+  const options = useMemo(() => Object.values(productData).map(p => ({ id: p.id, label: p.label })), [productData]);
+
   // Alternating layout: Left, Right, Left, Right
   const isLeft = activeId === 'sensor' || activeId === 'NUC' || activeId === 'gripper';
 
@@ -393,7 +403,7 @@ export default function HardwareShowcase() {
     <div className="relative w-full text-zinc-900 dark:text-zinc-100 flex flex-col items-center justify-center py-24 selection:bg-zinc-200 dark:selection:bg-zinc-800">
       {/* Preload Images Hidden Layer */}
       <div className="hidden pointer-events-none appearance-none" aria-hidden="true">
-        {Object.values(PRODUCT_DATA).map((product) => (
+        {Object.values(productData).map((product) => (
           <img key={product.id} src={product.image} alt="preload" />
         ))}
       </div>
@@ -422,7 +432,7 @@ export default function HardwareShowcase() {
         </motion.div>
       </main>
 
-      <Switcher activeId={activeId} onToggle={setActiveId} />
+      <Switcher activeId={activeId} onToggle={setActiveId} options={options} />
     </div>
   );
 }

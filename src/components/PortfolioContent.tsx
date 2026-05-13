@@ -6,6 +6,7 @@ import { Spotlight } from '@/components/ui/spotlight';
 import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { motion } from 'framer-motion';
 import { Education } from '@/components/Education';
 import { Certificates } from '@/components/Certificates';
@@ -20,6 +21,8 @@ import Link from 'next/link';
 import { projects } from '@/lib/projects';
 import { MinimalistHero } from '@/components/ui/minimalist-hero';
 import { Github, Linkedin } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/lib/translations';
 
 /**
  * PortfolioContent Component
@@ -27,6 +30,9 @@ import { Github, Linkedin } from 'lucide-react';
  * education, experience, and the filtered projects gallery.
  */
 export function PortfolioContent() {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   const [mounted, setMounted] = React.useState(false);
   const [isDark, setIsDark] = React.useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -116,15 +122,15 @@ export function PortfolioContent() {
   };
 
   const navItems = [
-    { name: 'Home', url: '#hero', icon: Home },
-    { name: 'About', url: '#about', icon: User },
-    { name: 'Education', url: '#education', icon: GraduationCap },
-    { name: 'Experience', url: '#experience', icon: Briefcase },
-    { name: 'Skills', url: '#skills', icon: Code },
-    { name: 'Projects', url: '#projects', icon: FolderOpen },
-    { name: 'Publications', url: '#publications', icon: BookOpen },
-    { name: 'Certificates', url: '#certificates', icon: Award },
-    { name: 'Testimonials', url: '#testimonials', icon: MessageSquare }];
+    { name: t.nav.home, url: '#hero', icon: Home },
+    { name: t.nav.about, url: '#about', icon: User },
+    { name: t.nav.education, url: '#education', icon: GraduationCap },
+    { name: t.nav.experience, url: '#experience', icon: Briefcase },
+    { name: t.nav.skills, url: '#skills', icon: Code },
+    { name: t.nav.projects, url: '#projects', icon: FolderOpen },
+    { name: t.nav.publications, url: '#publications', icon: BookOpen },
+    { name: t.nav.certificates, url: '#certificates', icon: Award },
+    { name: t.nav.testimonials, url: '#testimonials', icon: MessageSquare }];
 
   // Extract unique categories from all projects to dynamically build the filter menu
   const discoveredCategories = Array.from(new Set(projects.flatMap((p) => p.categories)));
@@ -148,8 +154,9 @@ export function PortfolioContent() {
         onItemClick={handleNavClick} />
 
 
-      {/* Theme Toggle - Fixed Position */}
-      <div className="fixed top-6 right-6 z-50">
+      {/* Theme & Language Toggle - Fixed Position */}
+      <div className="fixed top-6 right-6 z-50 flex items-center gap-2">
+        <LanguageSwitcher className="h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
         <AnimatedThemeToggler className="w-11 h-11 bg-card border border-border rounded-full hover:bg-accent transition-colors shadow-lg" />
       </div>
 
@@ -186,12 +193,12 @@ export function PortfolioContent() {
                 >
                   {/* Robotics Engineer - Now at the top */}
                   <p className="text-sm md:text-base text-muted-foreground uppercase tracking-widest mb-4">
-                    Robotics Graduate
+                    {t.hero.role}
                   </p>
 
                   {/* Name */}
                   <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground mt-6 mb-4 md:mb-8 whitespace-nowrap">
-                    Prathap Selvakumar
+                    {t.hero.name}
                   </h1>
                  
 
@@ -229,13 +236,14 @@ export function PortfolioContent() {
       {/* About Section - Redesigned Minimalist Hero */}
       <section id="about" className="min-h-screen bg-background overflow-hidden">
         <MinimalistHero
-          mainText="I'm a dedicated robotics engineering student with a passion for creating intelligent systems that solve real-world problems. My journey combines Python, ROS2, and machine learning. Currently focusing on autonomous navigation, computer vision, and human-robot interaction."
+          mainText={t.about.mainText}
           cvUrl="/Prathap Selvakumar-CV.pdf"
+          downloadCvText={t.about.download_cv}
           imageSrc="/Team_and_Testimonial/prathapselvakumar.png"
           imageAlt="Prathap Selvakumar"
           overlayText={{
-            part1: "ABOUT",
-            part2: "ME"
+            part1: t.about.title1,
+            part2: t.about.title2
           }}
           socialLinks={[
             { icon: Linkedin, href: "https://www.linkedin.com/in/prathapsk" },
@@ -276,7 +284,7 @@ export function PortfolioContent() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}>
 
-            Featured Projects
+            {t.projects.title}
           </motion.h2>
           <motion.p
             className="text-sm md:text-base text-muted-foreground text-center mb-12 max-w-2xl mx-auto"
@@ -284,7 +292,7 @@ export function PortfolioContent() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}>
-            A showcase of engineering work across robotics, machine learning, and software development.
+            {t.projects.subtitle}
           </motion.p>
 
           {/* Category Filter */}
@@ -305,7 +313,7 @@ export function PortfolioContent() {
                   'bg-background text-muted-foreground hover:text-foreground'}`
                 }>
 
-                {category}
+                {((translations[language].projects.categories as any)?.[category.toLowerCase().replace(/[\s/]/g, '_')]) || category}
               </LiquidButton>
             )}
           </motion.div>
@@ -339,7 +347,7 @@ export function PortfolioContent() {
                           key={cat}
                           className="px-2 md:px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-[10px] md:text-xs text-white">
 
-                          {cat}
+                          {((translations[language].projects.categories as any)?.[cat.toLowerCase().replace(/[\s/]/g, '_')]) || cat}
                         </span>
                       )}
                     </div>
@@ -350,7 +358,7 @@ export function PortfolioContent() {
                     </h3>
                     <p className={`text-neutral-300 line-clamp-2 md:line-clamp-none ${isLarge ? 'text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 max-w-lg' : 'text-xs md:text-sm mb-3 md:mb-4'}`
                     }>
-                      {project.description}
+                      {language === 'ja' && project.description_ja ? project.description_ja : project.description}
                     </p>
                     <Link
                       href={project.id === 'audio-search' ? "/projects/audio-search" : `/projects/${project.id}`}
@@ -361,7 +369,7 @@ export function PortfolioContent() {
                         size="default"
                         className="w-fit bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white/10 hover:border-white/20 hover:scale-105 transition-all duration-300 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,255,255,0.1)]"
                       >
-                        View Project
+                        {t.projects.viewProject}
                       </Button>
                     </Link>
                   </div>
@@ -378,7 +386,7 @@ export function PortfolioContent() {
               animate={{ opacity: 1 }}>
 
               <p className="text-muted-foreground text-lg">
-                No projects found in this category.
+                {t.projects.noProjects}
               </p>
             </motion.div>
           }
@@ -411,3 +419,4 @@ export function PortfolioContent() {
     </div >);
 
 }
+

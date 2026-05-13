@@ -7,6 +7,9 @@ import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { gsap } from 'gsap';
 import { Draggable } from 'gsap/all';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/lib/translations';
+
 
 // ============================================================================
 // TYPES
@@ -21,6 +24,7 @@ interface Certificate {
   date: string;
   category: string;
   description: string[];
+  description_ja?: string[];
   skills: string[];
   verificationUrl?: string;
   filePath?: string;
@@ -34,6 +38,7 @@ const certificates: Certificate[] = [
     date: "2024",
     category: "Publication",
     description: ["Research publication in IGI Global", "Academic contribution to the field", "Peer-reviewed research work"],
+    description_ja: ["IGI Globalでの研究出版", "この分野への学術的貢献", "査読付き研究成果"],
     skills: ["Research", "Academic Writing", "Publication"],
     filePath: "/Certificate/IGI Publication.pdf"
   },
@@ -44,6 +49,7 @@ const certificates: Certificate[] = [
     date: "2023",
     category: "Web Development",
     description: ["Comprehensive introduction to Python programming language", "Building web applications using Flask framework", "Hands-on projects for practical experience"],
+    description_ja: ["Pythonプログラミング言語の包括的な入門", "Flaskフレームワークを使用したWebアプリケーション構築", "実践的な経験のためのハンズオンプロジェクト"],
     skills: ["Python", "Flask", "Web Development", "Backend"],
     filePath: "/Certificate/Python And Flask Framework Complete Course For Beginners.pdf"
   },
@@ -54,6 +60,7 @@ const certificates: Certificate[] = [
     date: "2023",
     category: "Productivity",
     description: ["Fundamentals of Microsoft Excel", "Data organization and analysis", "Basic formulas and functions"],
+    description_ja: ["Microsoft Excelの基礎", "データの整理と分析", "基本的な数式と関数"],
     skills: ["Microsoft Excel", "Data Analysis", "Spreadsheets", "Productivity Tools"],
     filePath: "/Certificate/An Introduction to  Excel.pdf"
   },
@@ -64,6 +71,7 @@ const certificates: Certificate[] = [
     date: "2023",
     category: "Programming",
     description: ["Core JavaScript programming concepts", "Client-side web development", "Interactive web applications"],
+    description_ja: ["JavaScriptプログラミングのコアコンセプト", "クライアントサイドWeb開発", "インタラクティブなWebアプリケーション"],
     skills: ["JavaScript", "Web Development", "Frontend"],
     filePath: "/Certificate/IBMCE CEJS1IN Certificate  IBM.pdf"
   },
@@ -74,6 +82,7 @@ const certificates: Certificate[] = [
     date: "2023",
     category: "AI/ML",
     description: ["Fundamentals of prompt engineering", "Techniques for effective AI interactions", "Best practices for generative AI applications"],
+    description_ja: ["プロンプトエンジニアリングの基礎", "効果的なAIインタラクションのためのテクニック", "生成AIアプリケーションのベストプラクティス"],
     skills: ["AI", "Prompt Engineering", "Generative AI", "Machine Learning"],
     filePath: "/Certificate/Introduction to Prompt Engineering.pdf"
   },
@@ -84,6 +93,7 @@ const certificates: Certificate[] = [
     date: "2022",
     category: "Data Science",
     description: ["Data manipulation with NumPy and Pandas", "Data analysis techniques", "Practical applications and projects"],
+    description_ja: ["NumPyとPandasによるデータ操作", "データ分析テクニック", "実践的なアプリケーションとプロジェクト"],
     skills: ["Python", "NumPy", "Pandas", "Data Analysis"],
     filePath: "/Certificate/Numpy Pandas in Python.pdf"
   },
@@ -94,6 +104,7 @@ const certificates: Certificate[] = [
     date: "2022",
     category: "Programming",
     description: ["JavaScript fundamentals", "Web development concepts", "Practical programming exercises"],
+    description_ja: ["JavaScriptの基礎", "Web開発のコンセプト", "実践的なプログラミング演習"],
     skills: ["JavaScript", "Web Development", "Programming"],
     filePath: "/Certificate/SRM Axis Java Script.pdf"
   },
@@ -104,6 +115,7 @@ const certificates: Certificate[] = [
     date: "2024",
     category: "Programming",
     description: ["C language fundamentals: variables, data types, control flow", "Pointers, arrays, strings, and memory management", "Functions, structures, files, and modular programming"],
+    description_ja: ["C言語の基礎: 変数、データ型、制御フロー", "ポインタ、配列、文字列、およびメモリ管理", "関数、構造体、ファイル、およびモジュール化プログラミング"],
     skills: ["C", "Pointers", "Memory Management", "Problem Solving"],
     filePath: "/Certificate/C Programming Language.pdf"
   },
@@ -114,6 +126,7 @@ const certificates: Certificate[] = [
     date: "2023",
     category: "Programming",
     description: ["Core Python syntax and control structures", "Functions, modules, and file handling", "Hands-on practice with basic scripts"],
+    description_ja: ["Pythonのコア構文と制御構造", "関数、モジュール、およびファイル操作", "基本的なスクリプトの実践的な練習"],
     skills: ["Python", "Scripting", "Problem Solving"],
     filePath: "/Certificate/Basics of Python C-SQUARE.pdf"
   },
@@ -124,6 +137,7 @@ const certificates: Certificate[] = [
     date: "2023",
     category: "Data Science",
     description: ["Data import, modeling, and DAX basics", "Interactive dashboards and reports", "Publishing and sharing insights"],
+    description_ja: ["データのインポート、モデリング、およびDAXの基礎", "インタラクティブなダッシュボードとレポート", "インサイトの公開と共有"],
     skills: ["Power BI", "Data Modeling", "Dashboards"],
     filePath: "/Certificate/Power Bi .pdf"
   },
@@ -134,6 +148,7 @@ const certificates: Certificate[] = [
     date: "2022",
     category: "AI/ML",
     description: ["ML fundamentals and workflows", "Introduction to big data concepts", "Practical applications and use cases"],
+    description_ja: ["機械学習の基礎とワークフロー", "ビッグデータの概念入門", "実践的なアプリケーションとユースケース"],
     skills: ["Machine Learning", "Big Data", "Data Processing"],
     filePath: "/Certificate/SRM AXIS- Machine Learning and Big Data.pdf"
   },
@@ -144,6 +159,7 @@ const certificates: Certificate[] = [
     date: "2023",
     category: "Programming",
     description: ["Certification awarded to PRATHAP S", "Demonstrated competence as per SHAH program"],
+    description_ja: ["PRATHAP Sに授与された認定", "SHAHプログラムに従った能力の実証"],
     skills: ["Problem Solving"],
     filePath: "/Certificate/SHAH - 1353 PRATHAP S.pdf"
   },
@@ -154,6 +170,7 @@ const certificates: Certificate[] = [
     date: "2024",
     category: "AI/ML",
     description: ["Successfully completed AI/ML project internship", "Worked on predictive analytics and machine learning models", "Demonstrated enthusiasm, self-discipline and self-motivation"],
+    description_ja: ["AI/MLプロジェクトインターンシップを正常に完了", "予測分析と機械学習モデルに従事", "熱意、自己規律、および自己動機付けを実証"],
     skills: ["AI/ML", "Predictive Analytics", "Machine Learning"],
     filePath: "/Certificate/Qentelli Intership certificate.pdf"
   }
@@ -470,7 +487,7 @@ function VinylCarousel({
 
                   {/* Hover visual for "Click to view" */}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col items-center justify-center pointer-events-none">
-                    <span className="text-white font-bold bg-foreground/20 px-4 py-2 rounded-full backdrop-blur-sm border border-foreground/30">Click to Open</span>
+                    <span className="text-white font-bold bg-foreground/20 px-4 py-2 rounded-full backdrop-blur-sm border border-foreground/30">{translations[useLanguage().language].certificates.click_to_open}</span>
                     <p className="text-white text-xs mt-2 text-center px-4 line-clamp-2">{cert.title}</p>
                   </div>
 
@@ -508,6 +525,8 @@ function VinylCarousel({
 // MAIN PAGE COMPONENT
 // ============================================================================
 export function Certificates() {
+  const { language } = useLanguage();
+  const t = translations[language].certificates;
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const carouselNavRef = useRef<{ prev: () => void; next: () => void }>({ prev: () => { }, next: () => { } })
@@ -528,7 +547,7 @@ export function Certificates() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          Certificates
+          {t.title}
         </motion.h2>
 
         <motion.div
@@ -548,7 +567,7 @@ export function Certificates() {
                 : 'bg-background text-muted-foreground hover:text-foreground'
                 }`}
             >
-              {category}
+              {((translations[language].certificates.categories as any)?.[category.toLowerCase().replace(/[\s/]/g, '_')]) || category}
             </LiquidButton>
           ))}
         </motion.div>
@@ -599,12 +618,12 @@ export function Certificates() {
             ) : selectedCert?.verificationUrl ? (
               <div className="flex w-full h-full items-center justify-center">
                 <a href={selectedCert.verificationUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
-                  Click here to verify certificate online
+                  {t.verify_online}
                 </a>
               </div>
             ) : (
               <div className="flex w-full h-full items-center justify-center text-muted-foreground">
-                No certificate document available
+                {t.no_document}
               </div>
             )}
           </div>
