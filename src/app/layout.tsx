@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <body className="antialiased">
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-YCW9NQLJXG"
           strategy="afterInteractive"
@@ -33,8 +33,6 @@ export default function RootLayout({
             gtag('config', 'G-YCW9NQLJXG');
           `}
         </Script>
-      </head>
-      <body className="antialiased">
         <LanguageProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <ErrorReporter />
