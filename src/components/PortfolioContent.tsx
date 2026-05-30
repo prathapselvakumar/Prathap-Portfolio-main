@@ -151,7 +151,6 @@ export function PortfolioContent() {
       {/* Navigation Bar */}
       <NavBar
         items={navItems}
-        className="ipad-pro-center-nav"
         onItemClick={handleNavClick} />
 
 

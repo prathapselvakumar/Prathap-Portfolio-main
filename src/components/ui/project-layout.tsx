@@ -969,8 +969,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                 <div className="rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in overflow-x-auto" style={{ animationDelay: "0.1s" }}>
                                     <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
                                     <div className="space-y-2 text-foreground min-w-max">
-                                        <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Leo-Rover.git</div>
-                                        <div><span className="text-primary">$</span> cd Leo-Rover</div>
+                                        <div><span className="text-primary">$</span> git clone https://github.com/sarathkumar-sk/Team_6_AERO62520_RSD_Project.git</div>
+                                        <div><span className="text-primary">$</span> cd Team_6_AERO62520_RSD_Project</div>
                                         <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
                                         <div><span className="text-primary">$</span> python3 src/main.py</div>
                                     </div>
