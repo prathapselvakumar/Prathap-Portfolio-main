@@ -71,86 +71,86 @@ const SectionHeader = ({ label, title, description }: { label: string; title: st
 
 /* ─── Bento Grid Components ─── */
 const cardContents = [
-  {
-    title: "YOLOv8 Detection",
-    description:
-      "Real-time snake detection using a custom-trained YOLOv8 model to identify and classify snake species from images and video.",
-  },
-  {
-    title: "Species Classification",
-    description:
-      "Advanced classification to determine if a detected snake is venomous or non-venomous, providing critical safety information.",
-  },
-  {
-    title: "Multi-Input Support",
-    description:
-      "Highly flexible input system supporting uploaded images, video files, and live camera feeds. Whether you're working with static captures or real-time surveillance, the system adapts to handle varying light conditions, motion blur, and background distractions. Optimized for different file formats and stream protocols to ensure consistent performance across all user scenarios.",
-  },  
-  {
-    title: "Interactive Web App",
-    description:
-      "A user-friendly Streamlit interface for exploring predictions, visualizing detections, and interacting with the model.",
-  },
-  {
-    title: "Performance Optimized",
-    description:
-      "Built for efficiency, ensuring high-speed inference and clear visualization of annotated results.",
-  },
+    {
+        title: "YOLOv8 Detection",
+        description:
+            "Real-time snake detection using a custom-trained YOLOv8 model to identify and classify snake species from images and video.",
+    },
+    {
+        title: "Species Classification",
+        description:
+            "Advanced classification to determine if a detected snake is venomous or non-venomous, providing critical safety information.",
+    },
+    {
+        title: "Multi-Input Support",
+        description:
+            "Highly flexible input system supporting uploaded images, video files, and live camera feeds. Whether you're working with static captures or real-time surveillance, the system adapts to handle varying light conditions, motion blur, and background distractions. Optimized for different file formats and stream protocols to ensure consistent performance across all user scenarios.",
+    },
+    {
+        title: "Interactive Web App",
+        description:
+            "A user-friendly Streamlit interface for exploring predictions, visualizing detections, and interacting with the model.",
+    },
+    {
+        title: "Performance Optimized",
+        description:
+            "Built for efficiency, ensuring high-speed inference and clear visualization of annotated results.",
+    },
 ]
 
 const PlusCard: React.FC<{
-  className?: string
-  title: string
-  description: string
+    className?: string
+    title: string
+    description: string
 }> = ({
-  className = "",
-  title,
-  description,
+    className = "",
+    title,
+    description,
 }) => {
-  return (
-    <div
-      className={cn(
-        "relative border border-dashed border-zinc-400 dark:border-zinc-700 rounded-lg p-6 bg-white dark:bg-zinc-950 min-h-[200px]",
-        "flex flex-col justify-between",
-        className
-      )}
-    >
-      <Link href="https://github.com/prathapselvakumar/Snake-detection">
-        <CornerPlusIcons />
-        {/* Content */}
-        <div className="relative z-10 space-y-2">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-            {title}
-          </h3>
-          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{description}</p>
-        </div>
-      </Link>
-    </div>
-  )
-}
+        return (
+            <div
+                className={cn(
+                    "relative border border-dashed border-zinc-400 dark:border-zinc-700 rounded-lg p-6 bg-white dark:bg-zinc-950 min-h-[200px]",
+                    "flex flex-col justify-between",
+                    className
+                )}
+            >
+                <Link href="https://github.com/prathapselvakumar/Snake-detection">
+                    <CornerPlusIcons />
+                    {/* Content */}
+                    <div className="relative z-10 space-y-2">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                            {title}
+                        </h3>
+                        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{description}</p>
+                    </div>
+                </Link>
+            </div>
+        )
+    }
 
 const CornerPlusIcons = () => (
-  <>
-    <PlusIcon className="absolute -top-3 -left-3" />
-    <PlusIcon className="absolute -top-3 -right-3" />
-    <PlusIcon className="absolute -bottom-3 -left-3" />
-    <PlusIcon className="absolute -bottom-3 -right-3" />
-  </>
+    <>
+        <PlusIcon className="absolute -top-3 -left-3" />
+        <PlusIcon className="absolute -top-3 -right-3" />
+        <PlusIcon className="absolute -bottom-3 -left-3" />
+        <PlusIcon className="absolute -bottom-3 -right-3" />
+    </>
 )
 
 const PlusIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    width={24}
-    height={24}
-    strokeWidth="1"
-    stroke="currentColor"
-    className={`dark:text-white text-black size-6 ${className}`}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-  </svg>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        width={24}
+        height={24}
+        strokeWidth="1"
+        stroke="currentColor"
+        className={`dark:text-white text-black size-6 ${className}`}
+    >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+    </svg>
 )
 
 const codeSnippets = [
@@ -434,44 +434,44 @@ const Index = () => {
             />
 
             <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center">
-                       
-                                       {/* Background Image */}
-                                       <div className="absolute inset-0 z-0">
-                                           <img
-                                               src={project.image}
-                                               alt=""
-                                               className="w-full h-full object-cover opacity-80 dark:opacity-40"
-                                           />
-                                           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
-                                           <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
-                                       </div>
-                       
-                            <div className="relative z-10 max-w-4xl pt-20">
-                                           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
-                                               <span className="gradient-text">{project.title}</span>
-                                           </h1>
-                                           <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
-                                               {project.description}
-                                           </p>
-                       
-                                           <div className="mt-8 flex flex-wrap justify-center gap-2">
-                                               {project.categories.map((cat) => (
-                                                   <span
-                                                       key={cat}
-                                                       className="px-4 py-2 rounded-full border text-xs font-mono"
-                                                   >
-                                                       {cat}
-                                                   </span>
-                                               ))}
-                                           </div>
-                                       </div>
-                                   </section>
+
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src={project.image}
+                        alt=""
+                        className="w-full h-full object-cover opacity-80 dark:opacity-40"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+                </div>
+
+                <div className="relative z-10 max-w-4xl pt-20">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
+                        <span className="gradient-text">{project.title}</span>
+                    </h1>
+                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
+                        {project.description}
+                    </p>
+
+                    <div className="mt-8 flex flex-wrap justify-center gap-2">
+                        {project.categories.map((cat) => (
+                            <span
+                                key={cat}
+                                className="px-4 py-2 rounded-full border text-xs font-mono"
+                            >
+                                {cat}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             {/* ═══ Features ═══ */}
             <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40" >
                 <div className="max-w-6xl mx-auto">
                     <SectionHeader label="# features" title="What It Does" description="Core capabilities of the snake detection system." />
-                    
+
                     {/* Responsive Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-6">
                         <PlusCard {...cardContents[0]} className="lg:col-span-3 lg:row-span-2" />
@@ -481,7 +481,7 @@ const Index = () => {
                         <PlusCard {...cardContents[4]} className="lg:col-span-2 lg:row-span-1" />
                     </div>
 
-                   
+
                 </div>
             </section >
 
@@ -635,8 +635,8 @@ const Index = () => {
             {/* ═══ Team ═══ */}
             {project?.team && (
                 <div id="team">
-                    <Testimonials 
-                        title={project.team.title || "Team"} 
+                    <Testimonials
+                        title={project.team.title || "Team"}
                         description={project.team.description}
                         variant="animated"
                         data={project.team.members.map(m => ({
