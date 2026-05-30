@@ -361,13 +361,15 @@ nextjs-portal {
   
   .ipad-pro-center-nav {
     left: auto !important;
-    right: 8.5rem !important;
+    right: 1.5rem !important;
+    top: 5rem !important;
     transform: none !important;
   }
   
   .ipad-pro-nav-adjust {
     left: auto !important;
-    right: 8.5rem !important;
+    right: 1.5rem !important;
+    top: 5rem !important;
     transform: none !important;
   }
   
