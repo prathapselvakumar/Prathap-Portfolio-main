@@ -202,14 +202,18 @@ export const projects: Project[] =
                     url: "https://www.youtube.com/embed/n0pm3tVpszg?si=VqiDjv09iCeroLaZ",
                     filter: "Safety"
                 }
-
+ 
             ],
-
+ 
             files: [
                 { id: "5", name: "Autonomous Mobile Robot", name_ja: "自律走行モバイルロボット", format: ".step", description: "Complete assembly of the Autonomous Mobile Robot.", description_ja: "自律走行モバイルロボットの完全な組み立て図。", fileSize: "2.4 MB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Cad Files/robot-assembly-thumb.svg", downloadUrl: "#", modelUrl: "#" },
                 { id: "1", name: "Arm mounting plate v7", name_ja: "アーム取付プレート v7", format: ".step", description: "Mounting plate for the robotic arm assembly.", description_ja: "ロボットアームアセンブリ用の取付プレート。", fileSize: "30 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Products/Robotic ARM.png", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/Arm mounting plate v7.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/Arm mounting plate v7.glb" },
                 { id: "2", name: "L camera mount v6", name_ja: "L型カメラマウント v6", format: ".step", description: "L-shaped bracket for camera mounting.", description_ja: "カメラ取り付け用のL型ブラケット。", fileSize: "44 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Products/Camera.png", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/L camera mount v6.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/L camera mount v6.glb" },
                 { id: "3", name: "LIDAR A2 mount v4_", name_ja: "LIDAR A2 マウント v4_", format: ".step", description: "Mounting unit for LIDAR A2 sensor.", description_ja: "LIDAR A2センサー用の取り付けユニット。", fileSize: "80 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Products/Lidars.png", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/LIDAR A2 mount v4_.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/LIDAR A2 mount v4_.glb" },
+                { id: "4", name: "NUC mounting plate v4", name_ja: "NUC取付プレート v4", format: ".step", description: "Mounting plate for the NUC computer.", description_ja: "NUCコンピュータ用の取付プレート。", fileSize: "40 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Cad Files/nuc-plate-thumb.svg", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/NUC mounting plate v4.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/NUC mounting plate v4.glb" },
+            ],
+            repos: [
+                { id: "1", name: "Team_6_AERO62520_RSD_Project", description: "The complete source code for the Autonomous Robot project, featuring ROS2 integration, SLAM navigation, and hardware control systems.", description_ja: "ROS2統合、SLAMナビゲーション、ハードウェア制御システムを特徴とする、自律走行ロボットプロジェクトの完全なソースコード。", language: "C++", languageColor: "hsl(210 70% 55%)", stars: 0, forks: 0, url: "https://github.com/sarathkumar-sk/Team_6_AERO62520_RSD_Project.git", topics: ["robotics", "autonomous", "leo-rover", "ros2", "cpp"] },tonomous-Mobile-Robot/Products/Lidars.png", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/LIDAR A2 mount v4_.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/LIDAR A2 mount v4_.glb" },
                 { id: "4", name: "NUC mounting plate v4", name_ja: "NUC取付プレート v4", format: ".step", description: "Mounting plate for the NUC computer.", description_ja: "NUCコンピュータ用の取付プレート。", fileSize: "40 KB", icon: "cad", previewImage: "/Autonomous-Mobile-Robot/Cad Files/nuc-plate-thumb.svg", downloadUrl: "/Autonomous-Mobile-Robot/Cad Files/NUC mounting plate v4.step", modelUrl: "/Autonomous-Mobile-Robot/Cad Files/NUC mounting plate v4.glb" },
             ],
             repos: [
