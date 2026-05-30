@@ -203,7 +203,7 @@ export function PortfolioContent() {
                  
 
                   {/* Sparkles Effect - Theme-Aware for Both Light and Dark Mode */}
-                  <div className="w-full max-w-[80vw] md:max-w-none md:w-[25rem] lg:w-[40rem] h-24 md:h-40 relative mt-4 md:mt-8 mx-auto md:mx-0 md:max-xl:mx-auto md:max-xl:hidden">
+                  <div className="w-full max-w-[80vw] md:max-w-none md:w-[25rem] lg:w-[40rem] h-24 md:h-40 relative mt-4 md:mt-8 mx-auto md:mx-0 md:max-xl:mx-auto ipad-pro-hide">
                     {/* Gradients - Theme Aware */}
                     <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-xl:inset-x-0 md:max-xl:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-[2px] w-3/4 blur-sm" />
                     <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-xl:inset-x-0 md:max-xl:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-px w-3/4" />

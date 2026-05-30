@@ -352,3 +352,44 @@ nextjs-portal {
   animation: fadeIn 0.5s ease-out forwards;
   opacity: 0;
 }
+
+/* ─── Targeted Styles ONLY for iPad Pro 11-inch (834px to 1194px) ─── */
+@media only screen and (min-width: 834px) and (max-width: 1194px) {
+  .ipad-pro-hide {
+    display: none !important;
+  }
+  
+  .ipad-pro-center-nav {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+  
+  .ipad-pro-nav-adjust {
+    left: 1.5rem !important;
+    transform: translateX(0) !important;
+  }
+  
+  .ipad-pro-hero-text {
+    font-size: 3.75rem !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+  
+  .ipad-pro-timeline-row {
+    gap: 1rem !important;
+  }
+  
+  .ipad-pro-timeline-col {
+    max-width: 180px !important;
+  }
+  
+  .ipad-pro-timeline-title {
+    font-size: 1.875rem !important;
+    padding-left: 4rem !important;
+  }
+
+  .ipad-pro-leo-right {
+    top: 20% !important;
+    right: 1rem !important;
+  }
+}

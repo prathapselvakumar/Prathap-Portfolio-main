@@ -65,7 +65,7 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
   if (!mounted) {
     return (
       <div className={cn(
-        "flex items-center justify-between gap-2 px-3 py-2 rounded-full border border-border bg-card min-w-[110px] h-11 opacity-50 md:max-xl:hidden",
+        "flex items-center justify-between gap-2 px-3 py-2 rounded-full border border-border bg-card min-w-[110px] h-11 opacity-50 ipad-pro-hide",
         className
       )}>
         <div className="w-5 h-4 bg-muted rounded-[2px]" />
@@ -79,7 +79,7 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
       onClick={toggleLanguage}
       aria-label={`Switch language from ${currentLanguage.label}`}
       className={cn(
-        "flex items-center justify-between gap-2 px-3 py-2 rounded-full outline-none focus:outline-none active:outline-none focus:ring-0 cursor-pointer overflow-hidden min-w-[110px] md:max-xl:hidden",
+        "flex items-center justify-between gap-2 px-3 py-2 rounded-full outline-none focus:outline-none active:outline-none focus:ring-0 cursor-pointer overflow-hidden min-w-[110px] ipad-pro-hide",
         className
       )}
       type="button"

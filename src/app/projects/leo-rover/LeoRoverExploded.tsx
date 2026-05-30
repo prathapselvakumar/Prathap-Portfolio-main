@@ -135,7 +135,7 @@ export default function LeoRoverExploded() {
                                 "absolute bottom-[10%] lg:bottom-auto max-w-sm px-4",
                                 index % 2 === 0
                                     ? "lg:top-[20%] left-[5%] lg:left-[10%]"
-                                    : "lg:top-[20%] left-[5%] lg:left-auto lg:right-4 text-left lg:text-right"
+                                    : "lg:top-[30%] left-[5%] lg:left-auto lg:right-[10%] text-left lg:text-right ipad-pro-leo-right"
                             )}
                         >
                             <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-black/60 backdrop-blur-md p-2 rounded-lg inline-block border border-white/10 shadow-xl">{step.title}</h2>

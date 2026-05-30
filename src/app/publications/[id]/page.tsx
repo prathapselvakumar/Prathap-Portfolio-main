@@ -90,7 +90,7 @@ const Index = ({ params }: { params: { id: string } }) => {
     return (
         <main className="min-h-screen bg-background text-foreground">
             {/* ═══ Navigation ═══ */}
-            <div className="hidden xl:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
+            <div className="hidden lg:flex ipad-pro-hide fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -121,7 +121,7 @@ const Index = ({ params }: { params: { id: string } }) => {
             {/* Centered Navigation - matches main page */}
             <NavBar
                 items={navItems}
-                className="md:max-xl:left-1/2 md:max-xl:-translate-x-1/2"
+                className="ipad-pro-center-nav"
                 onItemClick={(url) => {
                     if (url.startsWith('http')) {
                         window.open(url, '_blank', 'noopener,noreferrer');

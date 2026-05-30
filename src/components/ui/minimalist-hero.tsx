@@ -99,7 +99,7 @@ export const MinimalistHero = ({
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h1 className="text-5xl sm:text-7xl md:max-xl:text-6xl md:max-xl:whitespace-nowrap lg:text-8xl font-extrabold text-foreground tracking-tighter leading-[0.9]">
+            <h1 className="text-5xl sm:text-7xl ipad-pro-hero-text lg:text-8xl font-extrabold text-foreground tracking-tighter leading-[0.9]">
               {overlayText.part1} {overlayText.part2}
             </h1>
           </motion.div>
