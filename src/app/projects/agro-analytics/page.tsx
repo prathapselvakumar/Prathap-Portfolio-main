@@ -71,86 +71,86 @@ const SectionHeader = ({ label, title, description }: { label: string; title: st
 
 /* ─── Bento Grid Components ─── */
 const cardContents = [
-    {
-        title: "Crop Recommendation",
-        description:
-            "ML-powered crop suggestions using RandomForest and XGBoost based on temperature, humidity, pH, and rainfall data.",
-    },
-    {
-        title: "Secure MySQL Data",
-        description:
-            "Robust user authentication and session management with MySQL, featuring salted and hashed passwords for maximum security.",
-    },
-    {
-        title: "Crop Health Monitoring",
-        description:
-            "State-of-the-art YOLOv8 object detection model that analyzes uploaded crop images to identify diseases, nutrient deficiencies, and overall health status. The system provides immediate visual feedback with bounding boxes and classification labels, helping farmers make informed decisions about pest control and fertilization. Optimized to run efficiently on mobile and desktop interfaces, ensuring accessibility in the field.",
-    },
-    {
-        title: "Weather Forecasting",
-        description:
-            "Integration with real-time weather APIs to provide accurate local forecasts, helping farmers plan irrigation and harvest schedules.",
-    },
-    {
-        title: "Streamlit Interface",
-        description:
-            "A clean, interactive web dashboard built with Streamlit, providing a seamless user experience across all devices.",
-    },
+  {
+    title: "Crop Recommendation",
+    description:
+      "ML-powered crop suggestions using RandomForest and XGBoost based on temperature, humidity, pH, and rainfall data.",
+  },
+  {
+    title: "Secure MySQL Data",
+    description:
+      "Robust user authentication and session management with MySQL, featuring salted and hashed passwords for maximum security.",
+  },
+  {
+    title: "Crop Health Monitoring",
+    description:
+      "State-of-the-art YOLOv8 object detection model that analyzes uploaded crop images to identify diseases, nutrient deficiencies, and overall health status. The system provides immediate visual feedback with bounding boxes and classification labels, helping farmers make informed decisions about pest control and fertilization. Optimized to run efficiently on mobile and desktop interfaces, ensuring accessibility in the field.",
+  },  
+  {
+    title: "Weather Forecasting",
+    description:
+      "Integration with real-time weather APIs to provide accurate local forecasts, helping farmers plan irrigation and harvest schedules.",
+  },
+  {
+    title: "Streamlit Interface",
+    description:
+      "A clean, interactive web dashboard built with Streamlit, providing a seamless user experience across all devices.",
+  },
 ]
 
 const PlusCard: React.FC<{
-    className?: string
-    title: string
-    description: string
+  className?: string
+  title: string
+  description: string
 }> = ({
-    className = "",
-    title,
-    description,
+  className = "",
+  title,
+  description,
 }) => {
-        return (
-            <div
-                className={cn(
-                    "relative border border-dashed border-zinc-400 dark:border-zinc-700 rounded-lg p-6 bg-white dark:bg-zinc-950 min-h-[200px]",
-                    "flex flex-col justify-between",
-                    className
-                )}
-            >
-                <Link href="https://github.com/prathapselvakumar/Agro-Analytics">
-                    <CornerPlusIcons />
-                    {/* Content */}
-                    <div className="relative z-10 space-y-2">
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                            {title}
-                        </h3>
-                        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{description}</p>
-                    </div>
-                </Link>
-            </div>
-        )
-    }
+  return (
+    <div
+      className={cn(
+        "relative border border-dashed border-zinc-400 dark:border-zinc-700 rounded-lg p-6 bg-white dark:bg-zinc-950 min-h-[200px]",
+        "flex flex-col justify-between",
+        className
+      )}
+    >
+      <Link href="https://github.com/prathapselvakumar/Agro-Analytics">
+        <CornerPlusIcons />
+        {/* Content */}
+        <div className="relative z-10 space-y-2">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+            {title}
+          </h3>
+          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{description}</p>
+        </div>
+      </Link>
+    </div>
+  )
+}
 
 const CornerPlusIcons = () => (
-    <>
-        <PlusIcon className="absolute -top-3 -left-3" />
-        <PlusIcon className="absolute -top-3 -right-3" />
-        <PlusIcon className="absolute -bottom-3 -left-3" />
-        <PlusIcon className="absolute -bottom-3 -right-3" />
-    </>
+  <>
+    <PlusIcon className="absolute -top-3 -left-3" />
+    <PlusIcon className="absolute -top-3 -right-3" />
+    <PlusIcon className="absolute -bottom-3 -left-3" />
+    <PlusIcon className="absolute -bottom-3 -right-3" />
+  </>
 )
 
 const PlusIcon = ({ className }: { className?: string }) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        width={24}
-        height={24}
-        strokeWidth="1"
-        stroke="currentColor"
-        className={`dark:text-white text-black size-6 ${className}`}
-    >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-    </svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    width={24}
+    height={24}
+    strokeWidth="1"
+    stroke="currentColor"
+    className={`dark:text-white text-black size-6 ${className}`}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+  </svg>
 )
 
 const codeSnippets = [
@@ -436,13 +436,13 @@ const Index = () => {
         <main className="min-h-screen bg-background w-full overflow-hidden">
             {/* ─── Navigation ─── */}
             {/* Breadcrumb (Top Left) */}
-            <div className="hidden xl:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
+            <div className="hidden lg:flex ipad-pro-hide fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <BreadcrumbLink asChild>
+                             <BreadcrumbLink asChild>
                                 <Link href="/">Home</Link>
-                            </BreadcrumbLink>
+                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -467,7 +467,7 @@ const Index = () => {
             {/* Centered Navigation - matches main page */}
             <NavBar
                 items={navItems}
-                className="md:max-xl:left-1/2 md:max-xl:-translate-x-1/2"
+                className="ipad-pro-center-nav"
                 onItemClick={(url) => {
                     if (url.startsWith('http')) {
                         window.open(url, '_blank', 'noopener,noreferrer');
@@ -484,44 +484,44 @@ const Index = () => {
 
             {/* ═══ Hero ═══ */}
             <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center">
-
-                {/* Background Image */}
-                <div className="absolute inset-0 z-0">
-                    <img
-                        src={project.image}
-                        alt=""
-                        className="w-full h-full object-cover opacity-80 dark:opacity-40"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
-                </div>
-
-                <div className="relative z-10 max-w-4xl pt-20">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
-                        <span className="gradient-text">{project.title}</span>
-                    </h1>
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
-                        {project.description}
-                    </p>
-
-                    <div className="mt-8 flex flex-wrap justify-center gap-2">
-                        {project.categories.map((cat) => (
-                            <span
-                                key={cat}
-                                className="px-4 py-2 rounded-full border text-xs font-mono"
-                            >
-                                {cat}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            
+                            {/* Background Image */}
+                            <div className="absolute inset-0 z-0">
+                                <img
+                                    src={project.image}
+                                    alt=""
+                                    className="w-full h-full object-cover opacity-80 dark:opacity-40"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+                            </div>
+            
+                            <div className="relative z-10 max-w-4xl pt-20">
+                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6">
+                                    <span className="gradient-text">{project.title}</span>
+                                </h1>
+                                <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
+                                    {project.description}
+                                </p>
+            
+                                <div className="mt-8 flex flex-wrap justify-center gap-2">
+                                    {project.categories.map((cat) => (
+                                        <span
+                                            key={cat}
+                                            className="px-4 py-2 rounded-full border text-xs font-mono"
+                                        >
+                                            {cat}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
 
             {/* ═══ Features ═══ */}
             <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40" >
                 <div className="max-w-6xl mx-auto">
                     <SectionHeader label="# features" title="What It Does" description="Core capabilities of the Agro Analytics platform." />
-
+                    
                     {/* Responsive Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-6">
                         <PlusCard {...cardContents[0]} className="lg:col-span-3 lg:row-span-2" />
@@ -531,7 +531,7 @@ const Index = () => {
                         <PlusCard {...cardContents[4]} className="lg:col-span-2 lg:row-span-1" />
                     </div>
 
-
+                   
                 </div>
             </section >
 
@@ -685,8 +685,8 @@ const Index = () => {
             {/* ═══ Team ═══ */}
             {project?.team && (
                 <div id="team">
-                    <TeamShowcase
-                        title={project.team.title || "Team"}
+                    <TeamShowcase 
+                        title={project.team.title || "Team"} 
                         description={project.team.description}
                         members={project.team.members}
                     />

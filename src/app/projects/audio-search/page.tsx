@@ -134,7 +134,7 @@ const PlusCard = ({
 );
 
 /* ─── Bento Grid Components ─── */
-
+ 
 
 const codeSnippets = [
     {
@@ -450,7 +450,7 @@ const Index = () => {
         <main className="min-h-screen bg-background w-full overflow-hidden">
             {/* ═══ Navigation ═══ */}
             {/* Breadcrumb (Top Left) */}
-            <div className="hidden xl:flex fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
+            <div className="hidden lg:flex ipad-pro-hide fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -480,7 +480,7 @@ const Index = () => {
             {/* Centered Navigation - matches main page */}
             <NavBar
                 items={navItems}
-                className="md:max-xl:left-1/2 md:max-xl:-translate-x-1/2"
+                className="ipad-pro-center-nav"
                 onItemClick={(url) => {
                     if (url.startsWith('http')) {
                         window.open(url, '_blank', 'noopener,noreferrer');
@@ -494,38 +494,38 @@ const Index = () => {
             />
 
             <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center">
-
-                {/* Background Image */}
-                <div className="absolute inset-0 z-0">
-                    <img
-                        src={project.image}
-                        alt=""
-                        className="w-full h-full object-cover opacity-80 dark:opacity-40"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
-                </div>
-
-                <div className="relative z-10 max-w-4xl pt-20">
-                    <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 md:mb-6">
-                        <span className="gradient-text">{project.title}</span>
-                    </h1>
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
-                        {project.description}
-                    </p>
-
-                    <div className="mt-8 flex flex-wrap justify-center gap-2">
-                        {project.categories.map((cat) => (
-                            <span
-                                key={cat}
-                                className="px-4 py-2 rounded-full border text-xs font-mono"
-                            >
-                                {cat}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </section>
+           
+                           {/* Background Image */}
+                           <div className="absolute inset-0 z-0">
+                               <img
+                                   src={project.image}
+                                   alt=""
+                                   className="w-full h-full object-cover opacity-80 dark:opacity-40"
+                               />
+                               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background" />
+                               <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+                           </div>
+           
+                            <div className="relative z-10 max-w-4xl pt-20">
+                               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 md:mb-6">
+                                   <span className="gradient-text">{project.title}</span>
+                               </h1>
+                               <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
+                                   {project.description}
+                               </p>
+           
+                               <div className="mt-8 flex flex-wrap justify-center gap-2">
+                                   {project.categories.map((cat) => (
+                                       <span
+                                           key={cat}
+                                           className="px-4 py-2 rounded-full border text-xs font-mono"
+                                       >
+                                           {cat}
+                                       </span>
+                                   ))}
+                               </div>
+                            </div>
+                        </section>
 
             {/* ═══ Features ═══ */}
             <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40">
@@ -543,10 +543,10 @@ const Index = () => {
                                 index === 0
                                     ? "lg:col-span-3 lg:row-span-2"
                                     : index === 1
-                                        ? "lg:col-span-3 lg:row-span-2"
-                                        : index === 2
-                                            ? "lg:col-span-4 lg:row-span-1"
-                                            : "lg:col-span-2 lg:row-span-1";
+                                    ? "lg:col-span-3 lg:row-span-2"
+                                    : index === 2
+                                    ? "lg:col-span-4 lg:row-span-1"
+                                    : "lg:col-span-2 lg:row-span-1";
 
                             return (
                                 <PlusCard
@@ -657,7 +657,7 @@ const Index = () => {
                             ))}
                             {isRunning && (
                                 <span className="cursor-blink text-primary">▋</span>
-                            )}
+                              )}
                         </div>
                     </div>
                 </div>
@@ -713,8 +713,8 @@ const Index = () => {
             {/* ═══ Team ═══ */}
             {project?.team && (
                 <div id="team">
-                    <Testimonials
-                        title={project.team.title || "Team"}
+                    <Testimonials 
+                        title={project.team.title || "Team"} 
                         description={project.team.description}
                         variant="animated"
                         data={project.team.members.map(m => ({
