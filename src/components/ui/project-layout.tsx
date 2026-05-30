@@ -405,7 +405,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             <NavBar
                 items={navItems}
                 forceDark={isDarkSection}
-                className="md:max-lg:left-1/2 md:max-lg:-translate-x-1/2"
+                className="md:max-xl:left-1/2 md:max-xl:-translate-x-1/2"
                 onItemClick={(url) => {
                     if (url.startsWith('http')) {
                         window.open(url, '_blank', 'noopener,noreferrer');

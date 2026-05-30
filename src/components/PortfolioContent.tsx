@@ -168,7 +168,7 @@ export function PortfolioContent() {
             fill="currentColor" />
 
           {/* 3D Scene - Absolute Background */}
-          <div className="absolute bottom-0 right-0 h-[60%] w-full z-0 md:top-0 md:bottom-auto md:h-full md:w-[60%] md:max-lg:bottom-0 md:max-lg:top-auto md:max-lg:h-[65%] md:max-lg:w-full md:max-lg:-bottom-10">
+          <div className="absolute bottom-0 right-0 h-[60%] w-full z-0 md:top-0 md:bottom-auto md:h-full md:w-[60%] md:max-xl:bottom-0 md:max-xl:top-auto md:max-xl:h-[65%] md:max-xl:w-full md:max-xl:-bottom-10">
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
               className="w-full h-full"
@@ -176,20 +176,20 @@ export function PortfolioContent() {
             />
           </div>
 
-          <div className="flex h-full flex-col md:flex-row md:max-lg:flex-col relative z-10 pointer-events-none items-center">
+          <div className="flex h-full flex-col md:flex-row md:max-xl:flex-col relative z-10 pointer-events-none items-center">
             {/* Left: Text Content */}
             <motion.div
-              className="flex-1 p-4 sm:p-8 md:p-12 lg:p-24 flex flex-col justify-center pt-0 items-center text-center pointer-events-auto max-w-2xl lg:max-w-4xl mx-auto w-full md:items-start md:text-left md:mx-0 md:max-lg:justify-start md:max-lg:pt-32 md:max-lg:items-center md:max-lg:text-center md:max-lg:mx-auto"
+              className="flex-1 p-4 sm:p-8 md:p-12 lg:p-24 flex flex-col justify-center pt-0 items-center text-center pointer-events-auto max-w-2xl lg:max-w-4xl mx-auto w-full md:items-start md:text-left md:mx-0 md:max-xl:justify-start md:max-xl:pt-32 md:max-xl:items-center md:max-xl:text-center md:max-xl:mx-auto"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="space-y-4 md:space-y-6 flex flex-col items-center w-full md:items-start md:max-lg:items-center">
+              <div className="space-y-4 md:space-y-6 flex flex-col items-center w-full md:items-start md:max-xl:items-center">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="w-full flex flex-col items-center md:items-start md:max-lg:items-center"
+                  className="w-full flex flex-col items-center md:items-start md:max-xl:items-center"
                 >
                   {/* Robotics Engineer - Now at the top */}
                   <p className="text-sm md:text-base text-muted-foreground uppercase tracking-widest mb-4">
@@ -203,12 +203,12 @@ export function PortfolioContent() {
                  
 
                   {/* Sparkles Effect - Theme-Aware for Both Light and Dark Mode */}
-                  <div className="w-full max-w-[80vw] md:max-w-none md:w-[25rem] lg:w-[40rem] h-24 md:h-40 relative mt-4 md:mt-8 mx-auto md:mx-0 md:max-lg:mx-auto">
+                  <div className="w-full max-w-[80vw] md:max-w-none md:w-[25rem] lg:w-[40rem] h-24 md:h-40 relative mt-4 md:mt-8 mx-auto md:mx-0 md:max-xl:mx-auto">
                     {/* Gradients - Theme Aware */}
-                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-lg:inset-x-0 md:max-lg:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-[2px] w-3/4 blur-sm" />
-                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-lg:inset-x-0 md:max-lg:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-px w-3/4" />
-                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-lg:inset-x-0 md:max-lg:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-[5px] w-1/4 blur-sm" />
-                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-lg:inset-x-0 md:max-lg:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-px w-1/4" />
+                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-xl:inset-x-0 md:max-xl:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-[2px] w-3/4 blur-sm" />
+                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-xl:inset-x-0 md:max-xl:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-indigo-500 dark:via-indigo-400 to-transparent h-px w-3/4" />
+                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-xl:inset-x-0 md:max-xl:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-[5px] w-1/4 blur-sm" />
+                    <div className="absolute inset-x-0 md:inset-x-auto mx-auto md:mx-0 md:max-xl:inset-x-0 md:max-xl:mx-auto md:left-0 top-0 bg-gradient-to-r from-transparent via-sky-500 dark:via-sky-400 to-transparent h-px w-1/4" />
 
                     {/* Core component - Theme Aware Particles */}
                     {mounted && (
