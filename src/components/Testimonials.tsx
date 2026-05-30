@@ -150,14 +150,14 @@ export function Testimonials({
                            <svg width="40" height="36" viewBox="0 0 44 40" fill="none" className="text-foreground/20">
                               <path d="M33.172 5.469q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 26.539 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.923-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203m-20.625 0q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 5.914 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.922-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203" fill="currentColor" />
                            </svg>
-                           <p className="text-xl md:text-2xl leading-relaxed text-foreground/90 font-light italic">
+                           <p className="text-base md:text-lg leading-relaxed text-foreground/90 font-light italic">
                              "{testimonial.quote}"
                            </p>
                         </div>
 
                         <div className="pt-8 border-t border-border/50">
-                           <h4 className="text-xl font-semibold text-foreground">{testimonial.name}</h4>
-                           <p className="text-sm text-muted-foreground uppercase tracking-widest mt-1">
+                           <h4 className="text-lg font-semibold text-foreground">{testimonial.name}</h4>
+                           <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">
                              {testimonial.designation}
                            </p>
                         </div>

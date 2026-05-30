@@ -90,7 +90,7 @@ export function NavBar({ items, className, onItemClick, forceDark }: NavBarProps
 
   return (
     <>
-      <div className={cn("fixed top-6 left-1/2 -translate-x-[60%] md:-translate-x-1/2 z-50 w-max max-w-[95vw]", forceDark && "dark")}>
+      <div className={cn("fixed top-6 left-1/2 -translate-x-[60%] sm:left-8 sm:-translate-x-0 md:max-lg:left-6 md:max-lg:-translate-x-0 lg:left-1/2 lg:-translate-x-1/2 z-50 w-max max-w-[95vw]", forceDark && "dark", className)}>
         <div className="relative flex items-center gap-0.5 sm:gap-1 lg:gap-2 py-1 px-1 rounded-full overflow-x-auto sm:overflow-x-visible no-scrollbar">
           {/* Liquid Glass Background */}
           <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 

@@ -13,12 +13,12 @@ const languages: { code: Language; label: string; shortLabel: string; flag: Reac
     shortLabel: "ENG",
     flag: (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" className="w-full h-full">
-        <clipPath id="s-en"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
-        <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
-        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" clipPath="url(#s-en)"/>
-        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4" clipPath="url(#s-en)"/>
-        <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" clipPath="url(#s-en)"/>
-        <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" clipPath="url(#s-en)"/>
+        <clipPath id="s-en"><path d="M0,0 v30 h60 v-30 z" /></clipPath>
+        <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" clipPath="url(#s-en)" />
+        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4" clipPath="url(#s-en)" />
+        <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" clipPath="url(#s-en)" />
+        <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" clipPath="url(#s-en)" />
       </svg>
     ),
   },
@@ -28,8 +28,8 @@ const languages: { code: Language; label: string; shortLabel: string; flag: Reac
     shortLabel: "日本語",
     flag: (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" className="w-full h-full">
-        <rect width="900" height="600" fill="#fff"/>
-        <circle cx="450" cy="300" r="180" fill="#bc002d"/>
+        <rect width="900" height="600" fill="#fff" />
+        <circle cx="450" cy="300" r="180" fill="#bc002d" />
       </svg>
     ),
   },
@@ -39,9 +39,9 @@ const languages: { code: Language; label: string; shortLabel: string; flag: Reac
     shortLabel: "Deutsch",
     flag: (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3" className="w-full h-full">
-        <rect width="5" height="3" y="0" fill="#000"/>
-        <rect width="5" height="2" y="1" fill="#D00"/>
-        <rect width="5" height="1" y="2" fill="#FFCE00"/>
+        <rect width="5" height="3" y="0" fill="#000" />
+        <rect width="5" height="2" y="1" fill="#D00" />
+        <rect width="5" height="1" y="2" fill="#FFCE00" />
       </svg>
     ),
   },
@@ -65,7 +65,7 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
   if (!mounted) {
     return (
       <div className={cn(
-        "flex items-center justify-between gap-2 px-3 py-2 rounded-full border border-border bg-card min-w-[110px] h-11 opacity-50",
+        "flex items-center justify-between gap-2 px-3 py-2 rounded-full border border-border bg-card min-w-[110px] h-11 opacity-50 md:max-lg:hidden",
         className
       )}>
         <div className="w-5 h-4 bg-muted rounded-[2px]" />
@@ -79,7 +79,7 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
       onClick={toggleLanguage}
       aria-label={`Switch language from ${currentLanguage.label}`}
       className={cn(
-        "flex items-center justify-between gap-2 px-3 py-2 rounded-full outline-none focus:outline-none active:outline-none focus:ring-0 cursor-pointer overflow-hidden min-w-[110px]",
+        "flex items-center justify-between gap-2 px-3 py-2 rounded-full outline-none focus:outline-none active:outline-none focus:ring-0 cursor-pointer overflow-hidden min-w-[110px] md:max-lg:hidden",
         className
       )}
       type="button"

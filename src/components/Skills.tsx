@@ -133,8 +133,8 @@ export function Skills() {
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full border transition-all duration-300 relative group overflow-hidden ${isActive
-                    ? 'border-transparent text-white shadow-xl bg-opacity-100'
-                    : 'border-border bg-card/40 text-muted-foreground hover:border-foreground/20 hover:text-foreground'
+                  ? 'border-transparent text-white shadow-xl bg-opacity-100'
+                  : 'border-border bg-card/40 text-muted-foreground hover:border-foreground/20 hover:text-foreground'
                   }`}
                 style={{
                   backgroundColor: isActive ? catColor : undefined,
@@ -250,4 +250,4 @@ export function Skills() {
       </div>
     </section>
   );
-}
+}

@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ShatterButton } from './ShatterButton';
+import { useTheme } from "next-themes";
 // Define the props interface for type safety and reusability
 interface MinimalistHeroProps {
   mainText: string;
@@ -42,6 +43,7 @@ export const MinimalistHero = ({
 }: MinimalistHeroProps) => {
   const containerRef = React.useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+  const { resolvedTheme } = useTheme();
 
   return (
     <div
@@ -97,7 +99,7 @@ export const MinimalistHero = ({
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold text-foreground tracking-tighter leading-[0.9]">
+            <h1 className="text-5xl sm:text-7xl md:max-lg:text-6xl md:max-lg:whitespace-nowrap lg:text-8xl font-extrabold text-foreground tracking-tighter leading-[0.9]">
               {overlayText.part1} {overlayText.part2}
             </h1>
           </motion.div>
@@ -116,7 +118,7 @@ export const MinimalistHero = ({
             <div className="flex flex-wrap items-center gap-6 pt-2">
               {cvUrl && (
                 <ShatterButton
-                  shatterColor="#ffffff" // white
+                  shatterColor={resolvedTheme === 'light' ? '#000000' : '#ffffff'} // dynamic based on theme
                   onClick={() => {
                     const link = document.createElement('a');
                     link.href = cvUrl;
