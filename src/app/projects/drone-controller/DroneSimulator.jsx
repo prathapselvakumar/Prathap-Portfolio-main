@@ -16,12 +16,7 @@ const MAX_TILT        = 0.38;
 
 const CFG = { M: 0.088, KF: 0.566e-5, K_TRANS: [3.365e-2, 3.365e-2, 3.365e-2], TM: 0.0163 };
 
-const DEFAULT_WAYPOINTS = [
-  { x: 0,   y: 0,   z: 0,    yaw: 0,     label: "Home" },
-  { x: 1.5, y: 0,   z: 1.5,  yaw: 0,     label: "WP1"  },
-  { x: 1.5, y: 1.5, z: 2.0,  yaw: 1.57,  label: "WP2"  },
-  { x: -1,  y: 1,   z: 1.2,  yaw: -1.57, label: "WP3"  },
-];
+
 
 // ── Math ──────────────────────────────────────────────────────────────────────
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -287,7 +282,7 @@ function addTravelSegment(sd, fromWP, toWP) {
   sd.travelPaths.push(line);
 }
 
-export default function DroneSimulator() {
+export default function DroneSimulator({ fullscreen = false }) {
   const [themeMode, setThemeMode] = useState("dark");
   const th     = THEMES[themeMode] || THEMES.dark;
   const isLt   = themeMode === "light";
@@ -309,7 +304,7 @@ export default function DroneSimulator() {
   const sceneRef    = useRef(null);
   const animRef     = useRef(0);
   const stateRef    = useRef(mkState());
-  const queueRef    = useRef({ waypoints: DEFAULT_WAYPOINTS.map(w=>({...w})), idx: 0 });
+  const queueRef    = useRef({ waypoints: [{ x: 0, y: 0, z: 0, yaw: 0, label: "Home" }], idx: 0 });
   const windRef     = useRef(false);
   const simRef      = useRef({
     running: false, t: 0, step: 0,
@@ -659,7 +654,7 @@ export default function DroneSimulator() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ display:"flex", flexDirection:"column", width:"100%", height:"800px", background:th.shellBg, fontFamily:"ui-monospace,'Cascadia Code',monospace", color:th.textPrimary, overflow:"hidden", userSelect:"none" }}>
+    <div style={{ display:"flex", flexDirection:"column", width:"100%", height: fullscreen ? "100vh" : "800px", background:th.shellBg, fontFamily:"ui-monospace,'Cascadia Code',monospace", color:th.textPrimary, overflow:"hidden", userSelect:"none" }}>
 
       {/* Topbar */}
       <div style={{ height:44, display:"flex", alignItems:"center", padding:"0 16px", gap:12, background:th.topbarBg, borderBottom:`1px solid ${th.topbarBorder}`, flexShrink:0 }}>
@@ -672,6 +667,15 @@ export default function DroneSimulator() {
         <button onClick={() => setThemeMode(m => m==="dark"?"light":"dark")} style={{ ...btn(false, th.accentBlue), padding:"4px 10px" }}>
           {isLt ? "☀ Light" : "◑ Dark"}
         </button>
+        {!fullscreen && (
+          <button
+            onClick={() => window.open('/projects/drone-controller/simulation', '_blank', 'noopener,noreferrer')}
+            style={{ ...btn(false, th.accentGreen), padding:"4px 10px", fontWeight:600 }}
+            title="Open in fullscreen new tab"
+          >
+            ⛶ Fullscreen
+          </button>
+        )}
         <span style={{ color:th.textMuted, fontSize:10 }}>Drag · Scroll zoom</span>
       </div>
 
