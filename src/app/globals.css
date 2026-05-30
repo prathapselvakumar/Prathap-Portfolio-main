@@ -365,8 +365,8 @@ nextjs-portal {
   }
   
   .ipad-pro-nav-adjust {
-    left: 1.5rem !important;
-    transform: translateX(0) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
   }
   
   .ipad-pro-hero-text {
