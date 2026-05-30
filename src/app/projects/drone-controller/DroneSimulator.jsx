@@ -16,7 +16,8 @@ const MAX_TILT        = 0.38;
 
 const CFG = { M: 0.088, KF: 0.566e-5, K_TRANS: [3.365e-2, 3.365e-2, 3.365e-2], TM: 0.0163 };
 
-
+// Hover RPM: RPM at which thrust exactly cancels gravity (≈ 1866 for this drone)
+const HOVER_RPM = Math.round(Math.sqrt((CFG.M * GRAVITY) / (4 * CFG.KF)) * (60 / (2 * Math.PI)));
 
 // ── Math ──────────────────────────────────────────────────────────────────────
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -47,7 +48,7 @@ function windForce(t, on) {
   if (!on) return [0,0,0];
   return [Math.sin(t*0.7)*0.02+Math.sin(t*2.3)*0.008, Math.cos(t*0.5)*0.018+Math.cos(t*1.8)*0.007, Math.sin(t*1.1)*0.01];
 }
-const mkState = () => ({ pos:[0,0,0], euler:[0,0,0], linVel:[0,0,0], rpm:[5000,5000,5000,5000] });
+const mkState = () => ({ pos:[0,0,0], euler:[0,0,0], linVel:[0,0,0], rpm:[HOVER_RPM,HOVER_RPM,HOVER_RPM,HOVER_RPM] });
 
 // ── Scene ─────────────────────────────────────────────────────────────────────
 function buildScene(th) {
@@ -333,7 +334,8 @@ export default function DroneSimulator({ fullscreen = false }) {
   const [showCSV,    setShowCSV]    = useState(false);
   const [csvText,    setCsvText]    = useState("x,y,z,yaw,label\n0,0,0,0,Home\n2,0,1.5,0,Alpha\n2,2,2,1.57,Beta\n-1,1,1.5,-1.57,Gamma");
 
-  const resizeRef = useRef(null);
+  const resizeRef      = useRef(null);
+  const lastPinchDist  = useRef(null);
 
   // ── Renderer init (once) ──────────────────────────────────────────────────
   useEffect(() => {
@@ -489,6 +491,55 @@ export default function DroneSimulator({ fullscreen = false }) {
   }, []); // eslint-disable-line
 
   useEffect(() => { animRef.current = requestAnimationFrame(tick); return () => cancelAnimationFrame(animRef.current); }, [tick]);
+
+  // ── Touch support (passive:false required to call preventDefault on iPad) ──
+  useEffect(() => {
+    const el = canvasRef.current;
+    if (!el) return;
+
+    const touchStart = (e) => {
+      if (e.touches.length === 1) {
+        simRef.current.dragging  = true;
+        simRef.current.lastMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        lastPinchDist.current    = null;
+      } else if (e.touches.length === 2) {
+        simRef.current.dragging = false;
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        lastPinchDist.current = Math.sqrt(dx*dx + dy*dy);
+      }
+    };
+
+    const touchMove = (e) => {
+      e.preventDefault(); // stop page scroll while orbiting / pinching
+      const sim = simRef.current;
+      if (e.touches.length === 1 && sim.dragging) {
+        sim.cameraTheta -= (e.touches[0].clientX - sim.lastMouse.x) * 0.007;
+        sim.cameraPhi    = clamp(sim.cameraPhi + (e.touches[0].clientY - sim.lastMouse.y) * 0.007, 0.06, Math.PI/2 - 0.02);
+        sim.lastMouse    = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      } else if (e.touches.length === 2 && lastPinchDist.current !== null) {
+        const dx   = e.touches[0].clientX - e.touches[1].clientX;
+        const dy   = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        sim.cameraR       = clamp(sim.cameraR + (lastPinchDist.current - dist) * 0.05, 1.5, 22);
+        lastPinchDist.current = dist;
+      }
+    };
+
+    const touchEnd = () => {
+      simRef.current.dragging = false;
+      lastPinchDist.current   = null;
+    };
+
+    el.addEventListener('touchstart', touchStart, { passive: true });
+    el.addEventListener('touchmove',  touchMove,  { passive: false });
+    el.addEventListener('touchend',   touchEnd);
+    return () => {
+      el.removeEventListener('touchstart', touchStart);
+      el.removeEventListener('touchmove',  touchMove);
+      el.removeEventListener('touchend',   touchEnd);
+    };
+  }, []); // eslint-disable-line
 
   // ── Queue helpers ──────────────────────────────────────────────────────────
   const applyQueue = (newWPs, newIdx, opts={}) => {
@@ -676,7 +727,7 @@ export default function DroneSimulator({ fullscreen = false }) {
             ⛶ Fullscreen
           </button>
         )}
-        <span style={{ color:th.textMuted, fontSize:10 }}>Drag · Scroll zoom</span>
+        <span style={{ color:th.textMuted, fontSize:10 }}>Drag / Touch · Pinch zoom</span>
       </div>
 
       <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
@@ -758,7 +809,7 @@ export default function DroneSimulator({ fullscreen = false }) {
         </div>
 
         {/* ── 3D Viewport ── */}
-        <div ref={canvasRef} style={{ flex:1, position:"relative", minWidth:0, cursor:"grab" }}
+        <div ref={canvasRef} style={{ flex:1, position:"relative", minWidth:0, cursor:"grab", touchAction:"none" }}
           onMouseDown={onMouseDown} onMouseMove={onMouseMove}
           onMouseUp={stopDrag} onMouseLeave={stopDrag} onWheel={onWheel}
           onContextMenu={e => e.preventDefault()}>
