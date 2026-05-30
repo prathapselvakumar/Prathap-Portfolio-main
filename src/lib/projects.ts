@@ -95,7 +95,7 @@ export const projects: Project[] =
             image: '/Thumbnails/Project Thumbnails/maxresdefault.jpg',
             categories: ['Robotics'],
             size: 'large',
-            repoUrl: 'https://github.com/sarathkumar-sk/Team_6_AERO62520_RSD_Project',
+            repoUrl: 'https://github.com/sarathkumar-sk/Team_6_AERO62520_RSD_Project.git',
             features: [
                 { icon: 'Cpu', title: "SLAM Navigation", title_ja: "SLAMナビゲーション", desc: "Simultaneous Localization and Mapping for autonomous movement.", desc_ja: "自律走行のための自己位置推定と環境地図作成を同時に実行。" },
                 { icon: 'Zap', title: "Real-time Processing", title_ja: "リアルタイム処理", desc: "On-board processing of sensor data for immediate reaction.", desc_ja: "即座な反応を可能にするセンサーデータのオンボード処理。" },
