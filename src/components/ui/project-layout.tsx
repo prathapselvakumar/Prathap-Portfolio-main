@@ -26,6 +26,10 @@ import {
     Ruler,
     User,
     GitFork,
+    Volume2,
+    VolumeX,
+    Pause,
+    ChevronDown,
 } from "lucide-react";
 
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
@@ -37,7 +41,7 @@ import { Project } from "@/lib/projects";
 import LeoRoverExploded from "@/app/projects/leo-rover/LeoRoverExploded";
 import PathPlannerApp from "@/app/projects/a-start-algorithm/PathPlannerApp";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 import { TeamShowcase } from '@/components/TeamShowcase';
 import { NavBar } from "@/components/ui/tubelight-navbar";
@@ -289,6 +293,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     // Build nav items from project sections
     const navItems = [
         { name: t.home, url: '#hero', icon: Home },
+        ...(project.id === "autonomous-robot" ? [{ name: t.promo, url: '#promo', icon: Play }] : []),
         ...(features && features.length > 0 ? [{ name: t.features, url: '#features', icon: Cpu }] : []),
         ...(project.id === "autonomous-robot" ? [{ name: t.products, url: '#products', icon: Box }] : []),
         ...(project.files && project.files.length > 0 ? [{ name: t.design, url: '#files', icon: Ruler }] : []),
@@ -301,6 +306,59 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     ];
 
     const [activeSection, setActiveSection] = useState("hero");
+    const [inlinePlayingVideoId, setInlinePlayingVideoId] = useState<string | null>(null);
+
+    // State and refs for full-screen interactive promo section
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+    const promoRef = useRef<HTMLDivElement>(null);
+    const [isMuted, setIsMuted] = useState(true);
+
+    // Scroll-bound tracking for cinematic video section scrolling animations
+    const { scrollYProgress } = useScroll({
+        target: promoRef,
+        offset: ["start end", "end start"]
+    });
+    const videoY = useTransform(scrollYProgress, [0, 1], ["-3%", "3%"]);
+    const videoScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.1]);
+
+    const toggleMute = () => {
+        if (iframeRef.current) {
+            const command = isMuted ? 'unMute' : 'mute';
+            iframeRef.current.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: command }),
+                '*'
+            );
+            setIsMuted(!isMuted);
+        }
+    };
+
+    // Autoplay, pause, and restart video on section enter/exit
+    useEffect(() => {
+        if (project.id !== 'autonomous-robot') return;
+
+        // Give a slight delay to allow the iframe API to initialize
+        const timer = setTimeout(() => {
+            if (activeSection === 'promo') {
+                // Seek to beginning and play
+                iframeRef.current?.contentWindow?.postMessage(
+                    JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }),
+                    '*'
+                );
+                iframeRef.current?.contentWindow?.postMessage(
+                    JSON.stringify({ event: 'command', func: 'playVideo' }),
+                    '*'
+                );
+            } else {
+                // Pause when scrolled away
+                iframeRef.current?.contentWindow?.postMessage(
+                    JSON.stringify({ event: 'command', func: 'pauseVideo' }),
+                    '*'
+                );
+            }
+        }, 150);
+
+        return () => clearTimeout(timer);
+    }, [activeSection, project.id]);
 
     // Scroll-based section detection for localized dark mode
     useEffect(() => {
@@ -320,7 +378,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
         };
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
-        const sections = ['hero', 'features', 'products', 'files', 'videos', 'sources', 'code', 'demo', 'github', 'team'];
+        const sections = ['hero', 'promo', 'features', 'products', 'files', 'videos', 'sources', 'code', 'demo', 'github', 'team'];
         sections.forEach(id => {
             const el = document.getElementById(id);
             if (el) observer.observe(el);
@@ -441,7 +499,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             />
 
             {/* ─── Hero ═══ */}
-        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center order-1">
+            <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center order-1">
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -454,9 +512,9 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                 </div>
 
                 <div className="relative z-10 max-w-4xl pt-8 md:pt-0">
-                    <h1 className={cn("font-bold mb-4 md:mb-6 leading-tight", 
-                        isDroneProject 
-                            ? "text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" 
+                    <h1 className={cn("font-bold mb-4 md:mb-6 leading-tight",
+                        isDroneProject
+                            ? "text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
                             : "text-4xl sm:text-5xl md:text-6xl lg:text-8xl"
                     )}>
                         <span className="gradient-text">{project.title}</span>
@@ -478,9 +536,53 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                 </div>
             </section>
 
+            {/* ─── Cinematic Promo Section ─── */}
+            {project.id === "autonomous-robot" && (
+                <section
+                    id="promo"
+                    ref={promoRef}
+                    className="relative w-full h-[100dvh] bg-[#030303] overflow-hidden border-y border-border/40 order-2 md:order-2 flex flex-col justify-center items-center"
+                >
+                    {/* Mathematical Cinematic Video Container (Fitted to Viewport) */}
+                    <motion.div 
+                        className="absolute inset-0 z-0 select-none overflow-hidden w-full h-full origin-center flex items-center justify-center bg-[#030303]"
+                        style={{ y: videoY, scale: videoScale }}
+                    >
+                        <div className="w-full h-full max-w-full max-h-full flex items-center justify-center p-0">
+                            <div className="relative w-full max-w-full aspect-video" style={{ maxHeight: '100dvh', width: 'min(100vw, calc(100dvh * 16 / 9))' }}>
+                                <iframe
+                                    ref={iframeRef}
+                                    src="https://www.youtube.com/embed/OvwIori7uV8?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=OvwIori7uV8&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1"
+                                    title="LEO Rover Promo Video Background"
+                                    className="absolute inset-0 w-full h-full pointer-events-none opacity-100 transition-opacity duration-700"
+                                    scrolling="no"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                />
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Floating Mute Button (Bottom Right) */}
+                    <div className="absolute bottom-8 right-8 z-20 pointer-events-auto">
+                        <button
+                            onClick={toggleMute}
+                            className="p-3.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/30 text-white hover:text-cyan-400 transition-all cursor-pointer shadow-lg hover:shadow-cyan-500/10 flex items-center justify-center"
+                            title={isMuted ? "Unmute Audio" : "Mute Audio"}
+                        >
+                            {isMuted ? (
+                                <VolumeX className="w-5 h-5" />
+                            ) : (
+                                <Volume2 className="w-5 h-5 text-cyan-400 animate-pulse" />
+                            )}
+                        </button>
+                    </div>
+                </section>
+            )}
+
             {/* ─── Features (or Custom Animation) ─── */}
             {project.id === "autonomous-robot" ? (
-                <section id="features" className="w-full relative dark order-3 md:order-2">
+                <section id="features" className="w-full relative dark order-3 md:order-3">
                     <div className="pt-12 px-6 max-w-6xl mx-auto absolute z-20 left-0 right-0 top-0 pointer-events-none">
                         <SectionHeader
                             label="# features"
@@ -494,7 +596,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <LeoRoverExploded />
                 </section>
             ) : isAStarProject ? (
-                <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40 order-3 md:order-2">
+                <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40 order-3 md:order-3">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# features"
@@ -512,10 +614,10 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                         i === 0
                                             ? "lg:col-span-3 lg:row-span-2"
                                             : i === 1
-                                            ? "lg:col-span-3 lg:row-span-2"
-                                            : i === 2
-                                            ? "lg:col-span-4 lg:row-span-1"
-                                            : "lg:col-span-2 lg:row-span-1"
+                                                ? "lg:col-span-3 lg:row-span-2"
+                                                : i === 2
+                                                    ? "lg:col-span-4 lg:row-span-1"
+                                                    : "lg:col-span-2 lg:row-span-1"
                                     }
                                 />
                             ))}
@@ -523,7 +625,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     </div>
                 </section>
             ) : features && features.length > 0 && (
-                <section id="features" className={cn("min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6", (isDroneProject || isRLProject) ? "order-2 md:order-2" : "order-3 md:order-2")}>
+                <section id="features" className={cn("min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6", "order-3 md:order-3")}>
                     <div className="max-w-6xl mx-auto w-full">
                         <SectionHeader
                             label="# features"
@@ -540,7 +642,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Product Showcase ─── */}
             {project.id === "autonomous-robot" && (
-                <section id="products" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/10 order-4 md:order-3">
+                <section id="products" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/10 order-7 md:order-4">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# products"
@@ -556,7 +658,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Graphs (RL Project) ─── */}
             {project.graphImages && project.graphImages.length > 0 && (
-                <section id="graphs" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/10 order-7 md:order-7 overflow-hidden relative">
+                <section id="graphs" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/10 order-9 md:order-8 overflow-hidden relative">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# graphs"
@@ -572,7 +674,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Files ─── */}
             {project.files && project.files.length > 0 && (
-                <section id="files" className="py-16 md:py-24 px-4 sm:px-6 order-5 md:order-4">
+                <section id="files" className="py-16 md:py-24 px-4 sm:px-6 order-8 md:order-5">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# files"
@@ -658,7 +760,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                 allowFullScreen={true}
                                                 frameBorder="0"
                                             ></iframe>
-                                           
+
                                         </div>
                                     )}
 
@@ -731,7 +833,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Source ─── */}
             {project.codeSnippets && project.codeSnippets.length > 0 && (
-                <section id={isAIMLProject ? "sources" : "code"} className={cn("py-16 md:py-24 px-4 sm:px-6", isDroneProject ? "order-3 md:order-5" : "order-6 md:order-5")}>
+                <section id={isAIMLProject ? "sources" : "code"} className={cn("py-16 md:py-24 px-4 sm:px-6", "order-4 md:order-6")}>
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? t.source : t.sourceCode} description={language === 'ja' ? "主要なロジックモジュールの確認。" : "Explore the primary logical modules."} />
 
@@ -790,7 +892,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Demo ─── */}
             {hasDemo && (
-                <section id="demo" className={cn("py-16 md:py-24 px-4 sm:px-6 surface-elevated", isDroneProject ? "order-4 md:order-6" : isRLProject ? "order-6 md:order-6" : "order-2 md:order-6")}>
+                <section id="demo" className={cn("py-16 md:py-24 px-4 sm:px-6 surface-elevated", "order-5 md:order-7")}>
                     <div className={isDroneProject ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
                         <SectionHeader
                             label="# simulation"
@@ -908,8 +1010,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                 </div>
 
                                 {project.terminalVideo ? (
-                                    <VideoPlayerPro 
-                                        src={project.terminalVideo} 
+                                    <VideoPlayerPro
+                                        src={project.terminalVideo}
                                         className="aspect-video"
                                     />
                                 ) : (
@@ -944,7 +1046,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Videos ─── */}
             {project.videos && project.videos.length > 0 && (
-                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20 order-7">
+                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20 order-10 md:order-9">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# videos"
@@ -955,9 +1057,9 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                         {(() => {
                             const filters = project.videos?.map(v => v.filter).filter(Boolean) as string[];
                             const uniqueFilters = ["All", ...Array.from(new Set(filters))];
-                            
-                            const filteredVideos = activeVideoFilter === "All" 
-                                ? project.videos 
+
+                            const filteredVideos = activeVideoFilter === "All"
+                                ? project.videos
                                 : project.videos?.filter(v => v.filter === activeVideoFilter);
 
                             return (
@@ -992,29 +1094,44 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                 key={video.id}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    setSelectedVideo(video.url);
+                                                    setInlinePlayingVideoId(video.id);
                                                 }}
-                                                className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition"
+                                                className="cursor-pointer rounded-lg overflow-hidden border bg-card hover:border-primary transition flex flex-col justify-between"
                                             >
-                                                <div className="relative aspect-video">
-                                                    <img
-                                                        src={getYouTubeThumbnail(video.url)}
-                                                        alt={video.title}
-                                                        className="w-full h-full object-cover"
-                                                    />
-                                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                                        <Play className="w-12 h-12 text-white" />
-                                                    </div>
-                                                    <span className="absolute bottom-2 right-2 bg-black/70 text-xs px-2 py-1 rounded">
-                                                        {video.duration}
-                                                    </span>
+                                                <div className="relative aspect-video w-full bg-black">
+                                                    {inlinePlayingVideoId === video.id ? (
+                                                        <iframe
+                                                            src={`${video.url}${video.url.includes('?') ? '&' : '?'}autoplay=1&enablejsapi=1&rel=0&modestbranding=1`}
+                                                            title={video.title}
+                                                            className="w-full h-full"
+                                                            frameBorder="0"
+                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                            allowFullScreen
+                                                        />
+                                                    ) : (
+                                                        <>
+                                                            <img
+                                                                src={getYouTubeThumbnail(video.url)}
+                                                                alt={video.title}
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                                                                <Play className="w-12 h-12 text-white" />
+                                                            </div>
+                                                            <span className="absolute bottom-2 right-2 bg-black/70 text-xs px-2 py-1 rounded font-mono text-white">
+                                                                {video.duration}
+                                                            </span>
+                                                        </>
+                                                    )}
                                                 </div>
 
-                                                <div className="p-4">
-                                                    <h3 className="font-semibold mb-1">{language === 'ja' && video.title_ja ? video.title_ja : video.title}</h3>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        {video.description}
-                                                    </p>
+                                                <div className="p-4 flex-1 flex flex-col justify-between">
+                                                    <div>
+                                                        <h3 className="font-semibold mb-1 text-sm md:text-base">{language === 'ja' && video.title_ja ? video.title_ja : video.title}</h3>
+                                                        <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
+                                                            {video.description}
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}
@@ -1028,7 +1145,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── GitHub ─── */}
             {project.repoUrl && (
-                <section id="github" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20 order-8">
+                <section id="github" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20 order-6 md:order-9">
                     <div className="max-w-4xl mx-auto">
                         <SectionHeader
                             label={isAIMLProject ? "# github" : "# repositories"}
@@ -1097,9 +1214,9 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Team ─── */}
             {project.team && (
-                <div id="team" className="order-9">
-                    <TeamShowcase 
-                        title={language === 'ja' && project.team.title_ja ? project.team.title_ja : project.team.title} 
+                <div id="team" className="order-11 md:order-10">
+                    <TeamShowcase
+                        title={language === 'ja' && project.team.title_ja ? project.team.title_ja : project.team.title}
                         description={language === 'ja' && project.team.description_ja ? project.team.description_ja : project.team.description}
                         members={project.team.members}
                     />
@@ -1107,7 +1224,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             )}
 
             {/* ─── Footer ─── */}
-            <footer className="py-10 px-6 border-t text-center text-xs text-muted-foreground order-10">
+            <footer className="py-10 px-6 border-t text-center text-xs text-muted-foreground order-12 md:order-11">
                 © {new Date().getFullYear()} {project.title}
             </footer>
 
@@ -1119,7 +1236,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     if (!open) setSelectedVideo(null);
                 }}
             >
-                <DialogContent 
+                <DialogContent
                     className="sm:max-w-4xl p-0 bg-black border-none"
                     onOpenAutoFocus={(e) => e.preventDefault()}
                     onCloseAutoFocus={(e) => e.preventDefault()}
@@ -1127,8 +1244,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <DialogTitle className="sr-only">Video Player</DialogTitle>
                     <div className="aspect-video w-full bg-black">
                         {selectedVideo && (
-                            <YouTubePlayerPro 
-                                url={selectedVideo} 
+                            <YouTubePlayerPro
+                                url={selectedVideo}
                                 className="w-full h-full"
                             />
                         )}

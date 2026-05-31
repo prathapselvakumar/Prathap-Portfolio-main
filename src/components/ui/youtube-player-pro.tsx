@@ -71,7 +71,7 @@ const YouTubePlayerPro: React.FC<YouTubePlayerProProps> = ({ url, className }) =
       playerRef.current = new window.YT.Player(iframeRef.current, {
         videoId: videoId,
         playerVars: {
-          autoplay: 0,
+          autoplay: 1,
           controls: 0, // Hide default controls
           disablekb: 1,
           fs: 0,
@@ -83,6 +83,7 @@ const YouTubePlayerPro: React.FC<YouTubePlayerProProps> = ({ url, className }) =
           onReady: (event: any) => {
             setIsReady(true);
             setDuration(event.target.getDuration());
+            event.target.playVideo();
           },
           onStateChange: (event: any) => {
             // event.data: -1 unstarted, 0 ended, 1 playing, 2 paused, 3 buffering, 5 video cued

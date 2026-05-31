@@ -125,6 +125,7 @@ export const translations = {
       },
       ui: {
         home: "Home",
+        promo: "Promo",
         features: "Features",
         products: "Products",
         design: "Design",
@@ -416,6 +417,7 @@ export const translations = {
       },
       ui: {
         home: "ホーム",
+        promo: "プロモ",
         features: "機能・特徴",
         products: "製品",
         design: "設計",
@@ -608,6 +610,7 @@ export const translations = {
       },
       ui: {
         home: "Startseite",
+        promo: "Promo",
         features: "Funktionen",
         products: "Produkte",
         design: "Design",
