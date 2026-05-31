@@ -78,7 +78,13 @@ export default function LeoRoverExploded() {
         ctx.imageSmoothingQuality = "high";
 
         // Calculate scaling to contain the image proportionately
-        const scale = Math.min(width / img.width, height / img.height);
+        let scale = Math.min(width / img.width, height / img.height);
+
+        // Zoom the image sequence on mobile/tablet to make the robot details highly visible
+        if (width < 768) {
+            scale = scale * 1.6;
+        }
+
         const x = (width / 2) - (img.width / 2) * scale;
         const y = (height / 2) - (img.height / 2) * scale;
 
@@ -132,7 +138,7 @@ export default function LeoRoverExploded() {
                             key={index}
                             style={{ opacity: opacities[index] }}
                             className={cn(
-                                "absolute bottom-[10%] lg:bottom-auto max-w-sm px-4",
+                                "absolute top-[12%] lg:top-auto lg:bottom-auto max-w-sm px-4",
                                 index % 2 === 0
                                     ? "lg:top-[20%] left-[5%] lg:left-[10%]"
                                     : "lg:top-[30%] left-[5%] lg:left-auto lg:right-[10%] text-left lg:text-right ipad-pro-leo-right"
