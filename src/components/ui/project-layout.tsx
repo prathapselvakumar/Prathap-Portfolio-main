@@ -47,6 +47,7 @@ import RuixenBentoCards from "@/components/ui/ruixen-bento-cards";
 import VideoPlayerPro from "@/components/ui/video-player-pro";
 import YouTubePlayerPro from "@/components/ui/youtube-player-pro";
 import { ShatterButton } from "@/components/ui/ShatterButton";
+import { VerticalImageStack } from "./vertical-image-stack";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -282,7 +283,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     const isAStarProject = project.id === "a-start-algorithm";
     const isDroneProject = project.id === "drone-controller";
     const isAutonomousRobotProject = project.id === "autonomous-robot";
-    const hasDemo = isAStarProject || isDroneProject || (!!project.terminalOutput && project.terminalOutput.length > 0) || !!project.terminalVideo;
+    const isRLProject = project.id === "reinforcement-learning-exercise";
+    const hasDemo = isAStarProject || isDroneProject || (!!project.terminalOutput && project.terminalOutput.length > 0) || (!!project.terminalSnippets && project.terminalSnippets.length > 0) || !!project.terminalVideo;
 
     // Build nav items from project sections
     const navItems = [
@@ -292,6 +294,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
         ...(project.files && project.files.length > 0 ? [{ name: t.design, url: '#files', icon: Ruler }] : []),
         ...(project.codeSnippets && project.codeSnippets.length > 0 ? [{ name: isAIMLProject ? t.source : t.code, url: isAIMLProject ? '#sources' : '#code', icon: Code2 }] : []),
         ...(hasDemo ? [{ name: t.simulation, url: '#demo', icon: Terminal }] : []),
+        ...(project.graphImages && project.graphImages.length > 0 ? [{ name: language === 'ja' ? 'グラフ' : 'Graphs', url: '#graphs', icon: Activity }] : []),
         ...(project.videos && project.videos.length > 0 ? [{ name: t.videos, url: '#videos', icon: Play }] : []),
         ...(project.repoUrl ? [{ name: t.github, url: '#github', icon: Github }] : []),
         ...(project.team ? [{ name: t.team, url: '#team', icon: User }] : []),
@@ -335,6 +338,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
     // Terminal and code state
     const [activeSnippet, setActiveSnippet] = useState(project.codeSnippets?.[0]?.id || "1");
+    const [activeTerminalSnippet, setActiveTerminalSnippet] = useState(project.terminalSnippets?.[0]?.id || "1");
     const [isRunning, setIsRunning] = useState(false);
     const [visibleLines, setVisibleLines] = useState(0);
 
@@ -344,18 +348,35 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
         setIsRunning(true);
         setVisibleLines(0);
         let i = 0;
+
+        let totalLines = 0;
+        if (project.terminalSnippets && project.terminalSnippets.length > 0) {
+            const activeSnippetObj = project.terminalSnippets.find(s => s.id === activeTerminalSnippet);
+            totalLines = activeSnippetObj ? activeSnippetObj.code.split('\n').length : 0;
+        } else if (project.terminalOutput) {
+            totalLines = project.terminalOutput.length;
+        }
+
         const interval = setInterval(() => {
             i++;
             setVisibleLines(i);
             if (terminalRef.current) {
                 terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
             }
-            if (project.terminalOutput && i >= project.terminalOutput.length) {
+            if (i >= totalLines) {
                 clearInterval(interval);
                 setTimeout(() => setIsRunning(false), 500);
             }
-        }, 200);
+        }, project.terminalSnippets ? 50 : 200);
     };
+
+    // Reset when switching terminal snippets
+    useEffect(() => {
+        if (project.terminalSnippets) {
+            setIsRunning(false);
+            setVisibleLines(0);
+        }
+    }, [activeTerminalSnippet, project.terminalSnippets]);
 
     const getLineColor = (type: string) => {
         switch (type) {
@@ -370,7 +391,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     };
 
     return (
-        <main className="min-h-screen bg-background text-foreground flex flex-col">
+        <main className="min-h-screen bg-background text-foreground flex flex-col pb-32">
             {/* ─── Navigation ─── */}
             {/* Breadcrumb (Top Left) */}
             <div className="hidden lg:flex ipad-pro-hide fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
@@ -502,7 +523,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     </div>
                 </section>
             ) : features && features.length > 0 && (
-                <section id="features" className={cn("min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6", isDroneProject ? "order-2 md:order-2" : "order-3 md:order-2")}>
+                <section id="features" className={cn("min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6", (isDroneProject || isRLProject) ? "order-2 md:order-2" : "order-3 md:order-2")}>
                     <div className="max-w-6xl mx-auto w-full">
                         <SectionHeader
                             label="# features"
@@ -533,6 +554,21 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                 </section>
             )}
 
+            {/* ─── Graphs (RL Project) ─── */}
+            {project.graphImages && project.graphImages.length > 0 && (
+                <section id="graphs" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/10 order-7 md:order-7 overflow-hidden relative">
+                    <div className="max-w-6xl mx-auto">
+                        <SectionHeader
+                            label="# graphs"
+                            title={language === 'ja' ? "パフォーマンスグラフ" : "Performance Graphs"}
+                            description={language === 'ja' ? "モデルのパフォーマンスと結果の可視化" : "Visualizations of model performance and results across experiments."}
+                        />
+                        <div className="mt-8 flex justify-center w-full relative z-10">
+                            <VerticalImageStack images={project.graphImages as any} />
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* ─── Files ─── */}
             {project.files && project.files.length > 0 && (
@@ -754,7 +790,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Demo ─── */}
             {hasDemo && (
-                <section id="demo" className={cn("py-16 md:py-24 px-4 sm:px-6 surface-elevated", isDroneProject ? "order-4 md:order-6" : "order-2 md:order-6")}>
+                <section id="demo" className={cn("py-16 md:py-24 px-4 sm:px-6 surface-elevated", isDroneProject ? "order-4 md:order-6" : isRLProject ? "order-6 md:order-6" : "order-2 md:order-6")}>
                     <div className={isDroneProject ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
                         <SectionHeader
                             label="# simulation"
@@ -772,6 +808,73 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                     {customDemo}
                                 </div>
                             ) : null
+                        ) : project.terminalSnippets && project.terminalSnippets.length > 0 ? (
+                            <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-4">
+                                {/* File list */}
+                                <div className="rounded-lg border border-border bg-card overflow-hidden">
+                                    <div className="px-4 py-3 border-b border-border text-xs text-muted-foreground font-mono uppercase tracking-wider">
+                                        Outputs
+                                    </div>
+                                    {project.terminalSnippets.map((s) => (
+                                        <button
+                                            key={s.id}
+                                            onClick={() => setActiveTerminalSnippet(s.id)}
+                                            className={`w-full text-left px-4 py-3 border-b border-border font-mono text-sm transition-colors ${activeTerminalSnippet === s.id
+                                                ? "bg-primary/10 text-primary border-l-2 border-l-primary"
+                                                : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <Terminal className={`w-3 h-3 transition-transform ${activeTerminalSnippet === s.id ? "text-primary" : ""}`} />
+                                                <span>{language === 'ja' && s.title_ja ? s.title_ja : s.title}</span>
+                                            </div>
+                                            <p className="text-xs text-muted-foreground mt-1 ml-5">{language === 'ja' && s.description_ja ? s.description_ja : s.description}</p>
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Terminal viewer */}
+                                <div className="rounded-lg border border-border bg-card shadow-2xl overflow-hidden flex flex-col">
+                                    {/* Terminal title bar */}
+                                    <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-black/50">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-3 h-3 rounded-full bg-destructive/60" />
+                                            <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                            <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
+                                            <span className="ml-3 text-xs text-muted-foreground font-mono">
+                                                {(() => {
+                                                    const s = project.terminalSnippets.find(s => s.id === activeTerminalSnippet);
+                                                    return language === 'ja' && s?.title_ja ? s.title_ja : s?.title;
+                                                })()}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <button
+                                                onClick={handleRun}
+                                                disabled={isRunning}
+                                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono border border-primary/40 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+                                            >
+                                                {isRunning ? t.running : <><Play className="w-3 h-3" />{t.run}</>}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div ref={terminalRef} className="p-5 overflow-y-auto font-mono text-sm leading-6 min-h-[350px] max-h-[500px] w-full bg-[#0d1117] text-[#c9d1d9]">
+                                        {visibleLines === 0 && (
+                                            <div className="flex gap-2">
+                                                <span className="text-primary">$</span>
+                                                <span className="text-muted-foreground">_</span>
+                                                <span className="cursor-blink text-primary">▋</span>
+                                            </div>
+                                        )}
+                                        <pre className="whitespace-pre-wrap font-inherit">
+                                            {project.terminalSnippets.find(s => s.id === activeTerminalSnippet)?.code.split('\n').slice(0, visibleLines).join('\n')}
+                                        </pre>
+                                        {isRunning && (
+                                            <span className="cursor-blink text-primary">▋</span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
                         ) : (
                             <div className="rounded-lg border border-border overflow-hidden bg-background shadow-2xl">
                                 {/* Terminal title bar */}

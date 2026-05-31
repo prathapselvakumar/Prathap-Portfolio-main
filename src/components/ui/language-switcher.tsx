@@ -68,8 +68,8 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
         "flex items-center justify-between gap-2 px-3 py-2 rounded-full border border-border bg-card min-w-[110px] h-11 opacity-50 ipad-pro-hide",
         className
       )}>
-        <div className="w-5 h-4 bg-muted rounded-[2px]" />
-        <div className="w-8 h-3 bg-muted rounded" />
+        <div className="w-7 h-5 bg-muted rounded-[2px]" />
+        <div className="w-10 h-3 bg-muted rounded" />
       </div>
     );
   }
@@ -93,10 +93,10 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
           transition={{ duration: 0.2 }}
           className="flex items-center gap-2 w-full justify-center"
         >
-          <div className="w-5 h-4 flex-shrink-0 rounded-[2px] overflow-hidden border border-border/50 shadow-sm">
+          <div className="w-7 h-5 flex-shrink-0 rounded-[2px] overflow-hidden border border-border/50 shadow-sm">
             {currentLanguage.flag}
           </div>
-          <span className="text-[10px] font-bold font-mono tracking-wider uppercase">
+          <span className="text-xs font-bold font-mono tracking-wider uppercase">
             {currentLanguage.shortLabel}
           </span>
         </motion.div>

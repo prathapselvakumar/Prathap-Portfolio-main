@@ -15,6 +15,8 @@ export interface Project {
     size: 'large' | 'small';
     demoUrl?: string; // URL for "Run Demo" button
     repoUrl?: string; // URL for "GitHub" button
+    terminalSnippets?: { id: string; title: string; title_ja?: string; description: string; description_ja?: string; language: string; code: string }[];
+    graphImages?: { id: string | number; src: string; alt: string; title?: string; description?: string }[];
     videos?: {
         id: string;
         title: string;
@@ -88,6 +90,225 @@ export const projects: Project[
     ] =
     // modified for thumbnail 
     [
+        {
+            id: 'reinforcement-learning-exercise',
+            title: 'Reinforcement Learning Exercise',
+            title_ja: '強化学習の演習',
+            description: 'Implementations of various reinforcement learning algorithms including MDPs, Q-Learning, and Policy Gradients for custom environments.',
+            description_ja: 'マルコフ決定過程、Q学習、方策勾配法などの様々な強化学習アルゴリズムのカスタム環境での実装。',
+            image: '/Thumbnails/Project Thumbnails/rl_thumbnail_v2.png',
+            categories: ['AI', 'Robotics'],
+            size: 'small',
+            repoUrl: 'https://github.com/prathapselvakumar/Reinforcement-Learning-Exercise.git',
+            features: [
+                { icon: 'Cpu', title: 'Markov Decision Processes (Lab 1)', title_ja: 'MDP', desc: 'Concepts: Fundamental Tabular Methods, MDPs, Value Functions, Value Iteration, and Model-Free RL (such as Tabular Q-Learning). Application: Agents learning to navigate grid worlds and play Pacman using basic tabular methods.', desc_ja: '' },
+                { icon: 'Zap', title: 'Function Approximation (Lab 2)', title_ja: 'Function Approximation', desc: 'Concepts: Linear Function Approximation, LSTD, and Deep Q-Networks. Application: Scaling up RL to handle larger state spaces where tabular methods are no longer feasible by using neural networks or feature extractors.', desc_ja: '' },
+                { icon: 'Activity', title: 'Policy Gradients (Lab 3)', title_ja: 'Policy Gradients', desc: 'Concepts: Policy Gradient Methods, Actor-Critic Architectures, Natural Gradients, and Model-Based Exploration. Application: Training agents in environments with continuous action spaces (like controlling a pendulum).', desc_ja: '' },
+                { icon: 'Database', title: 'POMDP and Multi-Agent RL (Lab 4)', title_ja: 'POMDP & MARL', desc: 'Concepts: POMDPs, Belief MDPs, Deep RL for POMDPs, and Cooperative MARL algorithms. Application: Dealing with uncertainty when the environment is not fully observable and coordinating multiple agents.', desc_ja: '' }
+            ],
+graphImages: [
+          {
+                    "id": "1",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_1.png",
+                    "alt": "Function Approximation img 1",
+                    "title": "Function Approximation img 1",
+                    "description": "Performance graph for Function Approximation img 1"
+          },
+          {
+                    "id": "2",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_10.png",
+                    "alt": "Function Approximation img 10",
+                    "title": "Function Approximation img 10",
+                    "description": "Performance graph for Function Approximation img 10"
+          },
+          {
+                    "id": "3",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_2.png",
+                    "alt": "Function Approximation img 2",
+                    "title": "Function Approximation img 2",
+                    "description": "Performance graph for Function Approximation img 2"
+          },
+          {
+                    "id": "4",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_3.png",
+                    "alt": "Function Approximation img 3",
+                    "title": "Function Approximation img 3",
+                    "description": "Performance graph for Function Approximation img 3"
+          },
+          {
+                    "id": "5",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_4.png",
+                    "alt": "Function Approximation img 4",
+                    "title": "Function Approximation img 4",
+                    "description": "Performance graph for Function Approximation img 4"
+          },
+          {
+                    "id": "6",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_5.png",
+                    "alt": "Function Approximation img 5",
+                    "title": "Function Approximation img 5",
+                    "description": "Performance graph for Function Approximation img 5"
+          },
+          {
+                    "id": "7",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_6.png",
+                    "alt": "Function Approximation img 6",
+                    "title": "Function Approximation img 6",
+                    "description": "Performance graph for Function Approximation img 6"
+          },
+          {
+                    "id": "8",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_7.png",
+                    "alt": "Function Approximation img 7",
+                    "title": "Function Approximation img 7",
+                    "description": "Performance graph for Function Approximation img 7"
+          },
+          {
+                    "id": "9",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_8.png",
+                    "alt": "Function Approximation img 8",
+                    "title": "Function Approximation img 8",
+                    "description": "Performance graph for Function Approximation img 8"
+          },
+          {
+                    "id": "10",
+                    "src": "/Reinforcement Learning/FunctionApproximation_img_9.png",
+                    "alt": "Function Approximation img 9",
+                    "title": "Function Approximation img 9",
+                    "description": "Performance graph for Function Approximation img 9"
+          },
+          {
+                    "id": "11",
+                    "src": "/Reinforcement Learning/lab3_output.png",
+                    "alt": "lab3 output",
+                    "title": "lab3 output",
+                    "description": "Performance graph for lab3 output"
+          },
+          {
+                    "id": "12",
+                    "src": "/Reinforcement Learning/MARL_img_1.png",
+                    "alt": "Multi-Agent RL img 1",
+                    "title": "Multi-Agent RL img 1",
+                    "description": "Performance graph for Multi-Agent RL img 1"
+          },
+          {
+                    "id": "13",
+                    "src": "/Reinforcement Learning/MARL_img_2.png",
+                    "alt": "Multi-Agent RL img 2",
+                    "title": "Multi-Agent RL img 2",
+                    "description": "Performance graph for Multi-Agent RL img 2"
+          },
+          {
+                    "id": "14",
+                    "src": "/Reinforcement Learning/MARL_img_3.png",
+                    "alt": "Multi-Agent RL img 3",
+                    "title": "Multi-Agent RL img 3",
+                    "description": "Performance graph for Multi-Agent RL img 3"
+          },
+          {
+                    "id": "15",
+                    "src": "/Reinforcement Learning/MARL_img_4.png",
+                    "alt": "Multi-Agent RL img 4",
+                    "title": "Multi-Agent RL img 4",
+                    "description": "Performance graph for Multi-Agent RL img 4"
+          },
+          {
+                    "id": "16",
+                    "src": "/Reinforcement Learning/MARL_img_5.png",
+                    "alt": "Multi-Agent RL img 5",
+                    "title": "Multi-Agent RL img 5",
+                    "description": "Performance graph for Multi-Agent RL img 5"
+          },
+          {
+                    "id": "17",
+                    "src": "/Reinforcement Learning/MARL_img_6.png",
+                    "alt": "Multi-Agent RL img 6",
+                    "title": "Multi-Agent RL img 6",
+                    "description": "Performance graph for Multi-Agent RL img 6"
+          },
+          {
+                    "id": "18",
+                    "src": "/Reinforcement Learning/MARL_img_7.png",
+                    "alt": "Multi-Agent RL img 7",
+                    "title": "Multi-Agent RL img 7",
+                    "description": "Performance graph for Multi-Agent RL img 7"
+          },
+          {
+                    "id": "19",
+                    "src": "/Reinforcement Learning/MARL_img_8.png",
+                    "alt": "Multi-Agent RL img 8",
+                    "title": "Multi-Agent RL img 8",
+                    "description": "Performance graph for Multi-Agent RL img 8"
+          },
+          {
+                    "id": "20",
+                    "src": "/Reinforcement Learning/POMDP_img_1.png",
+                    "alt": "POMDP img 1",
+                    "title": "POMDP img 1",
+                    "description": "Performance graph for POMDP img 1"
+          },
+          {
+                    "id": "21",
+                    "src": "/Reinforcement Learning/POMDP_img_2.png",
+                    "alt": "POMDP img 2",
+                    "title": "POMDP img 2",
+                    "description": "Performance graph for POMDP img 2"
+          },
+          {
+                    "id": "22",
+                    "src": "/Reinforcement Learning/POMDP_img_3.png",
+                    "alt": "POMDP img 3",
+                    "title": "POMDP img 3",
+                    "description": "Performance graph for POMDP img 3"
+          },
+          {
+                    "id": "23",
+                    "src": "/Reinforcement Learning/POMDP_img_4.png",
+                    "alt": "POMDP img 4",
+                    "title": "POMDP img 4",
+                    "description": "Performance graph for POMDP img 4"
+          }
+],
+            terminalSnippets: [
+                {
+                    id: "lab1",
+                    title: "Lab 1 Output",
+                    title_ja: "Lab 1 Output",
+                    description: "Terminal simulation of Markov Decision Processes",
+                    description_ja: "Terminal simulation of Markov Decision Processes",
+                    language: "bash",
+                    code: `Starting Lab 1: MDPs and Tabular Q-Learning...\nEnvironment initialized: GridWorld\nAgent navigating...\nConvergence reached after 500 episodes.\nOptimal Policy found.`
+                },
+                {
+                    id: "lab2",
+                    title: "Lab 2 Output",
+                    title_ja: "Lab 2 Output",
+                    description: "Terminal simulation of Function Approximation",
+                    description_ja: "Terminal simulation of Function Approximation",
+                    language: "bash",
+                    code: `Starting Lab 2: Function Approximation...\nUsing LSTD for value estimation.\nTraining Deep Q-Network...\nEpoch 100/100 completed.\nLoss: 0.045\nModel saved successfully.`
+                },
+                {
+                    id: "lab3",
+                    title: "Lab 3 Output",
+                    title_ja: "Lab 3 Output",
+                    description: "Terminal simulation of Policy Gradients",
+                    description_ja: "Terminal simulation of Policy Gradients",
+                    language: "bash",
+                    code: `Starting Lab 3: Policy Gradients...\nEnvironment: Pendulum-v1\nUsing Actor-Critic architecture.\nEpisode 1000: Total Reward -150.4\nNatural Gradients optimized.`
+                },
+                {
+                    id: "lab4",
+                    title: "Lab 4 Output",
+                    title_ja: "Lab 4 Output",
+                    description: "Terminal simulation of POMDPs",
+                    description_ja: "Terminal simulation of POMDPs",
+                    language: "bash",
+                    code: `Starting Lab 4: POMDP and MARL...\nInitializing Multi-Agent environment...\nAgents coordinating...\nBelief state updated.\nTask completed successfully.`
+                }
+            ],
+            codeSnippets: []
+        },
         {
                                     id: 'autonomous-robot',
                                     title: 'Autonomous Robot',

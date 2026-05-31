@@ -5,7 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ShatterButton } from './ShatterButton';
-import { useTheme } from "next-themes";
+import { AnimatedBlobImage } from './frame';
 // Define the props interface for type safety and reusability
 interface MinimalistHeroProps {
   mainText: string;
@@ -43,7 +43,31 @@ export const MinimalistHero = ({
 }: MinimalistHeroProps) => {
   const containerRef = React.useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
-  const { resolvedTheme } = useTheme();
+  
+  // The app's theme toggler uses direct DOM manipulation rather than next-themes.
+  // We must observe the document class to sync the shatter color.
+  const [isDark, setIsDark] = React.useState(false);
+
+  React.useEffect(() => {
+    // Sync initial theme
+    const syncTheme = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    
+    syncTheme();
+
+    // Observe theme changes
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"]
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Determine the shatter color based on the actual DOM theme
+  const shatterColor = isDark ? '#ffffff' : '#000000';
 
   return (
     <div
@@ -62,33 +86,18 @@ export const MinimalistHero = ({
       {/* Main Content Grid */}
       <div className="relative z-20 grid w-full max-w-7xl grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
         
-        {/* Left Column: Image in Box */}
-        <motion.div 
+        {/* Left Column: Animated Blob Photo */}
+        <motion.div
           className="flex justify-center md:justify-start w-full"
           initial={{ opacity: 0, scale: 0.9, x: -30 }}
           animate={isInView ? { opacity: 1, scale: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          {/* THE BOX */}
-          <div className="relative w-full max-w-sm lg:max-w-md aspect-[3/4] md:aspect-[4/5] rounded-[2rem] bg-card/40 backdrop-blur-xl border border-border/50 shadow-2xl overflow-hidden group flex items-center justify-center">
-            
-            {/* Box dynamic background glow */}
-            <div className="absolute inset-0 bg-gradient-to-t from-yellow-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"></div>
-
-            <motion.img
-              src={imageSrc}
-              alt={imageAlt}
-              className="relative z-10 w-full h-full object-cover object-top pointer-events-none drop-shadow-2xl"
-              initial={{ y: 50 }}
-              animate={isInView ? { y: 0 } : {}}
-              transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.onerror = null;
-                target.src = `https://placehold.co/400x500/eab308/ffffff?text=Image+Not+Found`;
-              }}
-            />
-          </div>
+          <AnimatedBlobImage
+            src={imageSrc}
+            alt={imageAlt}
+            className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg drop-shadow-2xl"
+          />
         </motion.div>
 
         {/* Right Column: Text & Actions */}
@@ -118,7 +127,7 @@ export const MinimalistHero = ({
             <div className="flex flex-wrap items-center gap-6 pt-2">
               {cvUrl && (
                 <ShatterButton
-                  shatterColor={resolvedTheme === 'light' ? '#000000' : '#ffffff'} // dynamic based on theme
+                  shatterColor={shatterColor}
                   onClick={() => {
                     const link = document.createElement('a');
                     link.href = cvUrl;
@@ -127,7 +136,7 @@ export const MinimalistHero = ({
                     link.click();
                     document.body.removeChild(link);
                   }}
-                  className="bg-foreground text-background text-sm hover:scale-105 transition-all duration-300 shadow-lg"
+                  className="text-sm hover:scale-105 transition-all duration-300 shadow-lg"
                 >
                   {downloadCvText}
                 </ShatterButton>
