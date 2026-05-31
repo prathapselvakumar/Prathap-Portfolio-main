@@ -322,23 +322,6 @@ export default function DroneSimulator({ fullscreen = false }) {
   const [running, setRunning] = useState(false);
   const [simTime, setSimTime] = useState(0);
   const [dronePos, setDronePos] = useState([0, 0, 0]);
-  const [mobileActiveTab, setMobileActiveTab] = useState("controls");
-  const [isDrawerExpanded, setIsDrawerExpanded] = useState(false);
-  const [isInteracting, setIsInteracting] = useState(false);
-  const [cameraPreset, setCameraPreset] = useState("3D");
-
-  useEffect(() => {
-    if (!isMobile) {
-      setIsInteracting(false);
-    }
-  }, [isMobile]);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
   const [droneRPM, setDroneRPM] = useState([5000, 5000, 5000, 5000]);
   const [waypoints, setWaypoints] = useState(queueRef.current.waypoints);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -732,16 +715,14 @@ export default function DroneSimulator({ fullscreen = false }) {
       <div style={{ height: 44, display: "flex", alignItems: "center", padding: "0 16px", gap: 12, background: th.topbarBg, borderBottom: `1px solid ${th.topbarBorder}`, flexShrink: 0 }}>
         <div style={{ width: 8, height: 8, borderRadius: "50%", background: running ? th.statusOn : th.statusOff, boxShadow: `0 0 6px ${running ? th.statusOn : th.statusOff}` }} />
         <span style={{ fontSize: 13, fontWeight: 600 }}>Drone Simulator</span>
-        {!isMobile && <span style={{ fontSize: 10, color: th.textMuted, background: th.wellBg, border: `1px solid ${th.wellBorder}`, borderRadius: 4, padding: "1px 6px" }}>v6</span>}
+        <span style={{ fontSize: 10, color: th.textMuted, background: th.wellBg, border: `1px solid ${th.wellBorder}`, borderRadius: 4, padding: "1px 6px" }}>v6</span>
         {arrived && <span style={{ fontSize: 11, padding: "2px 8px", background: th.arrivedBg, border: `1px solid ${th.arrivedBorder}`, borderRadius: 5, color: th.arrivedText }}>✓ {arrived}</span>}
         <div style={{ flex: 1 }} />
         <span style={{ color: th.textMuted, fontSize: 11 }}>T = {simTime.toFixed(1)} s</span>
-        {!isMobile && (
-          <button onClick={() => setThemeMode(m => m === "dark" ? "light" : "dark")} style={{ ...btn(false, th.accentBlue), padding: "4px 10px" }}>
-            {isLt ? "☀ Light" : "◑ Dark"}
-          </button>
-        )}
-        {!fullscreen && !isMobile && (
+        <button onClick={() => setThemeMode(m => m === "dark" ? "light" : "dark")} style={{ ...btn(false, th.accentBlue), padding: "4px 10px" }}>
+          {isLt ? "☀ Light" : "◑ Dark"}
+        </button>
+        {!fullscreen && (
           <button
             onClick={() => window.open('/projects/drone-controller/simulation', '_blank', 'noopener,noreferrer')}
             style={{ ...btn(false, th.accentGreen), padding: "4px 10px", fontWeight: 600 }}
@@ -750,739 +731,207 @@ export default function DroneSimulator({ fullscreen = false }) {
             ⛶ Fullscreen
           </button>
         )}
-        {!isMobile && <span style={{ color: th.textMuted, fontSize: 10 }}>Drag / Touch · Pinch zoom</span>}
+        <span style={{ color: th.textMuted, fontSize: 10 }}>Drag / Touch · Pinch zoom</span>
       </div>
 
-      {isMobile ? (
-        /* ── MOBILE VIEWPORT: PREMIUM FULL SCREEN OVERLAYS ── */
-        <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
 
-          {/* Immersive 3D Viewport canvas as the full-screen backdrop */}
-          <div ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", cursor: "grab", touchAction: "none", zIndex: 0 }}
-            onMouseDown={onMouseDown} onMouseMove={onMouseMove}
-            onMouseUp={stopDrag} onMouseLeave={stopDrag} onWheel={onWheel}
-            onContextMenu={e => e.preventDefault()} />
+        {/* ── Left panel ── */}
+        <div style={{ width: 244, background: th.panelBg, borderRight: `1px solid ${th.panelBorder}`, padding: 14, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14, flexShrink: 0 }}>
 
-          {/* Touch-to-Orbit Overlay */}
-          {!isInteracting && (
-            <div
-              onClick={() => setIsInteracting(true)}
-              style={{
-                position: "absolute",
-                inset: 0,
-                zIndex: 15,
-                background: "rgba(10, 10, 10, 0.45)",
-                backdropFilter: "blur(3px)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                cursor: "pointer",
-                textAlign: "center",
-                padding: 20,
-                transition: "all 0.3s ease"
-              }}
-            >
-              <div style={{ marginBottom: 12 }}>
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: "swipe-horizontal 2.5s infinite ease-in-out" }}>
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" strokeOpacity="0.15" />
-                  <path d="M18 13c0-3.5-2.5-6-4.5-6S9 9.5 9 13M6 11c0-1.5 1.5-2.5 3-2.5s3.5 2 3.5 4M15 15v4" stroke="currentColor" />
-                  <path d="M12 15V9" stroke="currentColor" />
-                </svg>
-                <style>{`
-                  @keyframes swipe-horizontal {
-                    0%, 100% { transform: translateX(-8px) rotate(-6deg); }
-                    50% { transform: translateX(8px) rotate(6deg); }
-                  }
-                `}</style>
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 0.5, textShadow: "0 2px 4px rgba(0,0,0,0.5)", color: "#ffffff" }}>
-                Tap to Orbit 3D Space
-              </div>
-              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.7)", marginTop: 4, letterSpacing: 0.2 }}>
-                Enables 3D rotation & locks page scrolling
-              </div>
+          <section style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <SL>Simulation</SL>
+            <div style={{ display: "flex", gap: 5 }}>
+              <button style={btn(running, th.accentGreen)} onClick={start}>▶ Start</button>
+              <button style={btn(!running && simTime > 0, th.accentAmber)} onClick={pause}>⏸ Pause</button>
+              <button style={btn(false, th.accentRed)} onClick={reset}>↺ Reset</button>
             </div>
-          )}
-
-          {/* Floating Lock Camera Button */}
-          {isInteracting && (
-            <button
-              onClick={() => setIsInteracting(false)}
-              style={{
-                position: "absolute",
-                top: 50,
-                left: "50%",
-                transform: "translateX(-50%)",
-                zIndex: 25,
-                background: "rgba(10, 10, 10, 0.85)",
-                border: "1px solid rgba(255, 255, 255, 0.15)",
-                borderRadius: 20,
-                color: "#ffffff",
-                fontSize: 10,
-                fontWeight: 700,
-                padding: "6px 14px",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                cursor: "pointer",
-                backdropFilter: "blur(8px)",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-                outline: "none"
-              }}
-            >
-              <span style={{ fontSize: 9 }}>🔒</span> Lock Camera
+            <button style={{ ...btn(wind, th.accentBlue), marginTop: 2 }} onClick={toggleWind}>
+              {wind ? "⚡ Wind On" : "○ Wind Off"}
             </button>
-          )}
+          </section>
 
-          {/* Camera presets (Floating Top Left) */}
-          <div style={{ position: "absolute", top: 12, left: 12, display: "flex", gap: 5, zIndex: 10 }}>
-            {Object.entries(camPresets).map(([label, [theta, phi, r]]) => {
-              const isSelected = cameraPreset === label;
-              return (
-                <button
-                  key={label}
-                  onClick={e => {
-                    e.stopPropagation();
-                    Object.assign(simRef.current, { cameraTheta: theta, cameraPhi: phi, cameraR: r });
-                    setCameraPreset(label);
-                  }}
-                  style={{
-                    background: isSelected ? "rgba(96, 165, 250, 0.25)" : "rgba(10, 10, 10, 0.70)",
-                    border: `1px solid ${isSelected ? "#60a5fa" : "rgba(255, 255, 255, 0.12)"}`,
-                    borderRadius: 6,
-                    color: isSelected ? "#60a5fa" : "#a3a3a3",
-                    fontSize: 9,
-                    fontWeight: 700,
-                    padding: "5px 9px",
-                    cursor: "pointer",
-                    backdropFilter: "blur(8px)",
-                    boxShadow: isSelected ? "0 0 8px rgba(96, 165, 250, 0.4)" : "none",
-                    transition: "all 0.2s ease-in-out"
-                  }}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Distance Badge (Floating Top Right) */}
-          <div style={{
-            position: "absolute", top: 12, right: 12, background: th.hudBg, border: `1px solid ${distToWP < ARRIVAL_DIST ? th.arrivedBorder : th.hudBorder}`, borderRadius: 8, padding: "6px 10px", backdropFilter: "blur(8px)", zIndex: 10,
-            opacity: isDrawerExpanded ? 0 : 1,
-            pointerEvents: isDrawerExpanded ? "none" : "auto",
-            transition: "all 0.3s ease-in-out"
-          }}>
-            <div style={{ fontSize: 8, color: th.textMuted, textTransform: "uppercase", letterSpacing: 0.3 }}>
-              {currentWP?.label ?? "Target"}
-            </div>
-            <div style={{ fontSize: 13, fontWeight: 700, fontVariantNumeric: "tabular-nums", color: distToWP < ARRIVAL_DIST ? th.arrivedText : th.accentAmber }}>
-              {distToWP.toFixed(2)} m
-            </div>
-          </div>
-
-          {/* Position HUD (Floating Bottom Left, sits above expanded drawer) */}
-          <div style={{
-            position: "absolute", bottom: isDrawerExpanded ? 405 : 85, left: 12, background: th.hudBg, border: `1px solid ${th.hudBorder}`, borderRadius: 8, padding: "6px 10px", backdropFilter: "blur(8px)", fontSize: 10, zIndex: 10,
-            opacity: isDrawerExpanded ? 0 : 1,
-            pointerEvents: isDrawerExpanded ? "none" : "auto",
-            transition: "all 0.3s ease-in-out"
-          }}>
-            <div style={{ fontSize: 8, color: th.textMuted, textTransform: "uppercase", letterSpacing: 0.3, marginBottom: 4, fontWeight: 600 }}>Position</div>
-            {["X", "Y", "Z"].map((ax, i) => (
-              <div key={ax} style={{ display: "flex", gap: 8, fontSize: 10, lineHeight: 1.2 }}>
-                <span style={{ color: ["#f87171", "#4ade80", "#60a5fa"][i], width: 8 }}>{ax}</span>
-                <span style={{ fontVariantNumeric: "tabular-nums", color: th.textPrimary }}>{dronePos[i].toFixed(2)}m</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Speed/Velocity HUD (Floating Bottom Right, sits above expanded drawer) */}
-          <div style={{
-            position: "absolute", bottom: isDrawerExpanded ? 405 : 85, right: 12, background: th.hudBg, border: `1px solid ${th.hudBorder}`, borderRadius: 8, padding: "6px 10px", backdropFilter: "blur(8px)", fontSize: 10, zIndex: 10,
-            opacity: isDrawerExpanded ? 0 : 1,
-            pointerEvents: isDrawerExpanded ? "none" : "auto",
-            transition: "all 0.3s ease-in-out"
-          }}>
-            <div style={{ fontSize: 8, color: th.textMuted, textTransform: "uppercase", letterSpacing: 0.3, marginBottom: 4, fontWeight: 600 }}>Speed</div>
-            {[
-              { ax: "Vx", val: stateRef.current.linVel[0], col: "#f87171" },
-              { ax: "Vy", val: stateRef.current.linVel[1], col: "#4ade80" },
-              { ax: "Vz", val: stateRef.current.linVel[2], col: "#60a5fa" }
-            ].map((v) => (
-              <div key={v.ax} style={{ display: "flex", gap: 8, fontSize: 10, lineHeight: 1.2 }}>
-                <span style={{ color: v.col, width: 14 }}>{v.ax}</span>
-                <span style={{ fontVariantNumeric: "tabular-nums", color: th.textPrimary }}>{v.val.toFixed(2)}m/s</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Floating Glassmorphic Bottom Sheet Drawer */}
-          <div style={{
-            position: "absolute", bottom: 12, left: 12, right: 12, zIndex: 20,
-            background: th.hudBg, border: `1px solid ${th.hudBorder}`, backdropFilter: "blur(20px)",
-            borderRadius: 16, padding: "10px 12px 12px 12px", boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
-            display: "flex", flexDirection: "column", gap: 10,
-            transition: "max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1)", maxHeight: isDrawerExpanded ? "390px" : "68px", overflow: "hidden"
-          }}>
-
-            {/* Drag handle pill */}
-            <div
-              onClick={() => setIsDrawerExpanded(!isDrawerExpanded)}
-              style={{
-                width: 36, height: 4, borderRadius: 2,
-                background: "rgba(255, 255, 255, 0.2)",
-                margin: "0 auto 4px auto", cursor: "pointer"
-              }}
-            />
-
-            {/* Header / Quick Actions (Always visible when collapsed or expanded) */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 36, flexShrink: 0 }}>
-              <div style={{ display: "flex", gap: 6 }}>
-                <button
-                  onClick={start}
-                  style={{
-                    background: running ? th.accentGreen : "rgba(74, 222, 128, 0.12)",
-                    border: `1px solid ${th.accentGreen}`,
-                    borderRadius: 6,
-                    color: running ? "#ffffff" : "#4ade80",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    padding: "5px 11px",
-                    cursor: "pointer",
-                    boxShadow: running ? `0 0 10px ${th.accentGreen}66` : "none",
-                    transition: "all 0.2s ease-in-out",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 3
-                  }}
-                >
-                  ▶ Start
-                </button>
-                <button
-                  onClick={pause}
-                  style={{
-                    background: (!running && simTime > 0) ? th.accentAmber : "rgba(251, 191, 36, 0.12)",
-                    border: `1px solid ${th.accentAmber}`,
-                    borderRadius: 6,
-                    color: (!running && simTime > 0) ? "#ffffff" : "#fbbf24",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    padding: "5px 11px",
-                    cursor: "pointer",
-                    boxShadow: (!running && simTime > 0) ? `0 0 10px ${th.accentAmber}66` : "none",
-                    transition: "all 0.2s ease-in-out",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 3
-                  }}
-                >
-                  ⏸ Pause
-                </button>
-                <button
-                  onClick={reset}
-                  style={{
-                    background: "rgba(248, 113, 113, 0.15)",
-                    border: `1px solid ${th.accentRed}`,
-                    borderRadius: 6,
-                    color: "#f87171",
-                    fontSize: 10,
-                    fontWeight: 600,
-                    padding: "5px 11px",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease-in-out",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 3
-                  }}
-                >
-                  ↺ Reset
-                </button>
-              </div>
-
-              {/* Toggle expand button */}
-              <button
-                onClick={() => setIsDrawerExpanded(!isDrawerExpanded)}
-                style={{
-                  background: "rgba(96, 165, 250, 0.12)",
-                  border: "1px solid rgba(96, 165, 250, 0.35)",
-                  borderRadius: 8,
-                  color: "#60a5fa",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  padding: "5px 12px",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease-in-out",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
-                }}
-              >
-                {isDrawerExpanded ? "▼ Close Panel" : "▲ Fly Config"}
-              </button>
+          {/* Fly-to / add form */}
+          <section style={{ background: th.wellBg, border: `1px solid ${th.accentBlue}44`, borderRadius: 8, padding: "11px 12px", display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ fontSize: 10, fontWeight: 600, color: editingIdx !== null ? th.accentAmber : th.accentBlue, letterSpacing: 0.3 }}>
+              {editingIdx !== null ? `✎ Editing: ${waypoints[editingIdx]?.label ?? `WP${editingIdx + 1}`}` : "Fly to Coordinates"}
             </div>
 
-            {/* Expanded Content Section */}
-            {isDrawerExpanded && (
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", gap: 10 }}>
-                <div style={{ height: 1, background: "rgba(255, 255, 255, 0.08)", width: "100%", flexShrink: 0 }} />
-
-                {/* Scrollable body content */}
-                <div style={{ flex: 1, overflowY: "auto", paddingRight: 2, display: "flex", flexDirection: "column", gap: 12 }}>
-                  {mobileActiveTab === "controls" && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      <SL>Coordinates Form</SL>
-
-                      {/* Form inputs */}
-                      <section style={{ background: th.wellBg, border: `1px solid ${th.wellBorder}`, borderRadius: 8, padding: "10px", display: "flex", flexDirection: "column", gap: 8 }}>
-                        <div style={{ fontSize: 9, fontWeight: 600, color: editingIdx !== null ? th.accentAmber : th.accentBlue }}>
-                          {editingIdx !== null ? `Editing: ${waypoints[editingIdx]?.label ?? `WP${editingIdx + 1}`}` : "Set Coordinates"}
-                        </div>
-
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-                          {[["X (±10)", "x"], ["Y (±10)", "y"], ["Z (0–8)", "z"], ["Yaw (±π)", "yaw"]].map(([label, field]) => (
-                            <div key={field}>
-                              <div style={{ fontSize: 8, color: th.textMuted, marginBottom: 1 }}>{label}</div>
-                              <input style={inputSt} type="number" step="0.1" value={form[field]}
-                                onChange={e => { setForm(f => ({ ...f, [field]: e.target.value })); setFormErr(""); }} />
-                            </div>
-                          ))}
-                        </div>
-
-                        <div>
-                          <div style={{ fontSize: 8, color: th.textMuted, marginBottom: 1 }}>Name (optional)</div>
-                          <input style={inputSt} type="text" placeholder="e.g. Alpha" value={form.label}
-                            onChange={e => setForm(f => ({ ...f, label: e.target.value }))}
-                            onKeyDown={e => e.key === "Enter" && (flyMode === "fly" ? handleFly() : handleAddOrUpdate())} />
-                        </div>
-
-                        {formErr && <div style={{ fontSize: 9, color: th.errorText, background: th.errorBg, border: `1px solid ${th.errorBorder}`, borderRadius: 4, padding: "4px 7px" }}>{formErr}</div>}
-
-                        {editingIdx !== null ? (
-                          <div style={{ display: "flex", gap: 6 }}>
-                            <button onClick={handleAddOrUpdate} style={{ flex: 1, background: th.editBtnBg, border: `1px solid ${th.editBtnBorder}`, borderRadius: 5, color: th.accentAmber, fontSize: 10, padding: "6px 0", cursor: "pointer", fontWeight: 600 }}>
-                              Update WP{editingIdx + 1}
-                            </button>
-                            <button onClick={() => { setEditingIdx(null); setFormErr(""); }} style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${th.wellBorder}`, borderRadius: 5, color: th.textSecondary, fontSize: 10, padding: "6px 10px", cursor: "pointer" }}>✕</button>
-                          </div>
-                        ) : (
-                          <>
-                            <div style={{ display: "flex", gap: 5 }}>
-                              {["fly", "queue"].map(m => (
-                                <button key={m} onClick={() => setFlyMode(m)} style={{
-                                  flex: 1, fontSize: 10, padding: "5px 0", cursor: "pointer", borderRadius: 5, fontWeight: flyMode === m ? 600 : 400,
-                                  background: flyMode === m ? (m === "fly" ? th.accentBlue + "22" : th.accentGreen + "22") : "transparent",
-                                  border: `1px solid ${flyMode === m ? (m === "fly" ? th.accentBlue : th.accentGreen) : th.btnBorder}`,
-                                  color: flyMode === m ? (m === "fly" ? th.accentBlue : th.accentGreen) : th.btnText,
-                                }}>{m === "fly" ? "✈ Fly Now" : "+ Queue"}</button>
-                              ))}
-                            </div>
-                            <button onClick={() => flyMode === "fly" ? handleFly() : handleAddOrUpdate()} style={{ background: flyMode === "fly" ? th.accentBlue : th.accentGreen, border: "none", borderRadius: 5, color: "#fff", fontSize: 11, padding: "7px 0", cursor: "pointer", fontWeight: 700 }}>
-                              {flyMode === "fly" ? "✈  Fly to Target" : "+  Add to Queue"}
-                            </button>
-                          </>
-                        )}
-                      </section>
-
-                      <button
-                        onClick={toggleWind}
-                        style={{
-                          background: wind ? th.accentBlue : "rgba(96, 165, 250, 0.08)",
-                          border: `1px solid ${th.accentBlue}`,
-                          borderRadius: 6,
-                          color: wind ? "#ffffff" : "#60a5fa",
-                          fontSize: 10,
-                          fontWeight: 700,
-                          padding: "8px",
-                          cursor: "pointer",
-                          boxShadow: wind ? `0 0 10px ${th.accentBlue}66` : "none",
-                          transition: "all 0.2s ease-in-out",
-                          width: "100%"
-                        }}
-                      >
-                        {wind ? "⚡ Wind Active" : "○ Wind Inactive"}
-                      </button>
-                    </div>
-                  )}
-
-                  {mobileActiveTab === "queue" && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <SL>Flight Queue</SL>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 4 }}>
-                          <span style={{ fontSize: 8, color: th.textMuted }}>Auto</span>
-                          <div onClick={toggleAutoAdv} style={{ width: 24, height: 13, borderRadius: 6, background: autoAdv ? th.toggleOnBg : th.toggleOffBg, border: `1px solid ${autoAdv ? th.toggleOnBorder : th.toggleOffBorder}`, cursor: "pointer", position: "relative" }}>
-                            <div style={{ position: "absolute", top: 1, left: autoAdv ? 12 : 2, width: 9, height: 9, borderRadius: "50%", background: autoAdv ? th.toggleKnobOn : th.toggleKnobOff, transition: "left 0.15s" }} />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Waypoints list */}
-                      <div style={{ display: "flex", flexDirection: "column", gap: 3, maxHeight: "130px", overflowY: "auto", paddingRight: 2 }}>
-                        {waypoints.map((wp, i) => {
-                          const isActive = i === activeIdx, isDone = i < activeIdx;
-                          return (
-                            <div key={i} style={{
-                              display: "flex", alignItems: "center", gap: 5, padding: "4px 6px", borderRadius: 5, cursor: "pointer",
-                              background: isActive ? th.wpActiveBg : isDone ? th.wpDoneBg : th.wpIdleBg,
-                              border: `1px solid ${isActive ? th.wpActiveBorder : isDone ? th.wpDoneBorder : th.wpIdleBorder}`,
-                            }} onClick={() => flyTo(i)}>
-                              <div style={{ width: 5, height: 5, borderRadius: "50%", flexShrink: 0, background: isActive ? th.wpDotActive : isDone ? th.wpDotDone : th.wpDot }} />
-                              <div style={{ flex: 1, minWidth: 0 }}>
-                                <div style={{ fontSize: 10, color: isActive ? th.wpActiveText : isDone ? th.wpDoneText : th.wpIdleText, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                                  {isDone && "✓ "}{wp.label}
-                                </div>
-                                <div style={{ fontSize: 8, color: th.textMuted }}>({wp.x.toFixed(1)}, {wp.y.toFixed(1)}, {wp.z.toFixed(1)})</div>
-                              </div>
-                              <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                                <button onClick={e => { e.stopPropagation(); moveWaypoint(i, -1); }} disabled={i === 0}
-                                  style={{ background: "none", border: "none", color: i === 0 ? th.textDim : th.textSecondary, fontSize: 8, cursor: i === 0 ? "default" : "pointer", padding: "0 1px", lineHeight: 1 }}>▲</button>
-                                <button onClick={e => { e.stopPropagation(); moveWaypoint(i, 1); }} disabled={i === waypoints.length - 1}
-                                  style={{ background: "none", border: "none", color: i === waypoints.length - 1 ? th.textDim : th.textSecondary, fontSize: 8, cursor: i === waypoints.length - 1 ? "default" : "pointer", padding: "0 1px", lineHeight: 1 }}>▼</button>
-                              </div>
-                              <button onClick={e => { e.stopPropagation(); startEditing(i); }}
-                                style={{ background: "none", border: "none", color: th.textMuted, fontSize: 11, cursor: "pointer", padding: "0 2px" }}>✎</button>
-                              <button onClick={e => { e.stopPropagation(); removeWaypoint(i); }}
-                                style={{ background: "none", border: "none", color: th.textMuted, fontSize: 12, cursor: "pointer", padding: "0 2px", lineHeight: 1 }}>✕</button>
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      <div style={{ display: "flex", gap: 6, marginTop: 2 }}>
-                        <button
-                          onClick={() => setShowCSV(true)}
-                          style={{
-                            background: "rgba(167, 139, 250, 0.18)",
-                            border: "1px solid #a78bfa",
-                            borderRadius: 6,
-                            color: "#a78bfa",
-                            flex: 1,
-                            padding: "7px",
-                            fontSize: 10,
-                            fontWeight: 600,
-                            cursor: "pointer",
-                            transition: "all 0.2s ease-in-out"
-                          }}
-                        >
-                          📂 Load CSV
-                        </button>
-                        <button
-                          onClick={() => applyQueue([{ x: 0, y: 0, z: 0, yaw: 0, label: "Home" }], 0, { resetArrival: true, clearTravel: true })}
-                          style={{
-                            background: "rgba(248, 113, 113, 0.18)",
-                            border: `1px solid ${th.accentRed}`,
-                            borderRadius: 6,
-                            color: "#f87171",
-                            flex: 1,
-                            padding: "7px",
-                            fontSize: 10,
-                            fontWeight: 600,
-                            cursor: "pointer",
-                            transition: "all 0.2s ease-in-out"
-                          }}
-                        >
-                          ✕ Clear All
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {mobileActiveTab === "telemetry" && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-
-                      {/* Unified Coordinates & Velocity grid */}
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, background: "rgba(0, 0, 0, 0.15)", padding: 8, borderRadius: 8, border: `1px solid ${th.wellBorder}` }}>
-                        <div>
-                          <SL>Coordinates</SL>
-                          {["X", "Y", "Z"].map((ax, i) => (
-                            <div key={ax} style={{ display: "flex", justifyContent: "space-between", fontSize: 10, marginBottom: 2 }}>
-                              <span style={{ color: ["#f87171", "#4ade80", "#60a5fa"][i], fontWeight: 700 }}>{ax}</span>
-                              <span style={{ fontVariantNumeric: "tabular-nums", color: th.textPrimary }}>{dronePos[i].toFixed(2)}m</span>
-                            </div>
-                          ))}
-                        </div>
-                        <div>
-                          <SL>Velocities</SL>
-                          {[
-                            { ax: "Vx", val: stateRef.current.linVel[0], col: "#f87171" },
-                            { ax: "Vy", val: stateRef.current.linVel[1], col: "#4ade80" },
-                            { ax: "Vz", val: stateRef.current.linVel[2], col: "#60a5fa" }
-                          ].map((v) => (
-                            <div key={v.ax} style={{ display: "flex", justifyContent: "space-between", fontSize: 10, marginBottom: 2 }}>
-                              <span style={{ color: v.col, fontWeight: 700 }}>{v.ax}</span>
-                              <span style={{ fontVariantNumeric: "tabular-nums", color: th.textPrimary }}>{v.val.toFixed(2)}m/s</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0, 0, 0, 0.15)", padding: "6px 8px", borderRadius: 8, border: `1px solid ${th.wellBorder}` }}>
-                        <span style={{ fontSize: 9, color: th.textMuted, textTransform: "uppercase", fontWeight: 700 }}>Next Leg Dist</span>
-                        <span style={{ fontSize: 12, fontWeight: 700, fontVariantNumeric: "tabular-nums", color: th.accentAmber }}>
-                          {distToWP.toFixed(2)} m
-                        </span>
-                      </div>
-
-                      <div style={{ height: 1, background: "rgba(255, 255, 255, 0.08)", margin: "2px 0" }} />
-
-                      <SL>Motor Telemetry</SL>
-
-                      {/* Motor RPM Gauges */}
-                      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                        {droneRPM.map((r, i) => <Gauge key={i} label={`M${i + 1}`} value={r} min={0} max={12000} unit="" color={rpmColors[i]} />)}
-                      </div>
-
-                      <div style={{ padding: "5px 8px", background: "rgba(0, 0, 0, 0.2)", border: `1px solid ${th.wellBorder}`, borderRadius: 5, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <div style={{ color: th.textMuted, fontSize: 9, textTransform: "uppercase" }}>Average RPM</div>
-                        <div style={{ color: th.accentAmber, fontSize: 13, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>
-                          {(droneRPM.reduce((a, b) => a + b, 0) / 4).toFixed(0)}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Tab Switcher inside Expanded Sheet */}
-                <div style={{ height: 36, display: "flex", background: th.wellBg, border: `1px solid ${th.wellBorder}`, borderRadius: 10, flexShrink: 0, overflow: "hidden" }}>
-                  {[
-                    { id: "controls", label: "⚙ Form" },
-                    { id: "queue", label: "📋 Queue" },
-                    { id: "telemetry", label: "📊 Motors" }
-                  ].map(t => (
-                    <button key={t.id} onClick={() => setMobileActiveTab(t.id)} style={{
-                      flex: 1, background: "transparent", border: "none", color: mobileActiveTab === t.id ? th.accentBlue : th.textMuted,
-                      fontSize: 10, fontWeight: mobileActiveTab === t.id ? 700 : 400, cursor: "pointer",
-                      borderBottom: mobileActiveTab === t.id ? `2px solid ${th.accentBlue}` : "none",
-                      display: "flex", alignItems: "center", justifyContent: "center"
-                    }}>
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : (
-        /* ── DESKTOP LAYOUT ── */
-        <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
-
-          {/* Left panel */}
-          <div style={{ width: 244, background: th.panelBg, borderRight: `1px solid ${th.panelBorder}`, padding: 14, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14, flexShrink: 0 }}>
-            <section style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <SL>Simulation</SL>
-              <div style={{ display: "flex", gap: 5 }}>
-                <button style={btn(running, th.accentGreen)} onClick={start}>▶ Start</button>
-                <button style={{ ...btn(!running && simTime > 0, th.accentAmber), padding: "4px 10px", fontWeight: 600 }} onClick={pause}>⏸ Pause</button>
-                <button style={btn(false, th.accentRed)} onClick={reset}>↺ Reset</button>
-              </div>
-              <button style={{ ...btn(wind, th.accentBlue), marginTop: 2 }} onClick={toggleWind}>
-                {wind ? "⚡ Wind On" : "○ Wind Off"}
-              </button>
-            </section>
-
-            {/* Fly-to / add form */}
-            <section style={{ background: th.wellBg, border: `1px solid ${th.accentBlue}44`, borderRadius: 8, padding: "11px 12px", display: "flex", flexDirection: "column", gap: 8 }}>
-              <div style={{ fontSize: 10, fontWeight: 600, color: editingIdx !== null ? th.accentAmber : th.accentBlue, letterSpacing: 0.3 }}>
-                {editingIdx !== null ? `✎ Editing: ${waypoints[editingIdx]?.label ?? `WP${editingIdx + 1}`}` : "Fly to Coordinates"}
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-                {[["X (±10)", "x"], ["Y (±10)", "y"], ["Z (0–8)", "z"], ["Yaw (±π)", "yaw"]].map(([label, field]) => (
-                  <div key={field}>
-                    <div style={{ fontSize: 9, color: th.textMuted, marginBottom: 2 }}>{label}</div>
-                    <input style={inputSt} type="number" step="0.1" value={form[field]}
-                      onChange={e => { setForm(f => ({ ...f, [field]: e.target.value })); setFormErr(""); }} />
-                  </div>
-                ))}
-              </div>
-
-              <div>
-                <div style={{ fontSize: 9, color: th.textMuted, marginBottom: 2 }}>Name (optional)</div>
-                <input style={inputSt} type="text" placeholder="e.g. Alpha" value={form.label}
-                  onChange={e => setForm(f => ({ ...f, label: e.target.value }))}
-                  onKeyDown={e => e.key === "Enter" && (flyMode === "fly" ? handleFly() : handleAddOrUpdate())} />
-              </div>
-
-              {formErr && <div style={{ fontSize: 10, color: th.errorText, background: th.errorBg, border: `1px solid ${th.errorBorder}`, borderRadius: 4, padding: "4px 7px" }}>{formErr}</div>}
-
-              {editingIdx !== null ? (
-                <div style={{ display: "flex", gap: 6 }}>
-                  <button onClick={handleAddOrUpdate} style={{ flex: 1, background: th.editBtnBg, border: `1px solid ${th.editBtnBorder}`, borderRadius: 5, color: th.accentAmber, fontSize: 11, padding: "7px 0", cursor: "pointer", fontWeight: 600 }}>
-                    ✎ Update WP{editingIdx + 1}
-                  </button>
-                  <button onClick={() => { setEditingIdx(null); setFormErr(""); }} style={{ background: th.wellBg, border: `1px solid ${th.wellBorder}`, borderRadius: 5, color: th.textSecondary, fontSize: 11, padding: "7px 10px", cursor: "pointer" }}>✕</button>
-                </div>
-              ) : (
-                <>
-                  <div style={{ display: "flex", gap: 5 }}>
-                    {["fly", "queue"].map(m => (
-                      <button key={m} onClick={() => setFlyMode(m)} style={{
-                        flex: 1, fontSize: 11, padding: "5px 0", cursor: "pointer", borderRadius: 5, fontWeight: flyMode === m ? 600 : 400,
-                        background: flyMode === m ? (m === "fly" ? th.accentBlue + "22" : th.accentGreen + "22") : "transparent",
-                        border: `1px solid ${flyMode === m ? (m === "fly" ? th.accentBlue : th.accentGreen) : th.btnBorder}`,
-                        color: flyMode === m ? (m === "fly" ? th.accentBlue : th.accentGreen) : th.btnText,
-                      }}>{m === "fly" ? "✈ Fly Now" : "+ Queue"}</button>
-                    ))}
-                  </div>
-                  <button onClick={() => flyMode === "fly" ? handleFly() : handleAddOrUpdate()} style={{ background: flyMode === "fly" ? th.accentBlue : th.accentGreen, border: "none", borderRadius: 5, color: "#fff", fontSize: 12, padding: "8px 0", cursor: "pointer", fontWeight: 700 }}>
-                    {flyMode === "fly" ? "✈  Fly to Target" : "+  Add to Queue"}
-                  </button>
-                </>
-              )}
-            </section>
-
-            {/* Velocity gauges */}
-            <section style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <SL>Velocity</SL>
-              <Gauge label="Vx" value={stateRef.current.linVel[0]} min={-6} max={6} unit="m/s" color="#f87171" />
-              <Gauge label="Vy" value={stateRef.current.linVel[1]} min={-6} max={6} unit="m/s" color="#4ade80" />
-              <Gauge label="Vz" value={stateRef.current.linVel[2]} min={-6} max={6} unit="m/s" color="#60a5fa" />
-            </section>
-          </div>
-
-          {/* 3D Viewport */}
-          <div ref={canvasRef} style={{ flex: 1, position: "relative", minWidth: 0, cursor: "grab", touchAction: "none" }}
-            onMouseDown={onMouseDown} onMouseMove={onMouseMove}
-            onMouseUp={stopDrag} onMouseLeave={stopDrag} onWheel={onWheel}
-            onContextMenu={e => e.preventDefault()}>
-
-            {/* Camera presets */}
-            <div style={{ position: "absolute", top: 10, left: 10, display: "flex", gap: 4 }}>
-              {Object.entries(camPresets).map(([label, [theta, phi, r]]) => {
-                const isSelected = cameraPreset === label;
-                return (
-                  <button
-                    key={label}
-                    onClick={e => {
-                      e.stopPropagation();
-                      Object.assign(simRef.current, { cameraTheta: theta, cameraPhi: phi, cameraR: r });
-                      setCameraPreset(label);
-                    }}
-                    style={{
-                      background: isSelected ? (isLt ? "rgba(37, 99, 235, 0.15)" : "rgba(96, 165, 250, 0.20)") : th.viewBtnBg,
-                      border: `1px solid ${isSelected ? (isLt ? "#2563eb" : "#60a5fa") : th.viewBtnBorder}`,
-                      borderRadius: 5,
-                      color: isSelected ? (isLt ? "#2563eb" : "#60a5fa") : th.viewBtnText,
-                      fontSize: 11,
-                      padding: "3px 9px",
-                      cursor: "pointer",
-                      backdropFilter: "blur(4px)",
-                      fontWeight: isSelected ? 600 : 400,
-                      boxShadow: isSelected ? `0 0 6px ${isLt ? "rgba(37, 99, 235, 0.3)" : "rgba(96, 165, 250, 0.3)"}` : "none",
-                      transition: "all 0.15s ease-in-out"
-                    }}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Position HUD */}
-            <div style={{ position: "absolute", bottom: 12, left: 12, background: th.hudBg, border: `1px solid ${th.hudBorder}`, borderRadius: 7, padding: "7px 12px", backdropFilter: "blur(6px)" }}>
-              {["X", "Y", "Z"].map((ax, i) => (
-                <div key={ax} style={{ display: "flex", gap: 12, fontSize: 11 }}>
-                  <span style={{ color: ["#f87171", "#4ade80", "#60a5fa"][i], width: 12 }}>{ax}</span>
-                  <span style={{ fontVariantNumeric: "tabular-nums", color: th.textPrimary }}>{dronePos[i].toFixed(3)} m</span>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+              {[["X (±10)", "x"], ["Y (±10)", "y"], ["Z (0–8)", "z"], ["Yaw (±π)", "yaw"]].map(([label, field]) => (
+                <div key={field}>
+                  <div style={{ fontSize: 9, color: th.textMuted, marginBottom: 2 }}>{label}</div>
+                  <input style={inputSt} type="number" step="0.1" value={form[field]}
+                    onChange={e => { setForm(f => ({ ...f, [field]: e.target.value })); setFormErr(""); }} />
                 </div>
               ))}
             </div>
 
-            {/* Distance badge */}
-            <div style={{ position: "absolute", top: 10, right: 10, background: th.hudBg, border: `1px solid ${distToWP < ARRIVAL_DIST ? th.arrivedBorder : th.hudBorder}`, borderRadius: 7, padding: "7px 12px", backdropFilter: "blur(6px)", transition: "border-color 0.3s" }}>
-              <div style={{ fontSize: 9, color: th.textMuted, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2 }}>
-                Dist · {currentWP?.label ?? "Target"}
-              </div>
-              <div style={{ fontSize: 15, fontWeight: 700, fontVariantNumeric: "tabular-nums", color: distToWP < ARRIVAL_DIST ? th.arrivedText : th.accentAmber }}>
-                {distToWP.toFixed(3)} m
-              </div>
+            <div>
+              <div style={{ fontSize: 9, color: th.textMuted, marginBottom: 2 }}>Name (optional)</div>
+              <input style={inputSt} type="text" placeholder="e.g. Alpha" value={form.label}
+                onChange={e => setForm(f => ({ ...f, label: e.target.value }))}
+                onKeyDown={e => e.key === "Enter" && (flyMode === "fly" ? handleFly() : handleAddOrUpdate())} />
             </div>
+
+            {formErr && <div style={{ fontSize: 10, color: th.errorText, background: th.errorBg, border: `1px solid ${th.errorBorder}`, borderRadius: 4, padding: "4px 7px" }}>{formErr}</div>}
+
+            {editingIdx !== null ? (
+              <div style={{ display: "flex", gap: 6 }}>
+                <button onClick={handleAddOrUpdate} style={{ flex: 1, background: th.editBtnBg, border: `1px solid ${th.editBtnBorder}`, borderRadius: 5, color: th.accentAmber, fontSize: 11, padding: "7px 0", cursor: "pointer", fontWeight: 600 }}>
+                  ✎ Update WP{editingIdx + 1}
+                </button>
+                <button onClick={() => { setEditingIdx(null); setFormErr(""); }} style={{ background: th.wellBg, border: `1px solid ${th.wellBorder}`, borderRadius: 5, color: th.textSecondary, fontSize: 11, padding: "7px 10px", cursor: "pointer" }}>✕</button>
+              </div>
+            ) : (
+              <>
+                <div style={{ display: "flex", gap: 5 }}>
+                  {["fly", "queue"].map(m => (
+                    <button key={m} onClick={() => setFlyMode(m)} style={{
+                      flex: 1, fontSize: 11, padding: "5px 0", cursor: "pointer", borderRadius: 5, fontWeight: flyMode === m ? 600 : 400,
+                      background: flyMode === m ? (m === "fly" ? th.accentBlue + "22" : th.accentGreen + "22") : "transparent",
+                      border: `1px solid ${flyMode === m ? (m === "fly" ? th.accentBlue : th.accentGreen) : th.btnBorder}`,
+                      color: flyMode === m ? (m === "fly" ? th.accentBlue : th.accentGreen) : th.btnText,
+                    }}>{m === "fly" ? "✈ Fly Now" : "+ Queue"}</button>
+                  ))}
+                </div>
+                <button onClick={() => flyMode === "fly" ? handleFly() : handleAddOrUpdate()} style={{ background: flyMode === "fly" ? th.accentBlue : th.accentGreen, border: "none", borderRadius: 5, color: "#fff", fontSize: 12, padding: "8px 0", cursor: "pointer", fontWeight: 700 }}>
+                  {flyMode === "fly" ? "✈  Fly to Target" : "+  Add to Queue"}
+                </button>
+              </>
+            )}
+          </section>
+
+          {/* Velocity gauges */}
+          <section style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <SL>Velocity</SL>
+            <Gauge label="Vx" value={stateRef.current.linVel[0]} min={-6} max={6} unit="m/s" color="#f87171" />
+            <Gauge label="Vy" value={stateRef.current.linVel[1]} min={-6} max={6} unit="m/s" color="#4ade80" />
+            <Gauge label="Vz" value={stateRef.current.linVel[2]} min={-6} max={6} unit="m/s" color="#60a5fa" />
+          </section>
+
+        </div>
+
+        {/* ── 3D Viewport ── */}
+        <div ref={canvasRef} style={{ flex: 1, position: "relative", minWidth: 0, cursor: "grab", touchAction: "none" }}
+          onMouseDown={onMouseDown} onMouseMove={onMouseMove}
+          onMouseUp={stopDrag} onMouseLeave={stopDrag} onWheel={onWheel}
+          onContextMenu={e => e.preventDefault()}>
+
+          {/* Camera presets */}
+          <div style={{ position: "absolute", top: 10, left: 10, display: "flex", gap: 4 }}>
+            {Object.entries(camPresets).map(([label, [theta, phi, r]]) => (
+              <button key={label} style={{ background: th.viewBtnBg, border: `1px solid ${th.viewBtnBorder}`, borderRadius: 5, color: th.viewBtnText, fontSize: 11, padding: "3px 9px", cursor: "pointer", backdropFilter: "blur(4px)" }}
+                onClick={e => { e.stopPropagation(); Object.assign(simRef.current, { cameraTheta: theta, cameraPhi: phi, cameraR: r }); }}>
+                {label}
+              </button>
+            ))}
           </div>
 
-          {/* Right panel */}
-          <div style={{ width: 232, background: th.panelBg, borderLeft: `1px solid ${th.panelBorder}`, padding: 14, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14, flexShrink: 0 }}>
-            <section style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <div style={{ display: "flex", alignItems: "center", justifycontent: "space-between" }}>
-                <SL>Queue</SL>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 4 }}>
-                  <span style={{ fontSize: 9, color: th.textMuted, textTransform: "uppercase" }}>Auto</span>
-                  <div onClick={toggleAutoAdv} style={{ width: 28, height: 15, borderRadius: 8, background: autoAdv ? th.toggleOnBg : th.toggleOffBg, border: `1px solid ${autoAdv ? th.toggleOnBorder : th.toggleOffBorder}`, cursor: "pointer", position: "relative" }}>
-                    <div style={{ position: "absolute", top: 2, left: autoAdv ? 13 : 2, width: 9, height: 9, borderRadius: "50%", background: autoAdv ? th.toggleKnobOn : th.toggleKnobOff, transition: "left 0.15s" }} />
-                  </div>
+          {/* Position HUD */}
+          <div style={{ position: "absolute", bottom: 12, left: 12, background: th.hudBg, border: `1px solid ${th.hudBorder}`, borderRadius: 7, padding: "7px 12px", backdropFilter: "blur(6px)" }}>
+            {["X", "Y", "Z"].map((ax, i) => (
+              <div key={ax} style={{ display: "flex", gap: 12, fontSize: 11 }}>
+                <span style={{ color: ["#f87171", "#4ade80", "#60a5fa"][i], width: 12 }}>{ax}</span>
+                <span style={{ fontVariantNumeric: "tabular-nums", color: th.textPrimary }}>{dronePos[i].toFixed(3)} m</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Distance badge */}
+          <div style={{ position: "absolute", top: 10, right: 10, background: th.hudBg, border: `1px solid ${distToWP < ARRIVAL_DIST ? th.arrivedBorder : th.hudBorder}`, borderRadius: 7, padding: "7px 12px", backdropFilter: "blur(6px)", transition: "border-color 0.3s" }}>
+            <div style={{ fontSize: 9, color: th.textMuted, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2 }}>
+              Dist · {currentWP?.label ?? "Target"}
+            </div>
+            <div style={{ fontSize: 15, fontWeight: 700, fontVariantNumeric: "tabular-nums", color: distToWP < ARRIVAL_DIST ? th.arrivedText : th.accentAmber }}>
+              {distToWP.toFixed(3)} m
+            </div>
+          </div>
+        </div>
+
+        {/* ── Right panel ── */}
+        <div style={{ width: 232, background: th.panelBg, borderLeft: `1px solid ${th.panelBorder}`, padding: 14, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14, flexShrink: 0 }}>
+
+          {/* Queue */}
+          <section style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <SL>Queue</SL>
+              <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 4 }}>
+                <span style={{ fontSize: 9, color: th.textMuted, textTransform: "uppercase" }}>Auto</span>
+                <div onClick={toggleAutoAdv} style={{ width: 28, height: 15, borderRadius: 8, background: autoAdv ? th.toggleOnBg : th.toggleOffBg, border: `1px solid ${autoAdv ? th.toggleOnBorder : th.toggleOffBorder}`, cursor: "pointer", position: "relative" }}>
+                  <div style={{ position: "absolute", top: 2, left: autoAdv ? 13 : 2, width: 9, height: 9, borderRadius: "50%", background: autoAdv ? th.toggleKnobOn : th.toggleKnobOff, transition: "left 0.15s" }} />
                 </div>
               </div>
+            </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                {waypoints.map((wp, i) => {
-                  const isActive = i === activeIdx, isDone = i < activeIdx;
-                  return (
-                    <div key={i} style={{
-                      display: "flex", alignItems: "center", gap: 5, padding: "5px 7px", borderRadius: 5, cursor: "pointer",
-                      background: isActive ? th.wpActiveBg : isDone ? th.wpDoneBg : th.wpIdleBg,
-                      border: `1px solid ${isActive ? th.wpActiveBorder : isDone ? th.wpDoneBorder : th.wpIdleBorder}`,
-                    }} onClick={() => flyTo(i)}>
-                      <div style={{ width: 6, height: 6, borderRadius: "50%", flexShrink: 0, background: isActive ? th.wpDotActive : isDone ? th.wpDotDone : th.wpDot }} />
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 11, color: isActive ? th.wpActiveText : isDone ? th.wpDoneText : th.wpIdleText, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                          {isDone && "✓ "}{wp.label}
-                        </div>
-                        <div style={{ fontSize: 9, color: th.textMuted }}>({wp.x.toFixed(1)}, {wp.y.toFixed(1)}, {wp.z.toFixed(1)})</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              {waypoints.map((wp, i) => {
+                const isActive = i === activeIdx, isDone = i < activeIdx;
+                return (
+                  <div key={i} style={{
+                    display: "flex", alignItems: "center", gap: 5, padding: "5px 7px", borderRadius: 5, cursor: "pointer",
+                    background: isActive ? th.wpActiveBg : isDone ? th.wpDoneBg : th.wpIdleBg,
+                    border: `1px solid ${isActive ? th.wpActiveBorder : isDone ? th.wpDoneBorder : th.wpIdleBorder}`,
+                  }} onClick={() => flyTo(i)}>
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", flexShrink: 0, background: isActive ? th.wpDotActive : isDone ? th.wpDotDone : th.wpDot }} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 11, color: isActive ? th.wpActiveText : isDone ? th.wpDoneText : th.wpIdleText, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {isDone && "✓ "}{wp.label}
                       </div>
-                      <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                        <button onClick={e => { e.stopPropagation(); moveWaypoint(i, -1); }} disabled={i === 0}
-                          style={{ background: "none", border: "none", color: i === 0 ? th.textDim : th.textSecondary, fontSize: 8, cursor: i === 0 ? "default" : "pointer", padding: "0 1px", lineHeight: 1.2 }}>▲</button>
-                        <button onClick={e => { e.stopPropagation(); moveWaypoint(i, 1); }} disabled={i === waypoints.length - 1}
-                          style={{ background: "none", border: "none", color: i === waypoints.length - 1 ? th.textDim : th.textSecondary, fontSize: 8, cursor: i === waypoints.length - 1 ? "default" : "pointer", padding: "0 1px", lineHeight: 1.2 }}>▼</button>
-                      </div>
-                      <button onClick={e => { e.stopPropagation(); startEditing(i); }}
-                        style={{ background: "none", border: "none", color: th.textMuted, fontSize: 13, cursor: "pointer", padding: "0 2px" }}>✎</button>
-                      <button onClick={e => { e.stopPropagation(); removeWaypoint(i); }}
-                        style={{ background: "none", border: "none", color: th.textMuted, fontSize: 14, cursor: "pointer", padding: "0 2px", lineHeight: 1 }}>✕</button>
+                      <div style={{ fontSize: 9, color: th.textMuted }}>({wp.x.toFixed(1)}, {wp.y.toFixed(1)}, {wp.z.toFixed(1)})</div>
                     </div>
-                  );
-                })}
-              </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                      <button onClick={e => { e.stopPropagation(); moveWaypoint(i, -1); }} disabled={i === 0}
+                        style={{ background: "none", border: "none", color: i === 0 ? th.textDim : th.textSecondary, fontSize: 8, cursor: i === 0 ? "default" : "pointer", padding: "0 1px", lineHeight: 1.2 }}>▲</button>
+                      <button onClick={e => { e.stopPropagation(); moveWaypoint(i, 1); }} disabled={i === waypoints.length - 1}
+                        style={{ background: "none", border: "none", color: i === waypoints.length - 1 ? th.textDim : th.textSecondary, fontSize: 8, cursor: i === waypoints.length - 1 ? "default" : "pointer", padding: "0 1px", lineHeight: 1.2 }}>▼</button>
+                    </div>
+                    <button onClick={e => { e.stopPropagation(); startEditing(i); }}
+                      style={{ background: "none", border: "none", color: th.textMuted, fontSize: 13, cursor: "pointer", padding: "0 2px" }}>✎</button>
+                    <button onClick={e => { e.stopPropagation(); removeWaypoint(i); }}
+                      style={{ background: "none", border: "none", color: th.textMuted, fontSize: 14, cursor: "pointer", padding: "0 2px", lineHeight: 1 }}>✕</button>
+                  </div>
+                );
+              })}
+            </div>
 
-              <div style={{ display: "flex", gap: 6, marginTop: 2 }}>
-                <button style={{ ...btn(false, "#a78bfa"), fontSize: 10 }} onClick={() => setShowCSV(true)}>📂 CSV</button>
-                <button style={{ ...btn(false, th.accentRed), fontSize: 10 }} onClick={() => applyQueue([{ x: 0, y: 0, z: 0, yaw: 0, label: "Home" }], 0, { resetArrival: true, clearTravel: true })}>✕ Clear</button>
-              </div>
-            </section>
+            <div style={{ display: "flex", gap: 6, marginTop: 2 }}>
+              <button style={{ ...btn(false, "#a78bfa"), fontSize: 10 }} onClick={() => setShowCSV(true)}>📂 CSV</button>
+              <button style={{ ...btn(false, th.accentRed), fontSize: 10 }} onClick={() => applyQueue([{ x: 0, y: 0, z: 0, yaw: 0, label: "Home" }], 0, { resetArrival: true, clearTravel: true })}>✕ Clear</button>
+            </div>
+          </section>
 
-            {/* Motor RPM */}
-            <section style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <SL>Motor RPM</SL>
-              {droneRPM.map((r, i) => <Gauge key={i} label={`M${i + 1}`} value={r} min={0} max={12000} unit="" color={rpmColors[i]} />)}
-              <div style={{ padding: "5px 8px", background: th.wellBg, border: `1px solid ${th.wellBorder}`, borderRadius: 5 }}>
-                <div style={{ color: th.textMuted, fontSize: 9, textTransform: "uppercase", letterSpacing: 0.5 }}>Avg RPM</div>
-                <div style={{ color: th.accentAmber, fontSize: 14, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>
-                  {(droneRPM.reduce((a, b) => a + b, 0) / 4).toFixed(0)}
-                </div>
+          {/* Motor RPM */}
+          <section style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <SL>Motor RPM</SL>
+            {droneRPM.map((r, i) => <Gauge key={i} label={`M${i + 1}`} value={r} min={0} max={12000} unit="" color={rpmColors[i]} />)}
+            <div style={{ padding: "5px 8px", background: th.wellBg, border: `1px solid ${th.wellBorder}`, borderRadius: 5 }}>
+              <div style={{ color: th.textMuted, fontSize: 9, textTransform: "uppercase", letterSpacing: 0.5 }}>Avg RPM</div>
+              <div style={{ color: th.accentAmber, fontSize: 14, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>
+                {(droneRPM.reduce((a, b) => a + b, 0) / 4).toFixed(0)}
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
 
         </div>
       )}
 
-      {/* CSV Modal */}
-      {showCSV && (
-        <div style={{ position: "fixed", inset: 0, background: th.modalOverlay, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }} onClick={() => setShowCSV(false)}>
-          <div style={{ background: th.modalBg, border: `1px solid ${th.modalBorder}`, borderRadius: 12, padding: 24, width: 420, maxWidth: "92vw" }} onClick={e => e.stopPropagation()}>
-            <div style={{ color: th.modalTitle, fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Load CSV</div>
-            <div style={{ color: th.modalSub, fontSize: 11, marginBottom: 10 }}>Columns: x, y, z, yaw, label (optional) · z ≥ 0</div>
-            <textarea value={csvText} onChange={e => setCsvText(e.target.value)}
-              style={{ width: "100%", height: 150, background: th.modalAreaBg, border: `1px solid ${th.modalBorder}`, borderRadius: 6, color: th.modalAreaText, fontSize: 11, fontFamily: "monospace", padding: 10, resize: "vertical", outline: "none", boxSizing: "border-box" }} />
-            <div style={{ display: "flex", gap: 8, marginTop: 14, justifyContent: "flex-end" }}>
-              <button style={btn(false, th.textSecondary)} onClick={() => setShowCSV(false)}>Cancel</button>
-              <button style={{ ...btn(false, th.accentGreen), background: th.accentGreen, color: "#fff", border: "none" }} onClick={handleLoadCSV}>Load</button>
+        {/* CSV Modal */}
+        {showCSV && (
+          <div style={{ position: "fixed", inset: 0, background: th.modalOverlay, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }} onClick={() => setShowCSV(false)}>
+            <div style={{ background: th.modalBg, border: `1px solid ${th.modalBorder}`, borderRadius: 12, padding: 24, width: 420, maxWidth: "92vw" }} onClick={e => e.stopPropagation()}>
+              <div style={{ color: th.modalTitle, fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Load CSV</div>
+              <div style={{ color: th.modalSub, fontSize: 11, marginBottom: 10 }}>Columns: x, y, z, yaw, label (optional) · z ≥ 0</div>
+              <textarea value={csvText} onChange={e => setCsvText(e.target.value)}
+                style={{ width: "100%", height: 150, background: th.modalAreaBg, border: `1px solid ${th.modalBorder}`, borderRadius: 6, color: th.modalAreaText, fontSize: 11, fontFamily: "monospace", padding: 10, resize: "vertical", outline: "none", boxSizing: "border-box" }} />
+              <div style={{ display: "flex", gap: 8, marginTop: 14, justifyContent: "flex-end" }}>
+                <button style={btn(false, th.textSecondary)} onClick={() => setShowCSV(false)}>Cancel</button>
+                <button style={{ ...btn(false, th.accentGreen), background: th.accentGreen, color: "#fff", border: "none" }} onClick={handleLoadCSV}>Load</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-    </div>
-  );
+      </div>
+      );
 }
