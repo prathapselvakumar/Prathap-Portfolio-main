@@ -71,15 +71,7 @@ function buildScene(th) {
   fill.position.set(-5, -3, 4);
   scene.add(fill);
 
-  // Ground
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(40, 40),
-    new THREE.MeshLambertMaterial({ color: th.sceneGround })
-  );
-  ground.rotation.x = -Math.PI / 2;
-  ground.position.z = -0.001;
-  ground.receiveShadow = true;
-  scene.add(ground);
+
 
   const grid = new THREE.GridHelper(20, 40, th.sceneGrid1, th.sceneGrid2);
   grid.rotation.x = Math.PI / 2;
@@ -308,7 +300,7 @@ export default function DroneSimulator({ fullscreen = false }) {
   const animRef = useRef(0);
   const stateRef = useRef(mkState());
   const queueRef = useRef({ waypoints: [{ x: 0, y: 0, z: 0, yaw: 0, label: "Home" }], idx: 0 });
-  const windRef = useRef(false);
+  const windRef = useRef(true);
   const simRef = useRef({
     running: false, t: 0, step: 0,
     trailWriteIdx: 0, trailCount: 0,
@@ -343,7 +335,7 @@ export default function DroneSimulator({ fullscreen = false }) {
   const [waypoints, setWaypoints] = useState(queueRef.current.waypoints);
   const [activeIdx, setActiveIdx] = useState(0);
   const [arrived, setArrived] = useState(null);
-  const [wind, setWind] = useState(false);
+  const [wind, setWind] = useState(true);
   const [autoAdv, setAutoAdv] = useState(true);
   const autoAdvRef = useRef(true);
   const [form, setForm] = useState({ x: "0", y: "0", z: "1", yaw: "0", label: "" });

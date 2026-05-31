@@ -237,7 +237,7 @@ export function PortfolioContent() {
       <section id="about" className="min-h-screen bg-background overflow-hidden">
         <MinimalistHero
           mainText={t.about.mainText}
-          cvUrl="/Prathap Selvakumar-CV.pdf"
+          cvUrl="/Prathap_Selvakumar-CV.pdf"
           downloadCvText={t.about.download_cv}
           imageSrc="/Team_and_Testimonial/prathapselvakumar.png"
           imageAlt="Prathap Selvakumar"

@@ -314,10 +314,14 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     const [isMuted, setIsMuted] = useState(true);
 
     // Scroll-bound tracking for cinematic video section scrolling animations
-    const { scrollYProgress } = useScroll({
-        target: promoRef,
-        offset: ["start end", "end start"]
-    });
+    const { scrollYProgress } = useScroll(
+        project.id === "autonomous-robot"
+            ? {
+                target: promoRef,
+                offset: ["start end", "end start"]
+              }
+            : undefined
+    );
     const videoY = useTransform(scrollYProgress, [0, 1], ["-3%", "3%"]);
     const videoScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.1]);
 
@@ -1189,8 +1193,8 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                 <div className="rounded-lg border border-border bg-card p-5 font-mono text-sm animate-fade-in overflow-x-auto" style={{ animationDelay: "0.1s" }}>
                                     <div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</div>
                                     <div className="space-y-2 text-foreground min-w-max">
-                                        <div><span className="text-primary">$</span> git clone https://github.com/sarathkumar-sk/Team_6_AERO62520_RSD_Project.git</div>
-                                        <div><span className="text-primary">$</span> cd Team_6_AERO62520_RSD_Project</div>
+                                        <div><span className="text-primary">$</span> git clone https://github.com/prathapselvakumar/Autonomous-Mobile-Robot-LEO-Rover.git</div>
+                                        <div><span className="text-primary">$</span> cd Autonomous-Mobile-Robot-LEO-Rover</div>
                                         <div><span className="text-primary">$</span> pip install -r requirements.txt</div>
                                         <div><span className="text-primary">$</span> python3 src/main.py</div>
                                     </div>

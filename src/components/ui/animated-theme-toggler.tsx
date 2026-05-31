@@ -14,6 +14,7 @@ type AnimatedThemeTogglerProps = {
 };
 
 export const AnimatedThemeToggler = ({ className }: AnimatedThemeTogglerProps) => {
+  const [mounted, setMounted] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [darkMode, setDarkMode] = useState(() =>
   typeof window !== "undefined" ?
@@ -22,6 +23,8 @@ export const AnimatedThemeToggler = ({ className }: AnimatedThemeTogglerProps) =
   );
 
   useEffect(() => {
+    setMounted(true);
+
     const syncTheme = () =>
     setDarkMode(document.documentElement.classList.contains("dark"));
 
@@ -67,6 +70,20 @@ export const AnimatedThemeToggler = ({ className }: AnimatedThemeTogglerProps) =
       }
     );
   }, [darkMode]);
+
+  if (!mounted) {
+    return (
+      <button
+        ref={buttonRef}
+        aria-label="Switch theme"
+        className={cn(
+          "flex items-center justify-center p-2 rounded-full outline-none focus:outline-none active:outline-none focus:ring-0 cursor-pointer",
+          className
+        )}
+        type="button"
+      />
+    );
+  }
 
   return (
     <button

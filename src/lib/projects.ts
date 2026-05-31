@@ -99,7 +99,7 @@ export const projects: Project[
             image: '/Thumbnails/Project Thumbnails/maxresdefault.jpg',
             categories: ['Robotics'],
             size: 'large',
-            repoUrl: 'https://github.com/sarathkumar-sk/Team_6_AERO62520_RSD_Project.git',
+            repoUrl: 'https://github.com/prathapselvakumar/Autonomous-Mobile-Robot-LEO-Rover.git',
             features: [
                 { icon: 'Cpu', title: "SLAM Navigation", title_ja: "SLAMナビゲーション", desc: "Simultaneous Localization and Mapping for autonomous movement.", desc_ja: "自律走行のための自己位置推定と環境地図作成を同時に実行。" },
                 { icon: 'Zap', title: "Real-time Processing", title_ja: "リアルタイム処理", desc: "On-board processing of sensor data for immediate reaction.", desc_ja: "即座な反応を可能にするセンサーデータのオンボード処理。" },
@@ -413,6 +413,24 @@ export const projects: Project[
                     description_ja: "UAV適応位置安定化およびロバストウェイポイント追跡試験。",
                     duration: "Live",
                     url: "https://www.youtube.com/embed/gKFQ-QHKmhw?si=juqdObPghko8oW9P&start=1"
+                },
+                {
+                    id: "3",
+                    title: "Drone Trajectory Tracking",
+                    title_ja: "ドローン軌道追跡テスト",
+                    description: "UAV adaptive trajectory tracking and simulation demonstration.",
+                    description_ja: "UAVの適応的な軌道追跡とシミュレーションの実演。",
+                    duration: "Live",
+                    url: "https://www.youtube.com/embed/BVp1SnTQ6CE?si=oEyR_gVO8xaAkHH7"
+                },
+                {
+                    id: "4",
+                    title: "Drone Week-3 trail",
+                    title_ja: "ドローン 3週目テスト",
+                    description: "Trajectory tracking and stabilization testing during week 3.",
+                    description_ja: "3週目における軌道追跡と安定化のテスト。",
+                    duration: "Live",
+                    url: "https://www.youtube.com/embed/MDX2xzAhBWw?si=QfPxz_qHtgV59tAw"
                 }
             ],
             files: [],
