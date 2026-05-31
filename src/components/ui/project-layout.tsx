@@ -370,7 +370,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
     };
 
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <main className="min-h-screen bg-background text-foreground flex flex-col">
             {/* ─── Navigation ─── */}
             {/* Breadcrumb (Top Left) */}
             <div className="hidden lg:flex ipad-pro-hide fixed top-6 left-6 z-50 items-center gap-2 px-4 py-2 rounded-full bg-background/50 backdrop-blur-md border border-border/40 text-foreground shadow-sm">
@@ -420,7 +420,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             />
 
             {/* ─── Hero ═══ */}
-        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center">
+        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 text-center order-1">
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -459,7 +459,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Features (or Custom Animation) ─── */}
             {project.id === "autonomous-robot" ? (
-                <section id="features" className="w-full relative dark">
+                <section id="features" className="w-full relative dark order-3 md:order-2">
                     <div className="pt-12 px-6 max-w-6xl mx-auto absolute z-20 left-0 right-0 top-0 pointer-events-none">
                         <SectionHeader
                             label="# features"
@@ -473,7 +473,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <LeoRoverExploded />
                 </section>
             ) : isAStarProject ? (
-                <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40">
+                <section id="features" className="py-16 md:py-24 px-4 sm:px-6 border-y border-border/40 order-3 md:order-2">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# features"
@@ -502,7 +502,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     </div>
                 </section>
             ) : features && features.length > 0 && (
-                <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6">
+                <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6 order-3 md:order-2">
                     <div className="max-w-6xl mx-auto w-full">
                         <SectionHeader
                             label="# features"
@@ -519,7 +519,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Product Showcase ─── */}
             {project.id === "autonomous-robot" && (
-                <section id="products" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/10">
+                <section id="products" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/10 order-4 md:order-3">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# products"
@@ -536,7 +536,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Files ─── */}
             {project.files && project.files.length > 0 && (
-                <section id="files" className="py-16 md:py-24 px-4 sm:px-6">
+                <section id="files" className="py-16 md:py-24 px-4 sm:px-6 order-5 md:order-4">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# files"
@@ -695,7 +695,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Source ─── */}
             {project.codeSnippets && project.codeSnippets.length > 0 && (
-                <section id={isAIMLProject ? "sources" : "code"} className="py-16 md:py-24 px-4 sm:px-6">
+                <section id={isAIMLProject ? "sources" : "code"} className="py-16 md:py-24 px-4 sm:px-6 order-6 md:order-5">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? t.source : t.sourceCode} description={language === 'ja' ? "主要なロジックモジュールの確認。" : "Explore the primary logical modules."} />
 
@@ -754,7 +754,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Demo ─── */}
             {hasDemo && (
-                <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated">
+                <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated order-2 md:order-6">
                     <div className={isDroneProject ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
                         <SectionHeader
                             label="# simulation"
@@ -841,7 +841,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Videos ─── */}
             {project.videos && project.videos.length > 0 && (
-                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
+                <section id="videos" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20 order-7">
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader
                             label="# videos"
@@ -925,7 +925,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── GitHub ─── */}
             {project.repoUrl && (
-                <section id="github" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20">
+                <section id="github" className="py-16 md:py-24 px-4 sm:px-6 bg-muted/20 order-8">
                     <div className="max-w-4xl mx-auto">
                         <SectionHeader
                             label={isAIMLProject ? "# github" : "# repositories"}
@@ -994,7 +994,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Team ─── */}
             {project.team && (
-                <div id="team">
+                <div id="team" className="order-9">
                     <TeamShowcase 
                         title={language === 'ja' && project.team.title_ja ? project.team.title_ja : project.team.title} 
                         description={language === 'ja' && project.team.description_ja ? project.team.description_ja : project.team.description}
@@ -1004,7 +1004,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             )}
 
             {/* ─── Footer ─── */}
-            <footer className="py-10 px-6 border-t text-center text-xs text-muted-foreground">
+            <footer className="py-10 px-6 border-t text-center text-xs text-muted-foreground order-10">
                 © {new Date().getFullYear()} {project.title}
             </footer>
 

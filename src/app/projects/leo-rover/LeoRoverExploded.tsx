@@ -86,7 +86,12 @@ export default function LeoRoverExploded() {
         }
 
         const x = (width / 2) - (img.width / 2) * scale;
-        const y = (height / 2) - (img.height / 2) * scale;
+        let y = (height / 2) - (img.height / 2) * scale;
+
+        if (width < 768) {
+            // Position the image towards the top of the section on mobile view to clear the bottom text
+            y = 110;
+        }
 
         ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
     };
@@ -114,7 +119,7 @@ export default function LeoRoverExploded() {
     const opacities = [textOpacity1, textOpacity2, textOpacity3, textOpacity4, textOpacity5];
 
     return (
-        <div ref={containerRef} className="relative h-[600vh] bg-black">
+        <div ref={containerRef} className="relative h-[300vh] md:h-[600vh] bg-black">
             <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
                 {/* Loading overlay if not all images loaded */}
@@ -138,7 +143,7 @@ export default function LeoRoverExploded() {
                             key={index}
                             style={{ opacity: opacities[index] }}
                             className={cn(
-                                "absolute top-[12%] lg:top-auto lg:bottom-auto max-w-sm px-4",
+                                "absolute bottom-[12%] lg:bottom-auto lg:top-auto max-w-sm px-4",
                                 index % 2 === 0
                                     ? "lg:top-[20%] left-[5%] lg:left-[10%]"
                                     : "lg:top-[30%] left-[5%] lg:left-auto lg:right-[10%] text-left lg:text-right ipad-pro-leo-right"
