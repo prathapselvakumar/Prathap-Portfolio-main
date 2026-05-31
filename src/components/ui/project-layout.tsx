@@ -502,7 +502,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     </div>
                 </section>
             ) : features && features.length > 0 && (
-                <section id="features" className="min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6 order-3 md:order-2">
+                <section id="features" className={cn("min-h-screen flex items-center py-16 md:py-24 px-4 sm:px-6", isDroneProject ? "order-2 md:order-2" : "order-3 md:order-2")}>
                     <div className="max-w-6xl mx-auto w-full">
                         <SectionHeader
                             label="# features"
@@ -695,7 +695,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Source ─── */}
             {project.codeSnippets && project.codeSnippets.length > 0 && (
-                <section id={isAIMLProject ? "sources" : "code"} className="py-16 md:py-24 px-4 sm:px-6 order-6 md:order-5">
+                <section id={isAIMLProject ? "sources" : "code"} className={cn("py-16 md:py-24 px-4 sm:px-6", isDroneProject ? "order-3 md:order-5" : "order-6 md:order-5")}>
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? t.source : t.sourceCode} description={language === 'ja' ? "主要なロジックモジュールの確認。" : "Explore the primary logical modules."} />
 
@@ -754,7 +754,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
 
             {/* ─── Demo ─── */}
             {hasDemo && (
-                <section id="demo" className="py-16 md:py-24 px-4 sm:px-6 surface-elevated order-2 md:order-6">
+                <section id="demo" className={cn("py-16 md:py-24 px-4 sm:px-6 surface-elevated", isDroneProject ? "order-4 md:order-6" : "order-2 md:order-6")}>
                     <div className={isDroneProject ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
                         <SectionHeader
                             label="# simulation"
