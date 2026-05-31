@@ -308,7 +308,7 @@ const Switcher = ({
     <div className="relative mt-16 flex justify-center z-50 pointer-events-none group/switcher">
       <motion.div 
         layout 
-        className="relative pointer-events-auto flex items-center gap-1.5 p-1.5 rounded-full bg-white/5 dark:bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_0_0_1px_rgba(255,255,255,0.1),0_0_0_1px_rgba(0,0,0,0.05)] overflow-hidden"
+        className="relative pointer-events-auto flex items-center gap-0 md:gap-1.5 p-1 md:p-1.5 rounded-full bg-white/5 dark:bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_0_0_1px_rgba(255,255,255,0.1),0_0_0_1px_rgba(0,0,0,0.05)] overflow-hidden"
       >
         {/* Gloss Layer */}
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-white/10 to-transparent pointer-none" />
@@ -325,7 +325,7 @@ const Switcher = ({
             onClick={() => onToggle(opt.id as ProductId)}
             whileTap={{ scale: 0.94 }}
             className={cn(
-              "relative px-6 h-12 rounded-full flex items-center justify-center text-sm font-medium focus:outline-none transition-all duration-300 z-10 whitespace-nowrap",
+              "relative px-2.5 md:px-6 h-12 rounded-full flex items-center justify-center text-sm font-medium focus:outline-none transition-all duration-300 z-10 whitespace-nowrap",
               activeId === opt.id ? "text-primary" : "text-zinc-500 hover:text-primary hover:scale-105"
             )}
           >
