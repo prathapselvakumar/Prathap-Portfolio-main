@@ -122,6 +122,8 @@ export const translations = {
         computer_vision: "Computer Vision",
         software: "Software",
         embedded: "Embedded",
+        rl: "RL",
+        dissertation_postgrad: "Dissertation (Postgrad)",
       },
       ui: {
         home: "Home",
@@ -414,6 +416,8 @@ export const translations = {
         computer_vision: "コンピュータビジョン",
         software: "ソフトウェア",
         embedded: "組込みシステム",
+        rl: "強化学習 (RL)",
+        dissertation_postgrad: "修士論文 (Postgrad)",
       },
       ui: {
         home: "ホーム",
@@ -607,6 +611,8 @@ export const translations = {
         computer_vision: "Computer Vision",
         software: "Software",
         embedded: "Embedded",
+        rl: "RL",
+        dissertation_postgrad: "Masterarbeit (Postgrad)",
       },
       ui: {
         home: "Startseite",

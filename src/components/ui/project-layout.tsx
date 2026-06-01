@@ -540,6 +540,40 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                 </div>
             </section>
 
+            {/* ─── Work in Progress Section for Visual Causal Chains ─── */}
+            {project.id === 'visual-causal-chains' && (
+                <section className="min-h-[55vh] flex flex-col items-center justify-center py-24 px-4 sm:px-6 bg-muted/5 border-y border-border/40 order-2">
+                    <div className="max-w-4xl mx-auto text-center space-y-8">
+                        <motion.span 
+                            className="px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-mono text-xs tracking-wider uppercase inline-block"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            {language === 'ja' ? '修士論文プロジェクト' : 'MSc Dissertation Project'}
+                        </motion.span>
+                        <motion.h2 
+                            className="text-5xl sm:text-7xl md:text-9xl font-black tracking-tight text-foreground bg-clip-text text-transparent bg-gradient-to-r from-foreground via-muted-foreground to-foreground leading-none"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.1 }}
+                        >
+                            {language === 'ja' ? '進行中' : 'WORK IN PROGRESS'}
+                        </motion.h2>
+                        <motion.p 
+                            className="text-xl sm:text-2xl md:text-3xl text-muted-foreground font-light max-w-3xl mx-auto leading-relaxed"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            {language === 'ja' 
+                                ? 'マンチェスター大学 MSc ロボティクス修士論文の一部として現在開発中です。詳細な実装と実験結果は近日公開予定です。' 
+                                : 'Currently under active development as part of the MSc Robotics Dissertation at the University of Manchester. Detailed implementation and experimental results will be published soon.'}
+                        </motion.p>
+                    </div>
+                </section>
+            )}
+
             {/* ─── Cinematic Promo Section ─── */}
             {project.id === "autonomous-robot" && (
                 <section

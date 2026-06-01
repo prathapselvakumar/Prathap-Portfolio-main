@@ -1205,6 +1205,17 @@ export const projects: Project[
             videos: [],
             files: [],
             repos: []
+        },
+
+        {
+            id: 'visual-causal-chains',
+            title: 'Visual Causal Chains',
+            title_ja: '視覚的因果連鎖',
+            description: '[Work in Progress] Reinforcement learning agent solving extremely sparse-reward, long-horizon tasks using vision-based event memory and causal credit assignment.',
+            description_ja: '[進行中] 視覚ベースのイベントメモリと因果関係クレジット割り当てを用いて、極めて希薄な報酬と長期にわたるタスクを解決する強化学習エージェント。',
+            image: '/Thumbnails/Project Thumbnails/visual-causal-chains.png',
+            categories: ['RL', 'Dissertation (Postgrad)'],
+            size: 'large'
         }
     ];
 
