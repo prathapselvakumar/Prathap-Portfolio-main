@@ -18,7 +18,7 @@ export const translations = {
     about: {
       title1: "ABOUT",
       title2: "ME",
-      mainText: "I'm a dedicated robotics engineering student with a passion for creating intelligent systems that solve real-world problems. My journey combines Python, ROS2, and machine learning. Currently focusing on autonomous navigation, computer vision, and human-robot interaction.",
+      mainText: "I'm a dedicated robotics engineering student with a passion for creating intelligent systems that solve real-world problems. My journey combines Python, ROS2, and machine learning. I am actively seeking roles in Robotics Software Engineering, Autonomous Navigation (SLAM), Computer Vision, and AI/ML, where I can apply my expertise in ROS2, Python, C++, and deep learning to build and deploy robust, state-of-the-art autonomous systems.",
       download_cv: "Download CV"
     },
     education: {
@@ -310,7 +310,7 @@ export const translations = {
     about: {
       title1: "私に",
       title2: "ついて",
-      mainText: "私は、現実世界の課題を解決する知能システムの構築に情熱を注ぐ、ロボット工学専攻の学生です。Python、ROS2、機械学習を組み合わせた開発に取り組んでいます。現在は、自律走行、コンピュータビジョン、ヒューマン・ロボット・インタラクション（HRI）に重点を置いています。",
+      mainText: "私は、現実世界の課題を解決する知能システムの構築に情熱を注ぐ、ロボット工学専攻の学生です。Python、ROS2、機械学習を組み合わせた開発に取り組んでいます。現在、ROS2、Python、C++、ディープラーニングの専門知識を活かして、堅牢で最先端の自律システムを構築・展開できる、ロボティクスソフトウェアエンジニア、自律走行システム開発、コンピュータビジョン、AI/MLエンジニアとしてのポジションを積極的に求めています。",
       download_cv: "CVをダウンロード"
     },
     education: {
@@ -578,7 +578,7 @@ export const translations = {
     about: {
       title1: "ÜBER",
       title2: "MICH",
-      mainText: "Ich bin ein engagierter Student der Robotik mit einer Leidenschaft für die Entwicklung intelligenter Systeme, die reale Probleme lösen. Meine Reise kombiniert Python, ROS2 und maschinelles Lernen. Derzeit konzentriere ich mich auf autonome Navigation, Computer Vision und Mensch-Roboter-Interaktion.",
+      mainText: "Ich bin ein engagierter Student der Robotik mit einer Leidenschaft für die Entwicklung intelligenter Systeme, die reale Probleme lösen. Meine Reise kombiniert Python, ROS2 und maschinelles Lernen. Ich suche aktiv nach Positionen im Bereich der Robotik-Softwareentwicklung, der autonomen Navigation (SLAM), Computer Vision sowie KI/ML, um meine Expertise in ROS2, Python, C++ und Deep Learning zur Entwicklung und Bereitstellung robuster, hochmoderner autonomer Systeme einzusetzen.",
       download_cv: "Lebenslauf herunterladen"
     },
     education: {

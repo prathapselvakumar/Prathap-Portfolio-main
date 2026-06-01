@@ -405,17 +405,9 @@ export const projects: Project[
                     duration: "3:15",
                     url: "https://www.youtube.com/embed/APb6memCiac?si=ITwi2TK544AzIHiY&start=7"
                 },
+
                 {
                     id: "2",
-                    title: "Technical Evaluvation",
-                    title_ja: "ドローン位置安定化試験",
-                    description: "UAV adaptive position stabilisation and robust waypoint tracking tests.",
-                    description_ja: "UAV適応位置安定化およびロバストウェイポイント追跡試験。",
-                    duration: "Live",
-                    url: "https://www.youtube.com/embed/gKFQ-QHKmhw?si=juqdObPghko8oW9P&start=1"
-                },
-                {
-                    id: "3",
                     title: "Drone Week-2 trail",
                     title_ja: "ドローン軌道追跡テスト",
                     description: "UAV adaptive trajectory tracking and simulation demonstration.",
@@ -424,13 +416,22 @@ export const projects: Project[
                     url: "https://www.youtube.com/embed/BVp1SnTQ6CE?si=oEyR_gVO8xaAkHH7"
                 },
                 {
-                    id: "4",
+                    id: "3",
                     title: "Drone Week-3 trail",
                     title_ja: "ドローン 3週目テスト",
                     description: "Trajectory tracking and stabilization testing during week 3.",
                     description_ja: "3週目における軌道追跡と安定化のテスト。",
                     duration: "Live",
                     url: "https://www.youtube.com/embed/MDX2xzAhBWw?si=QfPxz_qHtgV59tAw"
+                },
+                {
+                    id: "4",
+                    title: "Technical Evaluvation",
+                    title_ja: "ドローン位置安定化試験",
+                    description: "UAV adaptive position stabilisation and robust waypoint tracking tests.",
+                    description_ja: "UAV適応位置安定化およびロバストウェイポイント追跡試験。",
+                    duration: "Live",
+                    url: "https://www.youtube.com/embed/gKFQ-QHKmhw?si=juqdObPghko8oW9P&start=1"
                 }
             ],
             files: [],
