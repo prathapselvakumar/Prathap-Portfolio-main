@@ -123,7 +123,7 @@ export const translations = {
         software: "Software",
         embedded: "Embedded",
         rl: "RL",
-        dissertation_postgrad: "Dissertation (Postgrad)",
+        dissertation_postgrad: "Dissertation",
       },
       ui: {
         home: "Home",
@@ -417,7 +417,7 @@ export const translations = {
         software: "ソフトウェア",
         embedded: "組込みシステム",
         rl: "強化学習 (RL)",
-        dissertation_postgrad: "修士論文 (Postgrad)",
+        dissertation_postgrad: "修士論文",
       },
       ui: {
         home: "ホーム",
@@ -612,7 +612,7 @@ export const translations = {
         software: "Software",
         embedded: "Embedded",
         rl: "RL",
-        dissertation_postgrad: "Masterarbeit (Postgrad)",
+        dissertation_postgrad: "Masterarbeit",
       },
       ui: {
         home: "Startseite",

@@ -875,6 +875,17 @@ export const projects: Project[
         },
 
         {
+            id: 'visual-causal-chains',
+            title: 'Visual Causal Chains',
+            title_ja: '視覚的因果連鎖',
+            description: '[Work in Progress] Reinforcement learning agent solving extremely sparse-reward, long-horizon tasks using vision-based event memory and causal credit assignment.',
+            description_ja: '[進行中] 視覚ベースのイベントメモリと因果関係クレジット割り当てを用いて、極めて希薄な報酬と長期にわたるタスクを解決する強化学習エージェント。',
+            image: '/Thumbnails/Project Thumbnails/visual-causal-chains.png',
+            categories: ['RL', 'Dissertation'],
+            size: 'large'
+        },
+
+        {
             id: 'ros2-coursework1',
             title: 'ROS 2 - Basic Programming & Practice',
             description: 'Autonomous drone flight control system using ROS 2, featuring PID controllers and waypoint navigation.',
@@ -1208,14 +1219,67 @@ export const projects: Project[
         },
 
         {
-            id: 'visual-causal-chains',
-            title: 'Visual Causal Chains',
-            title_ja: '視覚的因果連鎖',
-            description: '[Work in Progress] Reinforcement learning agent solving extremely sparse-reward, long-horizon tasks using vision-based event memory and causal credit assignment.',
-            description_ja: '[進行中] 視覚ベースのイベントメモリと因果関係クレジット割り当てを用いて、極めて希薄な報酬と長期にわたるタスクを解決する強化学習エージェント。',
-            image: '/Thumbnails/Project Thumbnails/visual-causal-chains.png',
-            categories: ['RL', 'Dissertation (Postgrad)'],
-            size: 'large'
+            id: 'undergrad-dissertation',
+            title: 'Social Media Chat Bot Marvin',
+            title_ja: 'ソーシャルメディアチャットボット Marvin',
+            description: 'Undergraduate dissertation: An AI-powered Telegram chatbot providing real-time social media marketing insights and analytics.',
+            description_ja: 'AIを搭載したTelegramチャットボット。リアルタイムのソーシャルメディアマーケティングの洞察と分析を提供します（学部論文）。',
+            image: '/Thumbnails/Project Thumbnails/hybridnet.png',
+            categories: ['AI/ML', 'Dissertation'],
+            size: 'small',
+            repoUrl: 'https://github.com/prathapselvakumar/Undergrad-Dissertation.git',
+            features: [
+                { icon: 'Zap', title: 'Interactive Chatbot', title_ja: 'インタラクティブチャットボット', desc: 'Telegram-based bot for querying social media marketing insights.', desc_ja: 'ソーシャルメディアマーケティングのインサイトを照会するためのTelegramベースのボット。' },
+                { icon: 'Database', title: 'Data Analytics', title_ja: 'データ分析', desc: 'Integration with Pandas for processing and analyzing large marketing datasets.', desc_ja: '大規模なマーケティングデータセットを処理および分析するためのPandasとの統合。' },
+                { icon: 'Cpu', title: 'AI/ML Integration', title_ja: 'AI/ML 統合', desc: 'Leverages AI to interpret trends and offer automated marketing recommendations.', desc_ja: 'AIを活用してトレンドを解釈し、自動化されたマーケティングの推奨事項を提供します。' }
+            ],
+            repos: [
+                { id: "1", name: "Undergrad-Dissertation", description: "Source code for the Social Media Marketing Insights Telegram Chatbot.", description_ja: "ソーシャルメディアマーケティングインサイトTelegramチャットボットのソースコード。", language: "Python", languageColor: "hsl(50 70% 50%)", stars: 0, forks: 0, url: "https://github.com/prathapselvakumar/Undergrad-Dissertation.git", topics: ["python", "chatbot", "telegram", "ai", "pandas"] }
+            ],
+            terminalOutput: [
+                { type: "cmd", text: "python app.py", text_ja: "python app.py" },
+                { type: "info", text: "Successfully loaded socialmedia.csv context.", text_ja: "socialmedia.csv コンテキストを正常に読み込みました。" },
+                { type: "success", text: " * Serving Flask app 'app'\\n * Debug mode: on\\n * Running on http://127.0.0.1:5000", text_ja: " * Serving Flask app 'app'\\n * Debug mode: on\\n * Running on http://127.0.0.1:5000" },
+                { type: "info", text: "Note: Please look at the Telegram icon in the bottom right to interact with the chatbot demo.", text_ja: "注意: チャットボットのデモを試すには、右下のTelegramアイコンをご覧ください。" },
+                { type: "info", text: "Note: This is a sample output, not the final version, as hosting the complete system costs around $15 to $150 USD per month.", text_ja: "注意: これはサンプルの出力であり、最終バージョンではありません。完全なシステムのホスティングには月額約15〜150米ドルの費用がかかるためです。" }
+            ],
+            codeSnippets: [
+                {
+                    id: "1",
+                    title: "telegram_bot.py",
+                    title_ja: "telegram_bot.py",
+                    description: "Main logic for the Telegram chatbot utilizing Pandas for data analytics.",
+                    description_ja: "データ分析にPandasを利用したTelegramチャットボットのメインロジック。",
+                    language: "Python",
+                    code: `import pandas as pd
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
+
+# Load social media dataset
+df = pd.read_csv('marketing_data.csv')
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Send a message when the command /start is issued."""
+    await update.message.reply_text('Hello! I am Marvin, your Social Media Chat Bot.')
+
+async def get_insights(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Analyze and return marketing insights."""
+    top_campaign = df.loc[df['engagement_rate'].idxmax()]
+    response = f"Top Campaign: {top_campaign['name']}\\nEngagement Rate: {top_campaign['engagement_rate']}%"
+    await update.message.reply_text(response)
+
+def main():
+    application = Application.builder().token("YOUR_TOKEN").build()
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("insights", get_insights))
+    application.run_polling()
+
+if __name__ == '__main__':
+    main()`
+                }
+            ],
+            videos: [],
+            files: []
         }
     ];
 

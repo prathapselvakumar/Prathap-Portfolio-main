@@ -18,7 +18,7 @@ interface NavBarProps {
   forceDark?: boolean;
 }
 
-export function NavBar({ items, className, onItemClick, forceDark }: NavBarProps) {
+export const NavBar = React.memo(function NavBar({ items, className, onItemClick, forceDark }: NavBarProps) {
   const [activeTab, setActiveTab] = useState(items[0].name);
   const [isOpen, setIsOpen] = useState(false);
   const isClickingRef = useRef(false);
@@ -299,4 +299,4 @@ export function NavBar({ items, className, onItemClick, forceDark }: NavBarProps
       </svg>
     </>
   );
-}
+});

@@ -112,16 +112,16 @@ export function PortfolioContent() {
     }
   };
 
-  const handleNavClick = (url: string) => {
+  const handleNavClick = React.useCallback((url: string) => {
     scrollToSection(url);
 
     // If navigating away from home, trigger robot "Bye"
     if (url !== '#hero') {
       triggerRobotBye();
     }
-  };
+  }, []);
 
-  const navItems = [
+  const navItems = React.useMemo(() => [
     { name: t.nav.home, url: '#hero', icon: Home },
     { name: t.nav.about, url: '#about', icon: User },
     { name: t.nav.education, url: '#education', icon: GraduationCap },
@@ -130,16 +130,12 @@ export function PortfolioContent() {
     { name: t.nav.projects, url: '#projects', icon: FolderOpen },
     { name: t.nav.publications, url: '#publications', icon: BookOpen },
     { name: t.nav.certificates, url: '#certificates', icon: Award },
-    { name: t.nav.testimonials, url: '#testimonials', icon: MessageSquare }];
+    { name: t.nav.testimonials, url: '#testimonials', icon: MessageSquare }
+  ], [t.nav]);
 
   // Extract unique categories from all projects to dynamically build the filter menu
-  const discoveredCategories = Array.from(new Set(projects.flatMap((p) => p.categories)));
-  const preferredOrder = ['Robotics', 'AI/ML', 'Algorithms', 'Computer Vision'];
-  const orderedCategories = [
-    ...preferredOrder.filter((category) => discoveredCategories.includes(category)),
-    ...discoveredCategories.filter((category) => !preferredOrder.includes(category)),
-  ];
-  const allCategories = ['All', ...orderedCategories];
+  const discoveredCategories = Array.from(new Set(projects.flatMap((p) => p.categories))).sort((a, b) => a.localeCompare(b));
+  const allCategories = ['All', ...discoveredCategories];
 
   // Filter projects based on selected category
   const filteredProjects = selectedCategory === 'All' ?

@@ -1067,7 +1067,22 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                 {line.type === "cmd" ? (
                                                     <span><span className="text-primary">$ </span>{line.text}</span>
                                                 ) : (
-                                                    <span>{line.text}</span>
+                                                    <span>
+                                                        {line.text.split('\\n').map((str, strIdx, arr) => (
+                                                            <span key={strIdx}>
+                                                                {str.split(/(https?:\/\/[^\s]+)/g).map((part, idx) => 
+                                                                    part.match(/^https?:\/\//) ? (
+                                                                        <a key={idx} href={part === 'http://127.0.0.1:5000' || part === 'http://127.0.0.1:5000/' ? 'https://undergrad-dissertation.vercel.app' : part} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 hover:underline transition-colors pointer-events-auto">
+                                                                            {part}
+                                                                        </a>
+                                                                    ) : (
+                                                                        <span key={idx}>{part}</span>
+                                                                    )
+                                                                )}
+                                                                {strIdx < arr.length - 1 && <br />}
+                                                            </span>
+                                                        ))}
+                                                    </span>
                                                 )}
                                             </div>
                                         ))}

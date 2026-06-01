@@ -27,12 +27,8 @@ export default function Home() {
       setLoadingType('welcome');
       (window as any).appInitialized = true;
     } else {
-      // Internal navigation (e.g., clicking the 'Home' breadcrumb): play a brief simple loader
-      setLoadingType('simple');
-      const timer = setTimeout(() => {
-        setLoadingType('none');
-      }, 800);
-      return () => clearTimeout(timer);
+      // Internal navigation: no loader needed
+      setLoadingType('none');
     }
   }, []);
 
