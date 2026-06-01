@@ -407,7 +407,7 @@ export const projects: Project[
                 },
                 {
                     id: "2",
-                    title: "Drone Position Stabilisation",
+                    title: "Technical Evaluvation",
                     title_ja: "ドローン位置安定化試験",
                     description: "UAV adaptive position stabilisation and robust waypoint tracking tests.",
                     description_ja: "UAV適応位置安定化およびロバストウェイポイント追跡試験。",
@@ -416,7 +416,7 @@ export const projects: Project[
                 },
                 {
                     id: "3",
-                    title: "Drone Trajectory Tracking",
+                    title: "Drone Week-2 trail",
                     title_ja: "ドローン軌道追跡テスト",
                     description: "UAV adaptive trajectory tracking and simulation demonstration.",
                     description_ja: "UAVの適応的な軌道追跡とシミュレーションの実演。",
