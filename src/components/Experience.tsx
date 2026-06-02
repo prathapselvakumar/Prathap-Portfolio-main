@@ -7,9 +7,26 @@ export function Experience() {
   const { language } = useLanguage();
   const t = translations[language].experience;
 
-  const timelineData = t.items.map((exp: any) => ({
-    title: exp.period.split(" ")[0].split("-")[1] || exp.period.split(" ")[0].replace(/年$/, ""), // Extract just the year/month start
-    content: (
+  const timelineData = t.items.map((exp: any) => {
+    const parts = exp.period.split(/\s+-\s+|\s+to\s+/i);
+    
+    const extractYear = (str: string) => {
+      const match = str.match(/\d{4}/);
+      return match ? match[0] : str;
+    };
+
+    let titleStr = extractYear(exp.period);
+    let subtitleStr = undefined;
+    
+    if (parts.length === 2) {
+      titleStr = extractYear(parts[1]);
+      subtitleStr = extractYear(parts[0]);
+    }
+
+    return {
+      title: titleStr,
+      subtitle: subtitleStr,
+      content: (
       <div className="bg-card border border-border rounded-xl p-6 lg:p-8 animate-fade-in shadow-sm hover:shadow-md transition-shadow">
         <div className="flex flex-col sm:flex-row sm:items-start gap-6 mb-6">
           <div className="w-24 h-auto shrink-0 bg-white/5 p-2 rounded-lg backdrop-blur-sm border border-border/50">
@@ -54,7 +71,8 @@ export function Experience() {
         </div>
       </div>
     ),
-  }));
+    };
+  });
 
   return (
     <section>

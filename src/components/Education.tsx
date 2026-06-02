@@ -7,9 +7,19 @@ export function Education() {
   const { language } = useLanguage();
   const t = translations[language].education;
 
-  const timelineData = t.items.map((edu: any) => ({
-    title: edu.period.split(" ")[0].replace(/年$/, ""), // Extract start year, remove '年' if present for title
-    content: (
+  const timelineData = t.items.map((edu: any) => {
+    const parts = edu.period.split(/\s+-\s+|\s+to\s+/i);
+    let titleStr = edu.period;
+    let subtitleStr = undefined;
+    if (parts.length === 2) {
+      titleStr = parts[1];
+      subtitleStr = parts[0];
+    }
+
+    return {
+      title: titleStr,
+      subtitle: subtitleStr,
+      content: (
       <div className="bg-card border border-border rounded-xl p-6 lg:p-8 animate-fade-in shadow-sm hover:shadow-md transition-shadow">
         <div className="flex flex-col sm:flex-row sm:items-start gap-6 mb-6">
           <div className="w-24 h-auto shrink-0 bg-white/5 p-2 rounded-lg backdrop-blur-sm border border-border/50">
@@ -58,7 +68,8 @@ export function Education() {
         </div>
       </div>
     ),
-  }));
+    };
+  });
 
   return (
     <section>

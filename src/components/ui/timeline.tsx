@@ -9,6 +9,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 export interface TimelineEntry {
     title: string;
+    subtitle?: string;
     content: React.ReactNode;
 }
 
@@ -64,20 +65,44 @@ export const Timeline = ({ data, title, description }: TimelineProps) => {
                         key={index}
                         className="flex justify-start pt-10 md:pt-40 md:gap-10 ipad-pro-timeline-row"
                     >
-                        <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs ipad-pro-timeline-col lg:max-w-sm md:w-full">
-                            <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
-                                <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
+                        <div className="relative flex flex-col justify-between z-40 items-start self-stretch max-w-xs ipad-pro-timeline-col lg:max-w-sm md:w-full">
+                            <div className="flex-1 w-full relative">
+                                <div className="sticky top-40 flex items-center w-full h-10">
+                                    <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
+                                        <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
+                                    </div>
+                                    <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl ipad-pro-timeline-title font-bold text-muted-foreground/50 ">
+                                        {item.title}
+                                    </h3>
+                                </div>
                             </div>
-                            <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl ipad-pro-timeline-title font-bold text-muted-foreground/50 ">
-                                {item.title}
-                            </h3>
+                            
+                            {item.subtitle && (
+                                <div className="flex items-center w-full mt-auto mb-0 h-10">
+                                    <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
+                                        <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
+                                    </div>
+                                    <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl ipad-pro-timeline-title font-bold text-muted-foreground/50 ">
+                                        {item.subtitle}
+                                    </h3>
+                                </div>
+                            )}
                         </div>
 
-                        <div className="relative pl-20 pr-4 md:pl-4 w-full">
-                            <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-muted-foreground/50">
-                                {item.title}
-                            </h3>
+                        <div className="relative flex flex-col pl-20 pr-4 md:pl-4 w-full">
+                            <div className="md:hidden flex items-center h-10 mb-4">
+                                <h3 className="block text-2xl text-left font-bold text-muted-foreground/50">
+                                    {item.title}
+                                </h3>
+                            </div>
                             {item.content}{" "}
+                            {item.subtitle && (
+                                <div className="md:hidden mt-6 mb-0 flex items-center h-10">
+                                    <h3 className="block text-2xl text-left font-bold text-muted-foreground/50">
+                                        {item.subtitle}
+                                    </h3>
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}
