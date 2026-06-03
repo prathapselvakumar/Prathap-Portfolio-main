@@ -891,7 +891,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
             {project.codeSnippets && project.codeSnippets.length > 0 && (
                 <section id={isAIMLProject ? "sources" : "code"} className={cn("py-16 md:py-24 px-4 sm:px-6", "order-4 md:order-6")}>
                     <div className="max-w-6xl mx-auto">
-                        <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? t.source : t.sourceCode} description={language === 'ja' ? "主要なロジックモジュールの確認。" : "Explore the primary logical modules."} />
+                        <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? t.source : (isAutonomousRobotProject ? "Source Code" : t.sourceCode)} description={language === 'ja' ? "主要なロジックモジュールの確認。" : "Explore the primary logical modules."} />
 
                         <div className="flex flex-col lg:grid lg:grid-cols-[250px_1fr] rounded-md border border-[#3c3c3c] bg-[#1e1e1e] shadow-2xl overflow-hidden font-sans">
                             {/* Explorer (File list) */}
@@ -1241,7 +1241,7 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className="max-w-4xl mx-auto">
                         <SectionHeader
                             label={isAIMLProject ? "# github" : "# repositories"}
-                            title={isAIMLProject ? t.github : (language === 'ja' ? "ソースコード" : "Source Code")}
+                            title={isAIMLProject ? t.github : (isAutonomousRobotProject ? "Get code" : (language === 'ja' ? "ソースコード" : "Source Code"))}
                             description={t.github_desc}
                         />
 
