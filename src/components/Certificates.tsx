@@ -244,18 +244,40 @@ function VinylCarousel({
     items.map(() => TEXTURE_LIST[Math.floor(Math.random() * TEXTURE_LIST.length)])
   )
 
-  const itemWidth = 550
-  const itemHeight = 390
-  const itemGap = 80
+  const [dimensions, setDimensions] = useState({ width: 550, height: 390, gap: 80 });
+  const itemWidth = dimensions.width;
+  const itemHeight = dimensions.height;
+  const itemGap = dimensions.gap;
+
   const rotationAmount = -40
   const focusedScale = 1.2
   const focusedTranslateY = 20
   const focusedTranslateZ = 120
   const adjacentScale = 0.95
 
-  const updateVisuals = (currentIndexFloat: number) => {
+  useEffect(() => {
+    const updateDimensions = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth < 480) {
+        setDimensions({ width: 260, height: 185, gap: 30 });
+      } else if (screenWidth < 640) {
+        setDimensions({ width: 320, height: 227, gap: 40 });
+      } else if (screenWidth < 768) {
+        setDimensions({ width: 400, height: 284, gap: 50 });
+      } else if (screenWidth < 1024) {
+        setDimensions({ width: 450, height: 320, gap: 60 });
+      } else {
+        setDimensions({ width: 550, height: 390, gap: 80 });
+      }
+    };
+    
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
+  const updateVisuals = useCallback((currentIndexFloat: number) => {
     if (!boxesRef.current) return;
-    // ensure we scope to this component's boxes if there are multiple carousels
     const boxes = gsap.utils.toArray<HTMLElement>(boxesRef.current.children)
     boxes.forEach((box, i) => {
       const distance = i - currentIndexFloat
@@ -300,9 +322,9 @@ function VinylCarousel({
 
       gsap.to(box, { ...props, duration: 0.03, ease: "power1.out", overwrite: true, force3D: true })
     })
-  }
+  }, [adjacentScale, focusedScale, focusedTranslateY, focusedTranslateZ, rotationAmount]);
 
-  const animateTo = (index: number, duration: number) => {
+  const animateTo = useCallback((index: number, duration: number) => {
     animationRef.current?.kill()
     animationRef.current = gsap.to(boxesRef.current, {
       x: centerOffsetRef.current - index * (itemWidth + itemGap),
@@ -316,28 +338,27 @@ function VinylCarousel({
       },
       onComplete: () => setActiveIndex(index),
     })
-  }
+  }, [itemWidth, itemGap, updateVisuals]);
 
-  const goToPrev = () => {
+  const goToPrev = useCallback(() => {
     const newIndex = Math.max(0, activeIndexRef.current - 1)
     if (newIndex !== activeIndexRef.current) {
       activeIndexRef.current = newIndex
       animateTo(newIndex, 0.15)
     }
-  }
+  }, [animateTo]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     const newIndex = Math.min(items.length - 1, activeIndexRef.current + 1)
     if (newIndex !== activeIndexRef.current) {
       activeIndexRef.current = newIndex
       animateTo(newIndex, 0.15)
     }
-  }
+  }, [animateTo, items.length]);
 
   useEffect(() => {
     gsap.registerPlugin(Draggable)
     centerOffsetRef.current = wrapperRef.current ? wrapperRef.current.offsetWidth / 2 - itemWidth / 2 : 0
-    // Fix initial offset to activeIndex to prevent jumping if it remounts with different items
     const startIdx = Math.floor(items.length / 2)
     activeIndexRef.current = startIdx;
     setActiveIndex(startIdx);
@@ -366,7 +387,7 @@ function VinylCarousel({
 
     return () => { draggableInstance.current?.kill() }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items]) // Retrigger when items array changes
+  }, [items, itemWidth, itemGap]) 
 
   useEffect(() => {
     const handleResize = () => {
@@ -408,10 +429,10 @@ function VinylCarousel({
       window.removeEventListener("resize", handleResize)
       wrapper?.removeEventListener("wheel", handleWheel)
     }
-  }, [items.length])
+  }, [items.length, itemWidth, itemGap, updateVisuals])
 
   useEffect(() => { activeIndexRef.current = activeIndex }, [activeIndex])
-  useEffect(() => { if (navRef) navRef.current = { prev: goToPrev, next: goToNext } }, [navRef])
+  useEffect(() => { if (navRef) navRef.current = { prev: goToPrev, next: goToNext } }, [navRef, goToPrev, goToNext])
 
   const getTextureForItem = (index: number): string | null => {
     if (textureMode === "off") return null
@@ -603,18 +624,31 @@ export function Certificates() {
 
       {/* Certificate Modal */}
       <Dialog open={!!selectedCert} onOpenChange={(open) => !open && setSelectedCert(null)}>
-        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] flex flex-col p-0 overflow-hidden bg-background border-border">
+        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] md:w-[90vw] md:h-[85vh] flex flex-col p-0 overflow-hidden bg-background border-border">
           <DialogHeader className="p-4 border-b border-border shrink-0">
             <DialogTitle className="text-foreground">{selectedCert?.title}</DialogTitle>
             <DialogDescription className="text-muted-foreground">{selectedCert?.issuer} - {selectedCert?.date}</DialogDescription>
           </DialogHeader>
-          <div className="flex-1 w-full h-full bg-muted/20 relative">
+          <div className="flex-1 w-full h-full bg-muted/20 relative flex flex-col">
             {selectedCert?.filePath ? (
-              <iframe
-                src={selectedCert.filePath}
-                className="w-full h-full border-none"
-                title={selectedCert.title}
-              />
+              <>
+                <div className="md:hidden p-3 bg-muted/50 border-b border-border flex justify-center items-center shrink-0">
+                  <a 
+                    href={selectedCert.filePath} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-sm font-medium text-foreground hover:text-primary transition-colors flex items-center gap-2 bg-background/50 px-4 py-2 rounded-full border border-border"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                    {t.click_to_open}
+                  </a>
+                </div>
+                <iframe
+                  src={`${selectedCert.filePath}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
+                  className="w-full h-full flex-1 border-none"
+                  title={selectedCert.title}
+                />
+              </>
             ) : selectedCert?.verificationUrl ? (
               <div className="flex w-full h-full items-center justify-center">
                 <a href={selectedCert.verificationUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
