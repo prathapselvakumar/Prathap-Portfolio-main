@@ -1167,6 +1167,12 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                                                                 src={getYouTubeThumbnail(video.url)}
                                                                 alt={video.title}
                                                                 className="w-full h-full object-cover"
+                                                                onError={(e) => {
+                                                                    const target = e.currentTarget;
+                                                                    if (target.src.includes('maxresdefault.jpg')) {
+                                                                        target.src = target.src.replace('maxresdefault.jpg', 'hqdefault.jpg');
+                                                                    }
+                                                                }}
                                                             />
                                                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors">
                                                                 <Play className="w-12 h-12 text-white" />
