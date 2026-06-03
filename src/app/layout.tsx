@@ -6,6 +6,7 @@ import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import { ParallaxComponent } from "@/components/ui/parallax-scrolling";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "prathapsk",
@@ -65,6 +66,7 @@ export default function RootLayout({
             <ParallaxComponent />
             {children}
             <VisualEditsMessenger />
+            <SpeedInsights />
           </ThemeProvider>
         </LanguageProvider>
       </body>
