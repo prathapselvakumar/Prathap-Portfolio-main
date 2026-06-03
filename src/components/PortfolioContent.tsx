@@ -1,21 +1,24 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SplineScene } from '@/components/ui/splite';
+import dynamic from 'next/dynamic';
+
+const SplineScene = dynamic(() => import('@/components/ui/splite').then(mod => mod.SplineScene), { ssr: false });
+const Education = dynamic(() => import('@/components/Education').then(mod => mod.Education), { ssr: true });
+const Certificates = dynamic(() => import('@/components/Certificates').then(mod => mod.Certificates), { ssr: true });
+const Experience = dynamic(() => import('@/components/Experience').then(mod => mod.Experience), { ssr: true });
+const Skills = dynamic(() => import('@/components/Skills').then(mod => mod.Skills), { ssr: true });
+const Testimonials = dynamic(() => import('@/components/Testimonials').then(mod => mod.Testimonials), { ssr: true });
+const Publications = dynamic(() => import('@/components/Publications').then(mod => mod.Publications), { ssr: true });
+
 import { Spotlight } from '@/components/ui/spotlight';
 import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { motion } from 'framer-motion';
-import { Education } from '@/components/Education';
-import { Certificates } from '@/components/Certificates';
-import { Experience } from '@/components/Experience';
-import { Skills } from '@/components/Skills';
-import { Testimonials } from '@/components/Testimonials';
 import { NavBar } from '@/components/ui/tubelight-navbar';
 import { Home, User, GraduationCap, Briefcase, Code, FolderOpen, BookOpen, Award, MessageSquare } from 'lucide-react';
-import { Publications } from '@/components/Publications';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { projects } from '@/lib/projects';
