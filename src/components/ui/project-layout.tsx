@@ -210,7 +210,6 @@ const TerminalLine = ({ prefix = "$", text, delay = 0, className = "" }: { prefi
 
 /* ─── Basic syntactic highlighting ─── */
 function highlightCode(line: string): React.ReactNode {
-    const keywords = /\b(import|from|def|class|return|if|else|elif|for|in|with|as|async|await|not|and|or|try|except|raise|None|True|False|self|yield)\b/g;
     const comments = /(#.*)$/;
 
     const commentMatch = line.match(comments);
@@ -221,36 +220,55 @@ function highlightCode(line: string): React.ReactNode {
         return (
             <>
                 {highlightCode(before)}
-                <span className="text-muted-foreground/50 italic">{comment}</span>
+                <span className="text-[#6A9955] italic">{comment}</span>
             </>
         );
     }
 
     const parts: React.ReactNode[] = [];
     let lastIndex = 0;
-    const combined = new RegExp(`("""[\\s\\S]*?"""|'''[\\s\\S]*?'''|"(?:[^"\\\\]|\\\\.)*"|'(?:[^'\\\\]|\\\\.)*'|f"(?:[^"\\\\]|\\\\.)*"|f'(?:[^'\\\\]|\\\\.)*')|(@\\w+)|\\b(import|from|def|class|return|if|else|elif|for|in|with|as|async|await|not|and|or|try|except|raise|None|True|False|self|yield)\\b|\\b(\\d+)\\b`, 'g');
+    
+    const combined = new RegExp(
+        `("""[\\s\\S]*?"""|'''[\\s\\S]*?'''|"(?:[^"\\\\]|\\\\.)*"|'(?:[^'\\\\]|\\\\.)*'|f"(?:[^"\\\\]|\\\\.)*"|f'(?:[^'\\\\]|\\\\.)*')` +
+        `|(@\\w+)` +
+        `|\\b(import|from|return|if|else|elif|for|in|while|with|as|try|except|finally|raise|pass|break|continue|yield|async|await)\\b` +
+        `|\\b(def|class|lambda|global|nonlocal|not|and|or)\\b` +
+        `|\\b(None|True|False|self|cls)\\b` +
+        `|\\b(\\d+\\.?\\d*)\\b` +
+        `|\\b([a-zA-Z_]\\w*)(?=\\s*\\()` +
+        `|\\b([a-zA-Z_]\\w*)\\b`, 
+        'g'
+    );
 
     let match;
     while ((match = combined.exec(line)) !== null) {
         if (match.index > lastIndex) {
-            parts.push(line.slice(lastIndex, match.index));
+            parts.push(<span key={`text-${lastIndex}`} className="text-[#D4D4D4]">{line.slice(lastIndex, match.index)}</span>);
         }
         if (match[1]) {
-            parts.push(<span key={match.index} className="text-primary/70">{match[0]}</span>);
+            parts.push(<span key={match.index} className="text-[#CE9178]">{match[0]}</span>);
         } else if (match[2]) {
-            parts.push(<span key={match.index} className="text-accent">{match[0]}</span>);
+            parts.push(<span key={match.index} className="text-[#DCDCAA]">{match[0]}</span>);
         } else if (match[3]) {
-            parts.push(<span key={match.index} className="text-primary font-bold">{match[0]}</span>);
+            parts.push(<span key={match.index} className="text-[#C586C0] font-medium">{match[0]}</span>);
         } else if (match[4]) {
-            parts.push(<span key={match.index} className="text-accent/80">{match[0]}</span>);
+            parts.push(<span key={match.index} className="text-[#569CD6] font-medium">{match[0]}</span>);
+        } else if (match[5]) {
+            parts.push(<span key={match.index} className="text-[#569CD6]">{match[0]}</span>);
+        } else if (match[6]) {
+            parts.push(<span key={match.index} className="text-[#B5CEA8]">{match[0]}</span>);
+        } else if (match[7]) {
+            parts.push(<span key={match.index} className="text-[#DCDCAA]">{match[0]}</span>);
+        } else if (match[8]) {
+            parts.push(<span key={match.index} className="text-[#9CDCFE]">{match[0]}</span>);
         }
         lastIndex = match.index + match[0].length;
     }
     if (lastIndex < line.length) {
-        parts.push(line.slice(lastIndex));
+        parts.push(<span key={`text-${lastIndex}`} className="text-[#D4D4D4]">{line.slice(lastIndex)}</span>);
     }
 
-    return parts.length > 0 ? <>{parts}</> : line;
+    return parts.length > 0 ? <>{parts}</> : <span className="text-[#D4D4D4]">{line}</span>;
 }
 
 /**
