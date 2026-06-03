@@ -893,48 +893,63 @@ const ProjectLayout = ({ project, customDemo }: ProjectLayoutProps) => {
                     <div className="max-w-6xl mx-auto">
                         <SectionHeader label={isAIMLProject ? "# source" : "# source"} title={isAIMLProject ? t.source : t.sourceCode} description={language === 'ja' ? "主要なロジックモジュールの確認。" : "Explore the primary logical modules."} />
 
-                        <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-4">
-                            {/* File list */}
-                            <div className="rounded-lg border border-border bg-card overflow-hidden">
-                                <div className="px-4 py-3 border-b border-border text-xs text-muted-foreground font-mono uppercase tracking-wider">
-                                    Files
+                        <div className="flex flex-col lg:grid lg:grid-cols-[250px_1fr] rounded-md border border-[#3c3c3c] bg-[#1e1e1e] shadow-2xl overflow-hidden font-sans">
+                            {/* Explorer (File list) */}
+                            <div className="bg-[#252526] border-r border-[#3c3c3c] flex flex-col">
+                                <div className="px-4 py-2 flex items-center text-[11px] text-[#cccccc] font-semibold tracking-wider">
+                                    EXPLORER
                                 </div>
-                                {project.codeSnippets.map((s) => (
-                                    <button
-                                        key={s.id}
-                                        onClick={() => setActiveSnippet(s.id)}
-                                        className={`w-full text-left px-4 py-3 border-b border-border font-mono text-sm transition-colors ${activeSnippet === s.id
-                                            ? "bg-primary/10 text-primary border-l-2 border-l-primary"
-                                            : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <ChevronRight className={`w-3 h-3 transition-transform ${activeSnippet === s.id ? "rotate-90 text-primary" : ""}`} />
-                                            <span>{language === 'ja' && s.title_ja ? s.title_ja : s.title}</span>
-                                        </div>
-                                        <p className="text-xs text-muted-foreground mt-1 ml-5">{language === 'ja' && s.description_ja ? s.description_ja : s.description}</p>
-                                    </button>
-                                ))}
+                                <div className="flex-1 overflow-y-auto py-1">
+                                    {project.codeSnippets.map((s) => (
+                                        <button
+                                            key={s.id}
+                                            onClick={() => setActiveSnippet(s.id)}
+                                            className={`w-full text-left px-4 py-1.5 flex items-center gap-2 text-sm transition-colors ${activeSnippet === s.id
+                                                ? "bg-[#37373d] text-white"
+                                                : "text-[#cccccc] hover:bg-[#2a2d2e] hover:text-white"
+                                                }`}
+                                        >
+                                            <ChevronRight className={`w-3.5 h-3.5 transition-transform ${activeSnippet === s.id ? "rotate-90 text-white" : "text-[#cccccc]"}`} />
+                                            <span className="truncate">{language === 'ja' && s.title_ja ? s.title_ja : s.title}</span>
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
 
-                            {/* Code viewer */}
-                            <div className="rounded-lg border border-border bg-card overflow-hidden">
-                                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30">
-                                    <span className="font-mono text-sm text-foreground">
+                            {/* Editor (Code viewer) */}
+                            <div className="bg-[#1e1e1e] flex flex-col min-w-0 overflow-hidden">
+                                {/* Editor Tabs */}
+                                <div className="flex bg-[#252526] overflow-x-auto hide-scrollbar">
+                                    <div className="bg-[#1e1e1e] border-t border-[#007acc] text-[#cccccc] px-4 py-2 text-sm flex items-center gap-2 min-w-max cursor-default">
+                                        <span className="text-[#519aba]">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                                <path d="M11.95 2.155c-3.13 0-3.321.134-3.504.606-.18.472-.18 1.488-.18 1.488h3.684v1.077H5.666s-1.401-.013-2.128.714c-.727.727-.714 2.128-.714 2.128v3.684s-.013 1.401.714 2.128c.727.727 1.838.714 1.838.714h1.077V12.15c0-1.892.128-3.385.908-4.165.78-.78 2.273-.908 4.165-.908h3.684V5.41s.013-1.401-.714-2.128c-.727-.727-2.128-.714-2.128-.714h-.418zM12.05 21.845c3.13 0 3.321-.134 3.504-.606.18-.472.18-1.488.18-1.488h-3.684v-1.077h6.284s1.401.013 2.128-.714c.727-.727.714-2.128.714-2.128v-3.684s.013-1.401-.714-2.128c-.727-.727-1.838-.714-1.838-.714h-1.077v2.544c0 1.892-.128 3.385-.908 4.165-.78.78-2.273.908-4.165.908H8.766v1.667s-.013 1.401.714 2.128c.727.727 2.128.714 2.128.714h.418z"/>
+                                            </svg>
+                                        </span>
                                         {(() => {
                                             const s = project.codeSnippets.find(s => s.id === activeSnippet);
                                             return language === 'ja' && s?.title_ja ? s.title_ja : s?.title;
                                         })()}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground font-mono">
-                                        {project.codeSnippets.find(s => s.id === activeSnippet)?.language}
-                                    </span>
+                                    </div>
+                                    <div className="flex-1 bg-[#252526] border-b border-[#252526]"></div>
                                 </div>
-                                <pre className="p-5 overflow-x-auto text-sm leading-6 font-mono">
-                                    <code className="text-foreground">
+                                
+                                {/* Breadcrumbs */}
+                                <div className="px-4 py-1 text-[12px] text-[#cccccc]/80 flex items-center gap-1 border-b border-[#3c3c3c]/50 bg-[#1e1e1e]">
+                                    <span>src</span>
+                                    <ChevronRight className="w-3 h-3 text-[#cccccc]/50" />
+                                    <span>{(() => {
+                                        const s = project.codeSnippets.find(s => s.id === activeSnippet);
+                                        return language === 'ja' && s?.title_ja ? s.title_ja : s?.title;
+                                    })()}</span>
+                                </div>
+
+                                {/* Code Content */}
+                                <pre className="p-4 overflow-auto text-[14px] leading-6 font-mono bg-[#1e1e1e] flex-1">
+                                    <code className="text-[#D4D4D4] block min-w-max">
                                         {project.codeSnippets.find(s => s.id === activeSnippet)?.code.split('\n').map((line, i) => (
-                                            <div key={i} className="flex">
-                                                <span className="w-10 flex-shrink-0 text-right pr-4 text-muted-foreground/40 select-none">{i + 1}</span>
+                                            <div key={i} className="flex hover:bg-[#ffffff0a] px-2 -mx-2">
+                                                <span className="w-10 flex-shrink-0 text-right pr-6 text-[#858585] select-none">{i + 1}</span>
                                                 <span className="flex-1 whitespace-pre">{highlightCode(line)}</span>
                                             </div>
                                         ))}
