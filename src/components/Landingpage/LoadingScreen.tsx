@@ -13,8 +13,6 @@ export function LoadingScreen({ onEnter }: LoadingScreenProps) {
 
   // Fade in the enter button after animation loads
   useEffect(() => {
-    const audio = new Audio('/Audio/Website%20booting.m4a');
-    audio.play().catch(e => console.warn('Audio autoplay blocked by browser:', e));
 
     const timer = setTimeout(() => {
       setStartVisible(true);
@@ -24,6 +22,8 @@ export function LoadingScreen({ onEnter }: LoadingScreenProps) {
   }, []);
 
   const handleEnter = () => {
+    const audio = new Audio('/Audio/Website%20booting.m4a');
+    audio.play().catch(e => console.warn('Audio play error:', e));
     if (onEnter) {
       onEnter();
     }

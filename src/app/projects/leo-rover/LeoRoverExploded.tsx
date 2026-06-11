@@ -24,22 +24,42 @@ export default function LeoRoverExploded() {
     const frameIndex = useTransform(scrollYProgress, [0, 1], [1, FRAME_COUNT]);
 
     useEffect(() => {
-        // Preload images once on mount
         let loaded = 0;
-        for (let i = 1; i <= FRAME_COUNT; i++) {
-            const img = new Image();
-            const frameNumber = i.toString().padStart(3, '0');
-            img.src = `/Autonomous-Mobile-Robot/Leo-rover/ezgif-frame-${frameNumber}.jpg`;
-            img.onload = () => {
-                loaded++;
-                setImagesLoaded(loaded);
-                // Initial draw if frame 1 is loaded
-                if (i === 1) {
-                    drawToCanvas(1);
-                }
-            };
-            preloadedImages[i] = img;
+        
+        const loadChunk = (start: number, end: number) => {
+            for (let i = start; i <= Math.min(end, FRAME_COUNT); i++) {
+                const img = new Image();
+                const frameNumber = i.toString().padStart(3, '0');
+                img.src = `/Autonomous-Mobile-Robot/Leo-rover/ezgif-frame-${frameNumber}.jpg`;
+                img.onload = () => {
+                    loaded++;
+                    setImagesLoaded(loaded);
+                    if (i === start) {
+                        drawToCanvas(start);
+                    }
+                };
+                preloadedImages[i] = img;
+            }
+        };
+
+        // Immediate load of first 10 frames
+        loadChunk(1, 10);
+
+        // Defer remaining frames
+        let idleId: any;
+        if (typeof requestIdleCallback !== 'undefined') {
+            idleId = requestIdleCallback(() => loadChunk(11, FRAME_COUNT));
+        } else {
+            idleId = setTimeout(() => loadChunk(11, FRAME_COUNT), 2000);
         }
+
+        return () => {
+            if (typeof cancelIdleCallback !== 'undefined' && idleId) {
+                cancelIdleCallback(idleId);
+            } else if (idleId) {
+                clearTimeout(idleId);
+            }
+        };
     }, []);
 
     const drawToCanvas = (index: number) => {
@@ -52,7 +72,7 @@ export default function LeoRoverExploded() {
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const width = window.innerWidth;
         const height = window.innerHeight;
 

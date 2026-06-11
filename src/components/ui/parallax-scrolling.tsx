@@ -45,10 +45,17 @@ export function ParallaxComponent({ children }: { children?: React.ReactNode }) 
       });
     }
 
-    const lenis = new Lenis();
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-    gsap.ticker.lagSmoothing(0);
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowPower = (navigator.hardwareConcurrency ?? 4) <= 2;
+    const isLowEnd = prefersReduced || isLowPower;
+
+    let lenis: Lenis | null = null;
+    if (!isLowEnd) {
+      lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => { lenis?.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
 
     return () => {
       // Clean up GSAP and ScrollTrigger instances
@@ -56,7 +63,9 @@ export function ParallaxComponent({ children }: { children?: React.ReactNode }) 
       if (triggerElement) {
         gsap.killTweensOf(triggerElement);
       }
-      lenis.destroy();
+      if (lenis) {
+        lenis.destroy();
+      }
     };
   }, []);
 

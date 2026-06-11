@@ -39,9 +39,16 @@ export function PortfolioContent() {
   const [mounted, setMounted] = React.useState(false);
   const [isDark, setIsDark] = React.useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [isLowEnd, setIsLowEnd] = useState(false);
+  const [show3D, setShow3D] = useState(false);
 
   React.useEffect(() => {
     setMounted(true);
+    
+    // Detect low-end devices or reduced motion preference
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowPower = (navigator.hardwareConcurrency ?? 4) <= 2;
+    setIsLowEnd(prefersReduced || isLowPower);
     
     // Theme observer: directly monitors the <html> class to instantly
     // update particle colors (SparklesCore) when switching light/dark modes.
@@ -168,11 +175,25 @@ export function PortfolioContent() {
 
           {/* 3D Scene - Absolute Background */}
           <div className="absolute bottom-0 right-0 h-[60%] w-full z-0 md:top-0 md:bottom-auto md:h-full md:w-[60%] md:max-xl:bottom-0 md:max-xl:top-auto md:max-xl:h-[65%] md:max-xl:w-full md:max-xl:-bottom-10">
-            <SplineScene
-              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="w-full h-full"
-              onLoad={handleSplineLoad}
-            />
+            {!isLowEnd || show3D ? (
+              <SplineScene
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="w-full h-full"
+                onLoad={handleSplineLoad}
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-black/10 backdrop-blur-sm border border-white/5 rounded-3xl m-4 p-8 pointer-events-auto">
+                <Button 
+                  onClick={() => setShow3D(true)}
+                  className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20"
+                >
+                  Load Interactive 3D Scene
+                </Button>
+                <p className="text-xs text-muted-foreground mt-4 text-center max-w-xs">
+                  (Paused to save battery and performance)
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="flex h-full flex-col md:flex-row md:max-xl:flex-col relative z-10 pointer-events-none items-center">
@@ -212,11 +233,12 @@ export function PortfolioContent() {
                     {/* Core component - Theme Aware Particles */}
                     {mounted && (
                       <SparklesCore
-                        key={String(isDark)}
+                        key={String(isDark) + String(isLowEnd)}
                         background="transparent"
                         minSize={0.4}
                         maxSize={1}
-                        particleDensity={1200}
+                        particleDensity={isLowEnd ? 40 : 1200}
+                        speed={isLowEnd ? 0.3 : 1}
                         className="w-full h-full"
                         particleColor={isDark ? '#FFFFFF' : '#000000'}
                       />

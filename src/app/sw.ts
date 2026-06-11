@@ -11,7 +11,9 @@ declare global {
 declare const self: ServiceWorkerGlobalScope;
 
 const serwist = new Serwist({
-  precacheEntries: self.__SW_MANIFEST,
+  precacheEntries: (self.__SW_MANIFEST ?? []).filter(
+    (entry) => !String(typeof entry === 'string' ? entry : entry.url).includes('Leo-rover')
+  ),
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,

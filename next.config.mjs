@@ -11,11 +11,11 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig = {
-  output: "export",
   basePath: (isProd && !isVercel) ? "/prathapsk" : "",
   reactStrictMode: true,
   images: {
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [390, 768, 1280, 1920],
   },
   typescript: {
     ignoreBuildErrors: true,

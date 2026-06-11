@@ -5,12 +5,16 @@ import { motion } from 'framer-motion';
 import { Component } from '@/components/ui/vapour-text-effect';
 
 export function LandingPage({ onComplete }: { onComplete: () => void }) {
+  const [isLowEnd, setIsLowEnd] = React.useState(false);
+
   useEffect(() => {
-    // Single text animation time:
-    // vaporize (2s) + fadeIn (1s) + wait (0.5s) = 3.5s total
+    // Detect low-end devices
+    const isLowPower = (navigator.hardwareConcurrency ?? 4) <= 2;
+    setIsLowEnd(isLowPower);
+
     const timer = setTimeout(() => {
       onComplete();
-    }, 4000); // 4 seconds for complete animation
+    }, 2500); // reduced to 2.5 seconds
 
     return () => clearTimeout(timer);
   }, [onComplete]);
@@ -21,7 +25,11 @@ export function LandingPage({ onComplete }: { onComplete: () => void }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
-      <Component />
+      {isLowEnd ? (
+        <div className="text-4xl font-bold tracking-widest animate-pulse">PRATHAP SELVAKUMAR</div>
+      ) : (
+        <Component />
+      )}
     </motion.div>
   );
 }
